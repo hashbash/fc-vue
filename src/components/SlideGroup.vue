@@ -37,7 +37,6 @@
                     :show-arrows="showArrows"
                     :center-active="centerActive"
                     :key="collection_id"
-                    :loading="true"
             >
 
                 <v-slide-item
