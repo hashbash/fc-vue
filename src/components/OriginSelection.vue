@@ -34,7 +34,7 @@
         }),
         methods: {
             remove(item) {
-                const index = this.selectedOrigins.indexOf(item.name);
+                const index = this.selectedOrigins.indexOf(item.name)
                 if (index >= 0) this.selectedOrigins.splice(index, 1)
             },
             updateParent() {
@@ -55,8 +55,8 @@
         watch: {
             search(newValue, oldValue) {
                 if (newValue === oldValue) return;
-                if (newValue === undefined || newValue.length == 0) {
-                    this.availableOrigins = this.selectedOrigins;
+                if (newValue == undefined || newValue == null || newValue.length == 0) {
+                    this.availableOrigins = this.selectedOrigins
                     return;
                 }
                 this.isLoading = true;
