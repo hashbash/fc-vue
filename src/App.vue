@@ -13,6 +13,7 @@
     </v-app-bar>
     <!--      <v-content></v-content>-->
     <v-content>
+      <UnexpectedError v-if="unexpectedError"></UnexpectedError>
       <v-progress-linear
               :active="!origins_ready"
               :indeterminate="!origins_ready"
@@ -27,6 +28,7 @@
               v-bind:api_url="api_url"
       ></OriginSelection>
     </v-content>
+
 
 
     <div
@@ -61,6 +63,7 @@
   import CurrencyMenu from "@/components/CurrencyMenu";
   import Footer from "@/components/Footer";
   import OriginSelection from "@/components/OriginSelection";
+  import UnexpectedError from "@/components/UnexpectedError";
 
   Vue.use(VueCookies);
   VueCookies.config('90d');
@@ -69,6 +72,7 @@
   export default {
     name: 'App',
     components: {
+      UnexpectedError,
       SlideGroup, CurrencyMenu, Footer, OriginSelection,
     },
     data: () => ({
@@ -79,6 +83,7 @@
       origins_ready: false,
       collections: null,
       collections_ready: false,
+      unexpectedError: false,
     }),
     methods: {
       updateFromChild(value) {
@@ -101,6 +106,9 @@
                   this.nearby_airports_info = response.data.data;
                   this.origins = this.nearby_airports_info;
                   this.origins_ready = true
+                })
+                .catch(() => {
+                  this.unexpectedError = true;
                 });
       },
       fetchCollectionMeta() {
