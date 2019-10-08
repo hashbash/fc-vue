@@ -55,17 +55,17 @@
 </template>
 
 <script>
-  import Vue from 'vue';
-  import VueCookies from 'vue-cookies';
-  // import ChipsList from "@/components/ChipsList";
-  import axios from 'axios';
-  import SlideGroup from "@/components/SlideGroup";
-  import CurrencyMenu from "@/components/CurrencyMenu";
-  import Footer from "@/components/Footer";
-  import OriginSelection from "@/components/OriginSelection";
-  import UnexpectedError from "@/components/UnexpectedError";
+    import Vue from 'vue';
+    import VueCookies from 'vue-cookies';
+    // import ChipsList from "@/components/ChipsList";
+    import axios from 'axios';
+    import SlideGroup from "@/components/SlideGroup";
+    import CurrencyMenu from "@/components/CurrencyMenu";
+    import Footer from "@/components/Footer";
+    import OriginSelection from "@/components/OriginSelection";
+    import UnexpectedError from "@/components/UnexpectedError";
 
-  Vue.use(VueCookies);
+    Vue.use(VueCookies);
   VueCookies.config('90d');
 
 
@@ -95,12 +95,13 @@
       },
       fillOrigins() {
         axios
-                .get('http://ip-api.com/json/?fields=49361')
+            .get('https://freegeoip.app/json/')
                 .then((response) => {
                   this.ip_info = response.data;
+                    VueCookies.set('ip_info', JSON.stringify(this.ip_info));
                   return axios
                           .get(this.api_url + '/nearby-airports?' +
-                                  `lon=${this.ip_info['lon']}&lat=${this.ip_info['lat']}`);
+                              `lon=${this.ip_info['longitude']}&lat=${this.ip_info['latitude']}`);
                 })
                 .then((response) => {
                   this.nearby_airports_info = response.data.data;
