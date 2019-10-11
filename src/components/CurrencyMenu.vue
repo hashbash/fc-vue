@@ -16,8 +16,9 @@
                         v-for="(item, index) in currencies"
                         :key="index"
                         v-on:click="currency = currencies[index].title"
+                        @click="updateParent"
                 >
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    <v-list-item-title>{{ item.title }} <strong>{{ item.symbol }}</strong></v-list-item-title>
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -28,12 +29,31 @@
     export default {
         name: "CurrencyMenu",
         data: () => ({
-            currency: "USD",
             currencies: [
                 {title: "USD", symbol: "$"},
+                {title: "EUR", symbol: "€"},
                 {title: "RUB", symbol: "₽"},
+                {title: "AUD", symbol: "A$"},
+                {title: "CAD", symbol: "C$"},
+                {title: "JPY", symbol: "¥"},
+                {title: "CNY", symbol: "元"},
             ],
+            currency: null,
         }),
+        methods: {
+            updateParent() {
+                this.$emit('updateCurrencyFromChild', this.currency)
+            },
+        },
+        updated: function () {
+            this.updateParent(this.currency)
+        },
+        created: function () {
+            this.currency = this.input_currency;
+        },
+        props: {
+            input_currency: String,
+        }
     }
 </script>
 

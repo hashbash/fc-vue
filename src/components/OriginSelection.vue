@@ -17,7 +17,6 @@
             label="Origins"
             :menu-props="{closeOnContentClick: true}"
             no-filter
-            aria-autocomplete="none"
     >
     </v-autocomplete>
 </template>
@@ -34,11 +33,11 @@
         }),
         methods: {
             remove(item) {
-                const index = this.selectedOrigins.indexOf(item.name)
+                const index = this.selectedOrigins.indexOf(item.name);
                 if (index >= 0) this.selectedOrigins.splice(index, 1)
             },
             updateParent() {
-                this.$emit('updateFromChild', this.selectedOrigins)
+                this.$emit('updateOriginsFromChild', this.selectedOrigins)
             },
         },
         created: function () {
@@ -56,7 +55,7 @@
             search(newValue, oldValue) {
                 if (newValue === oldValue) return;
                 if (newValue == undefined || newValue == null || newValue.length == 0) {
-                    this.availableOrigins = this.selectedOrigins
+                    this.availableOrigins = this.selectedOrigins;
                     return;
                 }
                 this.isLoading = true;
@@ -71,6 +70,11 @@
                         this.isLoading = false;
                     })
             },
+            // origins(newValue, oldValue) {
+            //     if (newValue != oldValue) {
+            //         this.updateParent()
+            //     }
+            // }
         }
     }
 </script>

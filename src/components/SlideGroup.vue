@@ -1,10 +1,10 @@
 <template>
     <div>
         <v-sheet
-                class="mx-auto"
-                elevation="8"
-                max-width="1200"
-                min-height="180"
+                class="ma-auto"
+                elevation="20"
+                max-width="1310"
+                min-height="500"
         >
 
             <v-toolbar
@@ -23,9 +23,9 @@
                 <v-btn icon>
                     <v-icon>mdi-export-variant</v-icon>
                 </v-btn>
-                <v-btn icon>
-                    <v-icon>mdi-heart</v-icon>
-                </v-btn>
+                <!--                <v-btn icon>-->
+                <!--                    <v-icon>mdi-heart</v-icon>-->
+                <!--                </v-btn>-->
             </v-toolbar>
             <v-slide-group
                     v-model="model"
@@ -43,29 +43,36 @@
                         v-for="f in flights"
                         :key="collection_id + f.destination"
                         v-slot:default="{ active, toggle }"
-
                 >
                     <v-card
-                            width="170"
+                            width="180"
                             hover
                             class="ma-2 card-outer"
                     >
-                        <v-img
-                                class="white--text"
-                                height="150px"
-                                weight="150px"
-                                :src="getCardImagePath(f.destination)"
-                        >
-                            <v-card-title
-                                    class="align-end fill-height text-break"
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title class="headline">{{ f.destination_city_name }}</v-list-item-title>
+                                <v-list-item-subtitle>{{ f.destination_country_name }}</v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <template>
+                            <v-img
+                                    class="black--text"
+                                    height="150px"
+                                    weight="150px"
+                                    :src="api_url + `/image/airports?id=${f.destination}`"
                             >
-                                {{ f.destination_city_name }}
-                            </v-card-title>
-                        </v-img>
+                                <!--                            <v-card-title-->
+                                <!--                                    class="align-end fill-height text-break shades"-->
+                                <!--                            >-->
+                                <!--                                <strong>{{ f.destination_city_name }}</strong>-->
+                                <!--                            </v-card-title>-->
+                            </v-img>
+                        </template>
 
                         <v-card-text>
                             <div>
-                                <div>{{ f.destination_country_name }}</div>
+                                <!--                                <div>{{ f.destination_country_name }}</div>-->
                                 <div class="caption">{{f.origin}} ✈ {{ f.destination }}</div>
                                 <div class="caption">{{ f.outbound_dt }} {{calculateDays(f.outbound_dt, f.inbound_dt,
                                     f.one_way)}}
@@ -73,8 +80,8 @@
                             </div>
                             <v-chip-group
                                     column
-                                    active-class="primary--text"
                                     class="v-size--x-small"
+                                    disabled="true"
                             >
                                 <v-chip
                                         v-if="Boolean(Number(f.one_way))"
@@ -95,8 +102,8 @@
                                 <v-chip
                                         v-if="Boolean(Number(f.direct))"
                                         key="direct"
-                                        disabled
                                         small
+                                        disabled
                                 >
                                     Direct
                                 </v-chip>
@@ -112,7 +119,7 @@
                                         :href="getExternalLink(f.origin_city_id, f.destination_city_id,
                                                            f.outbound_dt, f.inbound_dt)"
                                         target="_blank"
-                                >✈️ {{f.price}} {{ f.currency }}
+                                >✈️ {{ f.price | currency(f.currency, 0, { spaceBetweenAmountAndSymbol: true }) }}
                                 </v-btn>
                             </v-container>
                         </v-card-actions>
@@ -124,10 +131,15 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     import axios from 'axios';
+    import Vue2Filters from 'vue2-filters'
+
+    Vue.use(Vue2Filters)
 
     export default {
         name: "SlideGroup",
+        mixins: [Vue2Filters.mixin],
         data: () => ({
             model: null,
             multiple: false,
@@ -149,7 +161,11 @@
             getFlights() {
                 this.flights_loaded = false;
                 axios
-                    .get(this.api_url + `/collections?id=${this.collection_id.toString()}&origins=${this.origins.join(',')}`)
+                    .get(this.api_url + `/collections?id=${this.collection_id.toString()}&`
+                        + `origins=${this.origins.join(',')}&`
+                        + `currency=${this.currency}&`
+                        + 'limit=48'
+                    )
                     .then((response) => {
                         this.flights = response.data.data;
                         this.flights_loaded = true;
@@ -168,15 +184,14 @@
                 let link_arr = ['https://www.skyscanner.ru/transport/flights',
                     origin_city_id, destination_city_id, outbound, inbound];
                 return link_arr.join('/')
-            }, getCardImagePath(destination) {
-                return this.api_url + '/image/airports?id=' + destination
-            }
+            },
         },
         props: {
             collection_id: Number,
             collection_name: String,
             api_url: String,
             origins: Array,
+            currency: String,
         },
         watch: {
             origins(newValue, oldValue) {
