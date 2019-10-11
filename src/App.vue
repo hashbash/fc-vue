@@ -37,6 +37,7 @@
     </v-content>
 
 
+    
 
     <div
             v-if="(collections_ready) && (origins_ready) && (currency_ready)"
@@ -47,17 +48,29 @@
               :key="index"
 
       >
-        <SlideGroup
-                v-bind:collection_id="parseInt(collection_id)"
-                v-bind:collection_name="collection_name"
-                v-bind:origins="origins"
-                v-bind:api_url="api_url"
-                v-bind:currency="currency"
-        >
-        </SlideGroup>
+      <intersect @enter="slideGroupEnter(index)" @leave="slideGroupLeave(index)">
+        <div>
+          <SlideGroup
+                  v-show="slideGroupShow[index]"
+                  v-bind:collection_id="parseInt(collection_id)"
+                  v-bind:collection_name="collection_name"
+                  v-bind:origins="origins"
+                  v-bind:api_url="api_url"
+                  v-bind:currency="currency"
+          >
+          </SlideGroup>
+          <div 
+            v-show="!slideGroupShow[index]"
+            style="width: 1310; height: 500px;"
+          >
+          </div>
+        </div>
+
+      </intersect>
       </v-content>
 
     </div>
+    
     <v-content></v-content>
     <v-content></v-content>
     <Footer></Footer>
@@ -67,6 +80,7 @@
 <script>
   import Vue from 'vue';
   import VueCookies from 'vue-cookies';
+  import Intersect from 'vue-intersect'
   // import ChipsList from "@/components/ChipsList";
   import axios from 'axios';
   import SlideGroup from "@/components/SlideGroup";
@@ -85,8 +99,10 @@
     components: {
       UnexpectedError,
       SlideGroup, CurrencyMenu, Footer, OriginSelection,
+      Intersect
     },
     data: () => ({
+      slideGroupShow: [true, true, true, false, false, false, false, false, false, false, false, false, false, false],
       origins: ['VKO', 'SVO', 'DME'],
       api_url: 'https://api.cheapster.travel/api/v1',
       // api_url: 'http://localhost:5000/api/v1',
@@ -101,6 +117,15 @@
       slideGroupDivId: 0,
     }),
     methods: {
+      slideGroupEnter(index) {
+        this.$set(this.slideGroupShow,index,true)
+        console.log(this.slideGroupShow)
+        console.log('Enter ' + index)
+      },
+      slideGroupLeave(index) {
+        this.$set(this.slideGroupShow,index,false)
+        console.log('Leave ' + index)
+      },
       updateOriginsFromChild(value) {
         this.origins = value;
         this.origins = this.origins.map(function (x) {
@@ -127,7 +152,8 @@
                   this.nearby_airports_info = response.data.data;
                   this.origins = this.nearby_airports_info;
                 })
-                .catch(() => {
+                .catch((error) => {
+                  console.log(error)
                   this.unexpectedError = true;
                 })
                 .then(() => {
@@ -147,7 +173,8 @@
                   this.collections = response.data;
                   this.collections_ready = true;
                 })
-                .catch(() => {
+                .catch((error) => {
+                  console.log(error)
                   this.unexpectedError = true;
                 })
       }
