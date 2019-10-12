@@ -37,24 +37,28 @@
       <v-content v-for="(collection_name, collection_id, index) in collections" :key="index">
         <intersect @enter="slideGroupEnter(index)" @leave="slideGroupLeave(index)">
           <div>
-            <!-- <SlideGroup
+            <SlideGroup
               v-show="slideGroupShow[index]"
               v-bind:collection_id="parseInt(collection_id)"
               v-bind:collection_name="collection_name"
               v-bind:origins="origins"
               v-bind:api_url="api_url"
               v-bind:currency="currency"
-            ></SlideGroup> -->
-            <v-sheet  class="ma-auto" elevation="20" max-width="1310" min-height="500">
-              <v-skeleton-loader class="ml-4 pt-5"
-                type="heading"
-              ></v-skeleton-loader>
-              <div class="pa-5 mt-5">
-                <v-skeleton-loader
-                  :width="180"
-                  :min-height="386"
-                  type="image"
-                ></v-skeleton-loader>
+            ></SlideGroup>
+            <v-sheet
+              v-show="!slideGroupShow[index]"
+              class="ma-auto"
+              elevation="20"
+              max-width="1310"
+              min-height="500"
+            >
+              <v-skeleton-loader class="ml-4 pt-5" type="heading"></v-skeleton-loader>
+              <div class="px-12 mx-8 mt-10">
+                <v-row dense>
+                  <v-col v-for="(itemTour, indexTour) in 6" :key="indexTour" class="mr-1">
+                    <v-skeleton-loader :width="180" type="image" class="tour-card-skeleton"></v-skeleton-loader>
+                  </v-col>
+                </v-row>
               </div>
             </v-sheet>
             <!-- <div v-show="!slideGroupShow[index]" style="width: 1310; height: 500px;"></div> -->
@@ -93,24 +97,24 @@ export default {
     CurrencyMenu,
     Footer,
     OriginSelection,
-    Intersect,
+    Intersect
   },
   data: () => ({
     slideGroupShow: [
       true,
       true,
       true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
     ],
     origins: ["VKO", "SVO", "DME"],
     api_url: "https://api.cheapster.travel/api/v1",
@@ -182,6 +186,23 @@ export default {
         .then(response => {
           this.collections = response.data;
           this.collections_ready = true;
+          this.slideGroupShow=[
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
         })
         .catch(error => {
           console.log(error);
@@ -228,3 +249,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.v-skeleton-loader__image.v-skeleton-loader__bone {
+  height: 386px !important;
+}
+</style>
