@@ -38,7 +38,7 @@
         <intersect @enter="slideGroupEnter(index)" @leave="slideGroupLeave(index)">
           <div>
             <SlideGroup
-              v-show="slideGroupShow[index]"
+              v-if="slideGroupShow[index]"
               v-bind:collection_id="parseInt(collection_id)"
               v-bind:collection_name="collection_name"
               v-bind:origins="origins"
@@ -46,7 +46,7 @@
               v-bind:currency="currency"
             ></SlideGroup>
             <v-sheet
-              v-show="!slideGroupShow[index]"
+              v-if="!slideGroupShow[index]"
               class="ma-auto"
               elevation="20"
               max-width="1310"
