@@ -38,6 +38,7 @@
         <intersect @enter="slideGroupEnter(index)" @leave="slideGroupLeave(index)">
           <div>
             <SlideGroup
+              v-if="slideGroupShow[index]"
               v-bind:collection_id="parseInt(collection_id)"
               v-bind:collection_name="collection_name"
               v-bind:origins="origins"
@@ -196,6 +197,23 @@ export default {
         .then(response => {
           this.collections = response.data;
           this.collections_ready = true;
+          this.slideGroupShow = [
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ];
         })
         .catch(() => {
           this.unexpectedError = true;

@@ -113,7 +113,7 @@
             </v-col>
           </v-row>
         </div>
-      </div>  
+      </div>
     </v-sheet>
   </div>
 </template>
