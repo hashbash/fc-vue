@@ -53,13 +53,13 @@
               min-height="500"
             >
               <v-toolbar height="0px" flat>
-                <v-progress-linear
+                <!-- <v-progress-linear
                   :active="true"
                   :indeterminate="true"
                   absolute
                   top
                   color="deep-purple accent-4"
-                ></v-progress-linear>
+                ></v-progress-linear> -->
               </v-toolbar>
               <v-skeleton-loader class="ml-4 pt-5" type="heading"></v-skeleton-loader>
               <div class="px-12 mx-8 mt-10">
