@@ -8,7 +8,7 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <div v-if="(currency_ready) && (origins_ready)">
+      <div v-if="currency_ready && origins_ready">
         <CurrencyMenu
           v-on:updateCurrencyFromChild="updateCurrencyFromChild"
           v-bind:input_currency="currency"
@@ -33,18 +33,19 @@
       ></OriginSelection>
     </v-content>
 
-    <div v-if="(collections_ready) && (origins_ready) && (currency_ready)" :key="slideGroupDivId">
-      <v-content v-for="(collection_name, collection_id, index) in collections" :key="index">
-        <intersect @enter="slideGroupEnter(index)" @leave="slideGroupLeave(index)">
+    <div
+      v-if="collections_ready && origins_ready && currency_ready"
+      :key="slideGroupDivId"
+    >
+      <v-content
+        v-for="(collection_name, collection_id, index) in collections"
+        :key="index"
+      >
+        <intersect
+          @enter="slideGroupEnter(index)"
+          @leave="slideGroupLeave(index)"
+        >
           <div>
-            <SlideGroup
-              v-if="slideGroupShow[index]"
-              v-bind:collection_id="parseInt(collection_id)"
-              v-bind:collection_name="collection_name"
-              v-bind:origins="origins"
-              v-bind:api_url="api_url"
-              v-bind:currency="currency"
-            ></SlideGroup>
             <v-sheet
               v-if="!slideGroupShow[index]"
               class="ma-auto"
@@ -52,19 +53,18 @@
               max-width="1310"
               min-height="500"
             >
-              <v-toolbar height="0px" flat>
-                <!-- <v-progress-linear
-                  :active="true"
-                  :indeterminate="true"
-                  absolute
-                  top
-                  color="deep-purple accent-4"
-                ></v-progress-linear> -->
-              </v-toolbar>
-              <v-skeleton-loader class="ml-4 pt-5" type="heading"></v-skeleton-loader>
+              <v-toolbar height="0px" flat> </v-toolbar>
+              <v-skeleton-loader
+                class="ml-4 pt-5"
+                type="heading"
+              ></v-skeleton-loader>
               <div class="px-12 mx-8 mt-10">
                 <v-row dense>
-                  <v-col v-for="(itemTour, indexTour) in 6" :key="indexTour" class="mr-1">
+                  <v-col
+                    v-for="(itemTour, indexTour) in 6"
+                    :key="indexTour"
+                    class="mr-1"
+                  >
                     <v-skeleton-loader
                       :width="180"
                       type="image"
@@ -75,6 +75,15 @@
                 </v-row>
               </div>
             </v-sheet>
+            <SlideGroup
+              v-else
+              v-bind:collection_id="parseInt(collection_id)"
+              v-bind:collection_name="collection_name"
+              v-bind:origins="origins"
+              v-bind:api_url="api_url"
+              v-bind:currency="currency"
+              @dataLoaded="slideGroupLoaded"
+            ></SlideGroup>
           </div>
         </intersect>
       </v-content>
@@ -112,22 +121,6 @@ export default {
     Intersect
   },
   data: () => ({
-    slideGroupShow: [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ],
     origins: ["VKO", "SVO", "DME"],
     api_url: "https://api.cheapster.travel/api/v1",
     // api_url: 'http://localhost:5000/api/v1',
@@ -139,17 +132,16 @@ export default {
     unexpectedError: false,
     currency: null,
     currency_ready: false,
-    slideGroupDivId: 0
+    slideGroupDivId: 0,
+    slideGroupShow: [],
+    slideGroupLoadedStatus: []
   }),
   methods: {
-    slideGroupEnter(index) {
-      this.$set(this.slideGroupShow, index, true);
-      console.log(this.slideGroupShow);
-      console.log("Enter " + index);
-    },
-    slideGroupLeave(index) {
-      this.$set(this.slideGroupShow, index, false);
-      console.log("Leave " + index);
+    slideGroupEnter(index) {},
+    slideGroupLeave(index) {},
+    slideGroupLoaded(id) {
+      console.log(id);
+      this.$set(this.slideGroupLoadedStatus, id - 1, true);
     },
     updateOriginsFromChild(value) {
       this.origins = value;
@@ -197,23 +189,15 @@ export default {
         .then(response => {
           this.collections = response.data;
           this.collections_ready = true;
-          this.slideGroupShow = [
-            true,
-            true,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ];
+          console.log("Collections length: " + Object.keys(this.collections));
+          //Setting only two of slideGroups to be loaded at first
+          for (let i = 0; i < Object.keys(this.collections).length; i++) {
+            if (i < 2) {
+              this.$set(this.slideGroupShow, i, true);
+            } else {
+              this.$set(this.slideGroupShow, i, false);
+            }
+          }
         })
         .catch(() => {
           this.unexpectedError = true;
@@ -255,7 +239,16 @@ export default {
     }
   },
   watch: {
-    currency() {}
+    currency() {},
+    slideGroupLoadedStatus(newValue, oldValue) {
+      setTimeout(() => {
+        if (newValue[0] === true && newValue[1] === true) {
+          for (let i = 2; i < this.slideGroupShow.length; i++) {
+            this.$set(this.slideGroupShow, i, true);
+          }
+        }
+      }, 1000);
+    }
   }
 };
 </script>

@@ -159,6 +159,7 @@ export default {
         .then(response => {
           this.flights = response.data.data;
           this.flights_loaded = true;
+          this.$emit('dataLoaded', this.collection_id)
         });
     },
     calculateDays(outbound, inbound, one_way) {
