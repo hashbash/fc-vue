@@ -46,35 +46,7 @@
           @leave="slideGroupLeave(index)"
         >
           <div>
-            <v-sheet
-              v-if="!slideGroupShow[index]"
-              class="ma-auto"
-              elevation="20"
-              max-width="1310"
-              min-height="500"
-            >
-              <v-toolbar height="0px" flat> </v-toolbar>
-              <v-skeleton-loader
-                class="ml-4 pt-5"
-                type="heading"
-              ></v-skeleton-loader>
-              <div class="px-12 mx-8 mt-10">
-                <v-row dense>
-                  <v-col
-                    v-for="(itemTour, indexTour) in 6"
-                    :key="indexTour"
-                    class="mr-1"
-                  >
-                    <v-skeleton-loader
-                      :width="180"
-                      type="image"
-                      class="tour-card-skeleton"
-                      transition="fade-transition"
-                    ></v-skeleton-loader>
-                  </v-col>
-                </v-row>
-              </div>
-            </v-sheet>
+            <CardSkeleton v-if="!slideGroupShow[index]"></CardSkeleton>
             <SlideGroup
               v-else
               v-bind:collection_id="parseInt(collection_id)"
@@ -105,6 +77,7 @@ import CurrencyMenu from "@/components/CurrencyMenu";
 import Footer from "@/components/Footer";
 import OriginSelection from "@/components/OriginSelection";
 import UnexpectedError from "@/components/UnexpectedError";
+import CardSkeleton from "@/components/CardSkeleton";
 
 Vue.use(VueCookies);
 
@@ -118,7 +91,8 @@ export default {
     CurrencyMenu,
     Footer,
     OriginSelection,
-    Intersect
+    Intersect,
+    CardSkeleton
   },
   data: () => ({
     origins: ["VKO", "SVO", "DME"],
