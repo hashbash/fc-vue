@@ -125,9 +125,11 @@ export default {
       VueCookies.set("origins", JSON.stringify(this.origins));
     },
     updateCurrencyFromChild(value) {
-      this.currency = value;
-      VueCookies.set("currency", this.currency);
-      this.slideGroupDivId += 1;
+      if (this.currency!=value) {
+        this.currency = value;
+        VueCookies.set("currency", this.currency);
+        this.slideGroupDivId += 1;
+      }
     },
     fillOrigins() {
       axios
