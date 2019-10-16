@@ -228,7 +228,7 @@ export default {
 </script>
 
 <style>
-.v-skeleton-loader__image.v-skeleton-loader__bone {
+/* .v-skeleton-loader__image.v-skeleton-loader__bone {
   height: 386px !important;
-}
+} */
 </style>

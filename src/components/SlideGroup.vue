@@ -216,4 +216,8 @@ export default {
   position: absolute;
   bottom: 0;
 }
+
+.v-skeleton-loader__image.v-skeleton-loader__bone {
+  height: 386px !important;
+}
 </style>
