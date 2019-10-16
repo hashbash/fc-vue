@@ -48,6 +48,7 @@
                   height="150px"
                   weight="150px"
                   :src="api_url + `/image/airports?id=${f.destination}`"
+                  lazy-src="/logo.png"
                 >
                   <!--                            <v-card-title-->
                   <!--                                    class="align-end fill-height text-break shades"-->
