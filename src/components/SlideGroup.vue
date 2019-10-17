@@ -10,7 +10,7 @@
             top
             color="deep-purple accent-4"
           ></v-progress-linear>
-          <v-toolbar-title href="ya.ru">{{ collection_name }}</v-toolbar-title>
+          <v-toolbar-title href="ya.ru" class="ml-2"><h3>{{ collection_name }}</h3></v-toolbar-title>
           <div class="flex-grow-1"></div>
           <v-btn icon>
             <v-icon>mdi-export-variant</v-icon>

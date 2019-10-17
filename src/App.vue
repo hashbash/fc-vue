@@ -8,6 +8,7 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
+      <v-switch v-model="visaFree" label="Visa free" class="visa-switcher"></v-switch>
       <div v-if="currency_ready && origins_ready">
         <CurrencyMenu
           v-on:updateCurrencyFromChild="updateCurrencyFromChild"
@@ -108,7 +109,8 @@ export default {
     currency_ready: false,
     slideGroupDivId: 0,
     slideGroupShow: [],
-    slideGroupLoadedStatus: []
+    slideGroupLoadedStatus: [],
+    visaFree: false
   }),
   methods: {
     slideGroupEnter(index) {},
@@ -125,7 +127,7 @@ export default {
       VueCookies.set("origins", JSON.stringify(this.origins));
     },
     updateCurrencyFromChild(value) {
-      if (this.currency!=value) {
+      if (this.currency != value) {
         this.currency = value;
         VueCookies.set("currency", this.currency);
         this.slideGroupDivId += 1;
@@ -233,4 +235,21 @@ export default {
 /* .v-skeleton-loader__image.v-skeleton-loader__bone {
   height: 386px !important;
 } */
+.v-messages.theme--light {
+  height: 0px !important;
+}
+.visa-switcher {
+  margin-right: 15px;
+}
+.visa-switcher > .v-input__control {
+  display: contents;
+}
+.visa-switcher > .v-input__control > .v-input__slot {
+  margin: auto;
+  margin-bottom: 0px !important;
+  flex-direction: row-reverse;
+}
+.visa-switcher > .v-input__control > .v-input__slot > .v-input--selection-controls__input {
+  margin-left: 10px;
+}
 </style>

@@ -17,6 +17,7 @@
             label="Origins"
             :menu-props="{closeOnContentClick: true}"
             no-filter
+            class="origin-autocompl"
     >
     </v-autocomplete>
 </template>
@@ -80,5 +81,8 @@
 </script>
 
 <style scoped>
-
+.origin-autocompl {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 </style>
