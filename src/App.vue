@@ -9,12 +9,16 @@
 
       <v-spacer></v-spacer>
       <v-switch v-model="visaFree" label="Visa free" class="visa-switcher"></v-switch>
-      <div v-if="currency_ready && origins_ready">
+      <div v-if="currency_ready && origins_ready" class="mr-2">
         <CurrencyMenu
           v-on:updateCurrencyFromChild="updateCurrencyFromChild"
           v-bind:input_currency="currency"
         ></CurrencyMenu>
       </div>
+      <v-btn text icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+
     </v-app-bar>
     <!--      <v-content></v-content>-->
     <v-content aria-autocomplete="none">
