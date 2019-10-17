@@ -8,7 +8,11 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <v-switch v-model="visaFree" label="Visa free" class="visa-switcher"></v-switch>
+      <v-switch
+        v-model="visaFree"
+        label="Visa free"
+        class="visa-switcher"
+      ></v-switch>
       <div v-if="currency_ready && origins_ready" class="mr-2">
         <CurrencyMenu
           v-on:updateCurrencyFromChild="updateCurrencyFromChild"
@@ -18,7 +22,6 @@
       <v-btn text icon>
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
-
     </v-app-bar>
     <!--      <v-content></v-content>-->
     <v-content aria-autocomplete="none">
@@ -37,7 +40,31 @@
         v-bind:api_url="api_url"
       ></OriginSelection>
     </v-content>
-
+    <div class="months-wrapper">
+      <v-row dense>
+        <v-col v-for="(item, index) in 12" :key="index">
+          <v-img
+            src="https://picsum.photos/id/11/500/300"
+            lazy-src="https://picsum.photos/id/11/10/6"
+            aspect-ratio="1"
+            class="grey lighten-2"
+            :width="100"
+            :height="90"
+            gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+          >
+            <div class="fill-height white--text" style="display: flex;">
+              <div style="margin:auto;">
+                <span>December</span>
+                <v-checkbox
+                  v-model="checkbox[index]"
+                  class="month-checkbox"
+                ></v-checkbox>
+              </div>
+            </div>
+          </v-img>
+        </v-col>
+      </v-row>
+    </div>
     <div
       v-if="collections_ready && origins_ready && currency_ready"
       :key="slideGroupDivId"
@@ -114,7 +141,8 @@ export default {
     slideGroupDivId: 0,
     slideGroupShow: [],
     slideGroupLoadedStatus: [],
-    visaFree: false
+    visaFree: false,
+    checkbox: [false,false,false,false,false,false,false,false,false,false,false,false],
   }),
   methods: {
     slideGroupEnter(index) {},
@@ -253,7 +281,26 @@ export default {
   margin-bottom: 0px !important;
   flex-direction: row-reverse;
 }
-.visa-switcher > .v-input__control > .v-input__slot > .v-input--selection-controls__input {
+.visa-switcher
+  > .v-input__control
+  > .v-input__slot
+  > .v-input--selection-controls__input {
   margin-left: 10px;
 }
+.months-wrapper {
+  max-width: 1300px;
+  margin: auto;
+  margin-bottom: -30px;
+}
+.month-checkbox {
+  margin-top: 0px !important;
+}
+.month-checkbox > .v-input__control {
+  margin-left: auto;
+  margin-right: auto;
+}
+.month-checkbox > .v-input__control > .v-input__slot > .v-input--selection-controls__input{
+  margin-right: 0px;
+}
+
 </style>
