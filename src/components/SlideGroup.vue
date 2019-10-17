@@ -91,7 +91,7 @@
           </v-slide-item>
         </v-slide-group>
       </div>
-      <CardSkeleton v-else></CardSkeleton>
+      <SlideSkeleton v-else></SlideSkeleton>
       <!-- <div v-else>
         <v-toolbar height="0px" flat>
           <v-progress-linear
@@ -124,14 +124,14 @@
 import Vue from "vue";
 import axios from "axios";
 import Vue2Filters from "vue2-filters";
-import CardSkeleton from "@/components/CardSkeleton";
+import SlideSkeleton from "@/components/SlideSkeleton";
 
 Vue.use(Vue2Filters);
 
 export default {
   name: "SlideGroup",
   components: {
-    CardSkeleton
+    SlideSkeleton
   },
   mixins: [Vue2Filters.mixin],
   data: () => ({

@@ -47,7 +47,7 @@
           @leave="slideGroupLeave(index)"
         >
           <div>
-            <CardSkeleton v-if="!slideGroupShow[index]"></CardSkeleton>
+            <SlideSkeleton v-if="!slideGroupShow[index]"></SlideSkeleton>
             <SlideGroup
               v-else
               v-bind:collection_id="parseInt(collection_id)"
@@ -78,7 +78,7 @@ import CurrencyMenu from "@/components/CurrencyMenu";
 import Footer from "@/components/Footer";
 import OriginSelection from "@/components/OriginSelection";
 import UnexpectedError from "@/components/UnexpectedError";
-import CardSkeleton from "@/components/CardSkeleton";
+import SlideSkeleton from "@/components/SlideSkeleton";
 
 Vue.use(VueCookies);
 
@@ -93,7 +93,7 @@ export default {
     Footer,
     OriginSelection,
     Intersect,
-    CardSkeleton
+    SlideSkeleton
   },
   data: () => ({
     origins: ["VKO", "SVO", "DME"],
