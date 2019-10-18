@@ -10,7 +10,7 @@
             top
             color="deep-purple accent-4"
           ></v-progress-linear>
-          <v-toolbar-title href="ya.ru">{{ collection_name }}</v-toolbar-title>
+          <v-toolbar-title href="ya.ru" class="ml-2"><h3>{{ collection_name }}</h3></v-toolbar-title>
           <div class="flex-grow-1"></div>
           <v-btn icon>
             <v-icon>mdi-export-variant</v-icon>
@@ -48,6 +48,7 @@
                   height="150px"
                   weight="150px"
                   :src="api_url + `/image/airports?id=${f.destination}`"
+                  lazy-src="/logo.png"
                 >
                   <!--                            <v-card-title-->
                   <!--                                    class="align-end fill-height text-break shades"-->
@@ -90,7 +91,8 @@
           </v-slide-item>
         </v-slide-group>
       </div>
-      <div v-else>
+      <SlideSkeleton v-else></SlideSkeleton>
+      <!-- <div v-else>
         <v-toolbar height="0px" flat>
           <v-progress-linear
             :active="true"
@@ -113,7 +115,7 @@
             </v-col>
           </v-row>
         </div>
-      </div>
+      </div> -->
     </v-sheet>
   </div>
 </template>
@@ -122,11 +124,15 @@
 import Vue from "vue";
 import axios from "axios";
 import Vue2Filters from "vue2-filters";
+import SlideSkeleton from "@/components/SlideSkeleton";
 
 Vue.use(Vue2Filters);
 
 export default {
   name: "SlideGroup",
+  components: {
+    SlideSkeleton
+  },
   mixins: [Vue2Filters.mixin],
   data: () => ({
     model: null,
@@ -159,6 +165,7 @@ export default {
         .then(response => {
           this.flights = response.data.data;
           this.flights_loaded = true;
+          this.$emit('dataLoaded', this.collection_id)
         });
     },
     calculateDays(outbound, inbound, one_way) {
@@ -209,5 +216,9 @@ export default {
 .card-actions {
   position: absolute;
   bottom: 0;
+}
+
+.v-skeleton-loader__image.v-skeleton-loader__bone {
+  height: 386px !important;
 }
 </style>

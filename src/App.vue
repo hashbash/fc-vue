@@ -8,12 +8,20 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <div v-if="(currency_ready) && (origins_ready)">
+      <v-switch
+        v-model="visaFree"
+        label="Visa free"
+        class="visa-switcher"
+      ></v-switch>
+      <div v-if="currency_ready && origins_ready" class="mr-2">
         <CurrencyMenu
           v-on:updateCurrencyFromChild="updateCurrencyFromChild"
           v-bind:input_currency="currency"
         ></CurrencyMenu>
       </div>
+      <v-btn text icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
     </v-app-bar>
     <!--      <v-content></v-content>-->
     <v-content aria-autocomplete="none">
@@ -32,49 +40,51 @@
         v-bind:api_url="api_url"
       ></OriginSelection>
     </v-content>
-
-    <div v-if="(collections_ready) && (origins_ready) && (currency_ready)" :key="slideGroupDivId">
-      <v-content v-for="(collection_name, collection_id, index) in collections" :key="index">
-        <intersect @enter="slideGroupEnter(index)" @leave="slideGroupLeave(index)">
+    <!-- <div class="months-wrapper">
+      <v-row dense>
+        <v-col v-for="(item, index) in 12" :key="index">
+          <v-img
+            src="https://picsum.photos/id/11/500/300"
+            lazy-src="https://picsum.photos/id/11/10/6"
+            aspect-ratio="1"
+            class="grey lighten-2 month-button"
+            :width="100"
+            :height="90"
+            gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+          >
+            <div class="fill-height white--text" style="display: flex;">
+              <div style="margin:auto;">
+                <span>December</span>
+                
+              </div>
+            </div>
+          </v-img>
+        </v-col>
+      </v-row>
+    </div> -->
+    <div
+      v-if="collections_ready && origins_ready && currency_ready"
+      :key="slideGroupDivId"
+    >
+      <v-content
+        v-for="(collection_name, collection_id, index) in collections"
+        :key="index"
+      >
+        <intersect
+          @enter="slideGroupEnter(index)"
+          @leave="slideGroupLeave(index)"
+        >
           <div>
+            <SlideSkeleton v-if="!slideGroupShow[index]"></SlideSkeleton>
             <SlideGroup
-              v-if="slideGroupShow[index]"
+              v-else
               v-bind:collection_id="parseInt(collection_id)"
               v-bind:collection_name="collection_name"
               v-bind:origins="origins"
               v-bind:api_url="api_url"
               v-bind:currency="currency"
+              @dataLoaded="slideGroupLoaded"
             ></SlideGroup>
-            <v-sheet
-              v-if="!slideGroupShow[index]"
-              class="ma-auto"
-              elevation="20"
-              max-width="1310"
-              min-height="500"
-            >
-              <v-toolbar height="0px" flat>
-                <!-- <v-progress-linear
-                  :active="true"
-                  :indeterminate="true"
-                  absolute
-                  top
-                  color="deep-purple accent-4"
-                ></v-progress-linear> -->
-              </v-toolbar>
-              <v-skeleton-loader class="ml-4 pt-5" type="heading"></v-skeleton-loader>
-              <div class="px-12 mx-8 mt-10">
-                <v-row dense>
-                  <v-col v-for="(itemTour, indexTour) in 6" :key="indexTour" class="mr-1">
-                    <v-skeleton-loader
-                      :width="180"
-                      type="image"
-                      class="tour-card-skeleton"
-                      transition="fade-transition"
-                    ></v-skeleton-loader>
-                  </v-col>
-                </v-row>
-              </div>
-            </v-sheet>
           </div>
         </intersect>
       </v-content>
@@ -96,6 +106,7 @@ import CurrencyMenu from "@/components/CurrencyMenu";
 import Footer from "@/components/Footer";
 import OriginSelection from "@/components/OriginSelection";
 import UnexpectedError from "@/components/UnexpectedError";
+import SlideSkeleton from "@/components/SlideSkeleton";
 
 Vue.use(VueCookies);
 
@@ -109,25 +120,10 @@ export default {
     CurrencyMenu,
     Footer,
     OriginSelection,
-    Intersect
+    Intersect,
+    SlideSkeleton
   },
   data: () => ({
-    slideGroupShow: [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ],
     origins: ["VKO", "SVO", "DME"],
     api_url: "https://api.cheapster.travel/api/v1",
     // api_url: 'http://localhost:5000/api/v1',
@@ -139,17 +135,18 @@ export default {
     unexpectedError: false,
     currency: null,
     currency_ready: false,
-    slideGroupDivId: 0
+    slideGroupDivId: 0,
+    slideGroupShow: [],
+    slideGroupLoadedStatus: [],
+    visaFree: false,
+    checkbox: [false,false,false,false,false,false,false,false,false,false,false,false],
   }),
   methods: {
-    slideGroupEnter(index) {
-      this.$set(this.slideGroupShow, index, true);
-      console.log(this.slideGroupShow);
-      console.log("Enter " + index);
-    },
-    slideGroupLeave(index) {
-      this.$set(this.slideGroupShow, index, false);
-      console.log("Leave " + index);
+    slideGroupEnter(index) {},
+    slideGroupLeave(index) {},
+    slideGroupLoaded(id) {
+      console.log(id);
+      this.$set(this.slideGroupLoadedStatus, id - 1, true);
     },
     updateOriginsFromChild(value) {
       this.origins = value;
@@ -159,9 +156,11 @@ export default {
       VueCookies.set("origins", JSON.stringify(this.origins));
     },
     updateCurrencyFromChild(value) {
-      this.currency = value;
-      VueCookies.set("currency", this.currency);
-      this.slideGroupDivId += 1;
+      if (this.currency != value) {
+        this.currency = value;
+        VueCookies.set("currency", this.currency);
+        this.slideGroupDivId += 1;
+      }
     },
     fillOrigins() {
       axios
@@ -197,23 +196,15 @@ export default {
         .then(response => {
           this.collections = response.data;
           this.collections_ready = true;
-          this.slideGroupShow = [
-            true,
-            true,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-          ];
+          console.log("Collections length: " + Object.keys(this.collections));
+          //Setting only two of slideGroups to be loaded at first
+          for (let i = 0; i < Object.keys(this.collections).length; i++) {
+            if (i < 2) {
+              this.$set(this.slideGroupShow, i, true);
+            } else {
+              this.$set(this.slideGroupShow, i, false);
+            }
+          }
         })
         .catch(() => {
           this.unexpectedError = true;
@@ -255,13 +246,61 @@ export default {
     }
   },
   watch: {
-    currency() {}
+    currency() {},
+    slideGroupLoadedStatus(newValue, oldValue) {
+      setTimeout(() => {
+        if (newValue[0] === true && newValue[1] === true) {
+          for (let i = 2; i < this.slideGroupShow.length; i++) {
+            this.$set(this.slideGroupShow, i, true);
+          }
+        }
+      }, 1000);
+    }
   }
 };
 </script>
 
 <style>
-.v-skeleton-loader__image.v-skeleton-loader__bone {
+/* .v-skeleton-loader__image.v-skeleton-loader__bone {
   height: 386px !important;
+} */
+.v-messages.theme--light {
+  height: 0px !important;
 }
+.visa-switcher {
+  margin-right: 15px;
+}
+.visa-switcher > .v-input__control {
+  display: contents;
+}
+.visa-switcher > .v-input__control > .v-input__slot {
+  margin: auto;
+  margin-bottom: 0px !important;
+  flex-direction: row-reverse;
+}
+.visa-switcher
+  > .v-input__control
+  > .v-input__slot
+  > .v-input--selection-controls__input {
+  margin-left: 10px;
+}
+.months-wrapper {
+  max-width: 1300px;
+  margin: auto;
+  margin-bottom: -30px;
+}
+.month-checkbox {
+  margin-top: 0px !important;
+}
+.month-checkbox > .v-input__control {
+  margin-left: auto;
+  margin-right: auto;
+}
+.month-checkbox > .v-input__control > .v-input__slot > .v-input--selection-controls__input{
+  margin-right: 0px;
+}
+.month-button:hover{
+  background: linear-gradient(to bottom,#9aee68 0%,#92e757 28%,#7dd42f 74%,#75cd1f 100%);
+}
+
 </style>
