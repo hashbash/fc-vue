@@ -40,14 +40,14 @@
         v-bind:api_url="api_url"
       ></OriginSelection>
     </v-content>
-    <div class="months-wrapper">
+    <!-- <div class="months-wrapper">
       <v-row dense>
         <v-col v-for="(item, index) in 12" :key="index">
           <v-img
             src="https://picsum.photos/id/11/500/300"
             lazy-src="https://picsum.photos/id/11/10/6"
             aspect-ratio="1"
-            class="grey lighten-2"
+            class="grey lighten-2 month-button"
             :width="100"
             :height="90"
             gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
@@ -55,16 +55,13 @@
             <div class="fill-height white--text" style="display: flex;">
               <div style="margin:auto;">
                 <span>December</span>
-                <v-checkbox
-                  v-model="checkbox[index]"
-                  class="month-checkbox"
-                ></v-checkbox>
+                
               </div>
             </div>
           </v-img>
         </v-col>
       </v-row>
-    </div>
+    </div> -->
     <div
       v-if="collections_ready && origins_ready && currency_ready"
       :key="slideGroupDivId"
@@ -301,6 +298,9 @@ export default {
 }
 .month-checkbox > .v-input__control > .v-input__slot > .v-input--selection-controls__input{
   margin-right: 0px;
+}
+.month-button:hover{
+  background: linear-gradient(to bottom,#9aee68 0%,#92e757 28%,#7dd42f 74%,#75cd1f 100%);
 }
 
 </style>
