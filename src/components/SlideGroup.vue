@@ -65,7 +65,7 @@
 
               <v-card-text>
                 <div>
-                  <!--                                <div>{{ f.destination_country_name }}</div>-->
+                  <!--<div>{{ f.destination_country_name }}</div>-->
                   <div class="caption">{{f.origin}} ✈ {{ f.destination }}</div>
                   <div class="caption">
                     {{ f.outbound_dt }} {{calculateDays(f.outbound_dt, f.inbound_dt,
@@ -152,15 +152,28 @@ export default {
     this.getFlights();
   },
   methods: {
+    returnFlightsString() {
+      let monthsReqString=''
+      for (var i = 0; i < this.months.length; i++) {
+        /* monthsReqString=monthsReqString+'months='+this.months[i]+'&' */
+        if (this.months[i]===true) {
+          monthsReqString=monthsReqString+'months='+(i+1)+'&'
+        }
+      }
+      console.log(monthsReqString)
+      let string = this.api_url +
+            `/collections?id=${this.collection_id.toString()}&` +
+            `origins=${this.origins.join(",")}&` +
+            `currency=${this.currency}&` +
+            `${monthsReqString}&`+
+            "limit=48"
+      return string
+    },
     getFlights() {
       this.flights_loaded = false;
       axios
         .get(
-          this.api_url +
-            `/collections?id=${this.collection_id.toString()}&` +
-            `origins=${this.origins.join(",")}&` +
-            `currency=${this.currency}&` +
-            "limit=48"
+          this.returnFlightsString()
         )
         .then(response => {
           this.flights = response.data.data;
@@ -193,12 +206,18 @@ export default {
     collection_name: String,
     api_url: String,
     origins: Array,
-    currency: String
+    currency: String,
+    months: Array
   },
   watch: {
     origins(newValue, oldValue) {
       // console.error(newValue, oldValue)
       if (JSON.stringify(newValue) === JSON.stringify(oldValue)) return;
+      if (newValue.length > 0) {
+        this.getFlights();
+      }
+    },
+    months(newValue, oldValue) {
       if (newValue.length > 0) {
         this.getFlights();
       }

@@ -8,11 +8,7 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <v-switch
-        v-model="visaFree"
-        label="Visa free"
-        class="visa-switcher"
-      ></v-switch>
+      <v-switch v-model="visaFree" label="Visa free" class="visa-switcher"></v-switch>
       <div v-if="currency_ready && origins_ready" class="mr-2">
         <CurrencyMenu
           v-on:updateCurrencyFromChild="updateCurrencyFromChild"
@@ -40,40 +36,34 @@
         v-bind:api_url="api_url"
       ></OriginSelection>
     </v-content>
-    <!-- <div class="months-wrapper">
-      <v-row dense>
-        <v-col v-for="(item, index) in 12" :key="index">
-          <v-img
-            src="https://picsum.photos/id/11/500/300"
-            lazy-src="https://picsum.photos/id/11/10/6"
-            aspect-ratio="1"
-            class="grey lighten-2 month-button"
-            :width="100"
-            :height="90"
-            gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-          >
-            <div class="fill-height white--text" style="display: flex;">
-              <div style="margin:auto;">
-                <span>December</span>
-                
-              </div>
-            </div>
-          </v-img>
-        </v-col>
-      </v-row>
-    </div> -->
-    <div
-      v-if="collections_ready && origins_ready && currency_ready"
-      :key="slideGroupDivId"
-    >
-      <v-content
-        v-for="(collection_name, collection_id, index) in collections"
-        :key="index"
-      >
-        <intersect
-          @enter="slideGroupEnter(index)"
-          @leave="slideGroupLeave(index)"
-        >
+    <div class="months-wrapper">
+      <!-- <v-container> -->
+        <v-row dense>
+          <v-col cols="12" sm="1" v-for="(item, index) in months" :key="index">
+            <v-hover v-slot:default="{ hover }">
+              <v-img
+                src="/11-500x300.jpg"
+                class="grey lighten-2 month-button"
+                :class="{ 'unselected' : !monthsSelect[index] }"
+                :width="100"
+                :height="90"
+                gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+                @click="monthClick(index)"
+              >
+                <div class="fill-height white--text" style="display: flex;">
+                  <div style="margin:auto;">
+                    <span>{{item}}</span>
+                  </div>
+                </div>
+              </v-img>
+            </v-hover>
+          </v-col>
+        </v-row>
+      <!-- </v-container> -->
+    </div>
+    <div v-if="collections_ready && origins_ready && currency_ready" :key="slideGroupDivId">
+      <v-content v-for="(collection_name, collection_id, index) in collections" :key="index">
+        <intersect @enter="slideGroupEnter(index)" @leave="slideGroupLeave(index)">
           <div>
             <SlideSkeleton v-if="!slideGroupShow[index]"></SlideSkeleton>
             <SlideGroup
@@ -83,10 +73,16 @@
               v-bind:origins="origins"
               v-bind:api_url="api_url"
               v-bind:currency="currency"
+              :months="monthsSelect"
               @dataLoaded="slideGroupLoaded"
             ></SlideGroup>
           </div>
         </intersect>
+      </v-content>
+    </div>
+    <div v-else>
+      <v-content v-for="(collection_name, collection_id, index) in 6" :key="index">
+        <SlideSkeleton v-if="!slideGroupShow[index]"></SlideSkeleton>
       </v-content>
     </div>
     <v-content></v-content>
@@ -139,9 +135,26 @@ export default {
     slideGroupShow: [],
     slideGroupLoadedStatus: [],
     visaFree: false,
-    checkbox: [false,false,false,false,false,false,false,false,false,false,false,false],
+    months: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ],
+    monthsSelect: []
   }),
   methods: {
+    monthClick(index) {
+      this.$set(this.monthsSelect, index, !this.monthsSelect[index]);
+    },
     slideGroupEnter(index) {},
     slideGroupLeave(index) {},
     slideGroupLoaded(id) {
@@ -243,6 +256,9 @@ export default {
         this.currency = "USD";
       }
       this.currency_ready = true;
+      for (var i = 0; i < 12; i++) {
+        this.$set(this.monthsSelect, i, true)
+      }
     }
   },
   watch: {
@@ -296,11 +312,27 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
-.month-checkbox > .v-input__control > .v-input__slot > .v-input--selection-controls__input{
+.month-checkbox
+  > .v-input__control
+  > .v-input__slot
+  > .v-input--selection-controls__input {
   margin-right: 0px;
 }
-.month-button:hover{
-  background: linear-gradient(to bottom,#9aee68 0%,#92e757 28%,#7dd42f 74%,#75cd1f 100%);
+h3 {
+  font-weight: 300;
+  font-size: 30px;
 }
-
+.month-button {
+  transition: all 0.2s ease-in-out; /* 
+  transition: shadow .2s ease-in-out; */
+}
+/* .month-button:not(.on-hover) {
+  opacity: 0.6;
+} */
+.month-button.unselected {
+  opacity: 0.6;
+}
+.month-button:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Параметры тени */
+}
 </style>

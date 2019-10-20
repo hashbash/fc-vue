@@ -16,7 +16,7 @@
       ></v-progress-linear>
     </v-toolbar>
     <v-skeleton-loader class="ml-4 pt-5 slidegroup-skeleton-heading" type="heading"></v-skeleton-loader>
-    <div class="-px-lg-12 mx-lg-8 px-md-0 mx-md-4 mt-10">
+    <div class="px-lg-12 mx-lg-8 px-md-0 mx-md-4 mt-10">
       <v-row dense>
           <v-col v-for="(itemTour, indexTour) in respElementsNum" :key="indexTour" class="mr-1">
             <v-card :max-width="180" class="card-outer skeleton-card">
