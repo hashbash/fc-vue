@@ -75,9 +75,9 @@
           @leave="slideGroupLeave(index)"
         >
           <div>
-            <SlideSkeleton v-if="!slideGroupShow[index]"></SlideSkeleton>
+            <SlideSkeleton ></SlideSkeleton>
             <SlideGroup
-              v-else
+              
               v-bind:collection_id="parseInt(collection_id)"
               v-bind:collection_name="collection_name"
               v-bind:origins="origins"

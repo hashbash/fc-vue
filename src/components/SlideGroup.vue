@@ -221,4 +221,9 @@ export default {
 .v-skeleton-loader__image.v-skeleton-loader__bone {
   height: 386px !important;
 }
+
+h3 {
+  font-weight: 300;
+  font-size: 1.7em;
+}
 </style>
