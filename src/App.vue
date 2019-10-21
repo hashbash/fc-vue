@@ -8,16 +8,87 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <v-switch v-model="visaFree" label="Visa free" class="visa-switcher"></v-switch>
+      <v-switch
+        v-model="visaFree"
+        label="Visa free"
+        class="visa-switcher"
+      ></v-switch>
       <div v-if="currency_ready && origins_ready" class="mr-2">
         <CurrencyMenu
           v-on:updateCurrencyFromChild="updateCurrencyFromChild"
           v-bind:input_currency="currency"
         ></CurrencyMenu>
       </div>
-      <v-btn text icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      <v-menu
+        v-model="settings"
+        :close-on-content-click="false"
+        :nudge-width="200"
+        offset-y
+      >
+        <template v-slot:activator="{ on }">
+          <v-btn text icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-card>
+          <v-list>
+            <v-list-item>
+              <v-list-item-avatar>
+                <img
+                  src="https://www.pascogifts.com/files/cache/square/files/duck-5aeb23d4896f9.jpg"
+                  alt="Yellow Duck"
+                />
+              </v-list-item-avatar>
+
+              <v-list-item-content>
+                <v-list-item-title>Yellow Duck</v-list-item-title>
+                <!-- <v-list-item-subtitle
+                  >Founder of Vuetify.js</v-list-item-subtitle
+                > -->
+              </v-list-item-content>
+
+              <v-list-item-action> </v-list-item-action>
+            </v-list-item>
+          </v-list>
+
+          <v-divider></v-divider>
+          <v-container>
+            Your citizienship
+            <v-autocomplete
+              v-model="selectedCitizienship"
+              :items="citizienshipDict"
+              chips
+              item-text="name"
+              item-value="abb"
+              multiple
+              dense
+            >
+
+            </v-autocomplete>
+          </v-container>
+          <!-- <v-list>
+            <v-list-item>
+              <v-list-item-action>
+              </v-list-item-action>
+              <v-list-item-title>Enable messages</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-action>
+                
+              </v-list-item-action>
+              <v-list-item-title>Enable hints</v-list-item-title>
+            </v-list-item>
+          </v-list> -->
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn text @click="settings = false">Cancel</v-btn>
+            <v-btn color="primary" text @click="settings = false">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
     </v-app-bar>
     <!--      <v-content></v-content>-->
     <v-content aria-autocomplete="none">
@@ -38,32 +109,41 @@
     </v-content>
     <div class="months-wrapper">
       <!-- <v-container> -->
-        <v-row dense>
-          <v-col cols="12" sm="1" v-for="(item, index) in months" :key="index">
-            <v-hover v-slot:default="{ hover }">
-              <v-img
-                src="/11-500x300.jpg"
-                class="grey lighten-2 month-button"
-                :class="{ 'unselected' : !monthsSelect[index] }"
-                :width="100"
-                :height="90"
-                gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
-                @click="monthClick(index)"
-              >
-                <div class="fill-height white--text" style="display: flex;">
-                  <div style="margin:auto;">
-                    <span>{{item}}</span>
-                  </div>
+      <v-row dense>
+        <v-col cols="12" sm="1" v-for="(item, index) in months" :key="index">
+          <v-hover v-slot:default="{ hover }">
+            <v-img
+              src="/11-500x300.jpg"
+              class="grey lighten-2 month-button"
+              :class="{ unselected: !monthsSelect[index] }"
+              :width="100"
+              :height="90"
+              gradient="to top right, rgba(100,115,201,.33), rgba(25,32,72,.7)"
+              @click="monthClick(index)"
+            >
+              <div class="fill-height white--text" style="display: flex;">
+                <div style="margin:auto;">
+                  <span>{{ item }}</span>
                 </div>
-              </v-img>
-            </v-hover>
-          </v-col>
-        </v-row>
+              </div>
+            </v-img>
+          </v-hover>
+        </v-col>
+      </v-row>
       <!-- </v-container> -->
     </div>
-    <div v-if="collections_ready && origins_ready && currency_ready" :key="slideGroupDivId">
-      <v-content v-for="(collection_name, collection_id, index) in collections" :key="index">
-        <intersect @enter="slideGroupEnter(index)" @leave="slideGroupLeave(index)">
+    <div
+      v-if="collections_ready && origins_ready && currency_ready"
+      :key="slideGroupDivId"
+    >
+      <v-content
+        v-for="(collection_name, collection_id, index) in collections"
+        :key="index"
+      >
+        <intersect
+          @enter="slideGroupEnter(index)"
+          @leave="slideGroupLeave(index)"
+        >
           <div>
             <SlideSkeleton v-if="!slideGroupShow[index]"></SlideSkeleton>
             <SlideGroup
@@ -81,7 +161,10 @@
       </v-content>
     </div>
     <div v-else>
-      <v-content v-for="(collection_name, collection_id, index) in 6" :key="index">
+      <v-content
+        v-for="(collection_name, collection_id, index) in 6"
+        :key="index"
+      >
         <SlideSkeleton v-if="!slideGroupShow[index]"></SlideSkeleton>
       </v-content>
     </div>
@@ -135,6 +218,7 @@ export default {
     slideGroupShow: [],
     slideGroupLoadedStatus: [],
     visaFree: false,
+    settings: false,
     months: [
       "January",
       "February",
@@ -149,7 +233,13 @@ export default {
       "November",
       "December"
     ],
-    monthsSelect: []
+    monthsSelect: [],
+    citizienshipDict: [
+      { name: 'Russia', abb: 'RU'},
+      { name: 'United States', abb: 'US'},
+      { name: 'England', abb: 'EN'}
+    ],
+    selectedCitizienship: []
   }),
   methods: {
     monthClick(index) {
@@ -257,7 +347,7 @@ export default {
       }
       this.currency_ready = true;
       for (var i = 0; i < 12; i++) {
-        this.$set(this.monthsSelect, i, true)
+        this.$set(this.monthsSelect, i, true);
       }
     }
   },
