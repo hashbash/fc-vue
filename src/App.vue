@@ -55,7 +55,7 @@
           <v-container>
             Your citizienship
             <v-autocomplete
-              v-model="selectedCitizienship"
+              v-model="modelSelectedCitizienship"
               :items="citizienshipDict"
               chips
               item-text="name"
@@ -85,7 +85,7 @@
             <v-spacer></v-spacer>
 
             <v-btn text @click="settings = false">Cancel</v-btn>
-            <v-btn color="primary" text @click="settings = false">Save</v-btn>
+            <v-btn color="primary" text @click="saveCitizienship()">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-menu>
@@ -154,6 +154,8 @@
               v-bind:api_url="api_url"
               v-bind:currency="currency"
               :months="monthsSelect"
+              :citizienShip="propSelectedCitizeienship"
+              :visaFree="visaFree"
               @dataLoaded="slideGroupLoaded"
             ></SlideGroup>
           </div>
@@ -239,9 +241,14 @@ export default {
       { name: 'United States', abb: 'US'},
       { name: 'England', abb: 'EN'}
     ],
-    selectedCitizienship: []
+    modelSelectedCitizienship: [],
+    propSelectedCitizeienship: []
   }),
   methods: {
+    saveCitizienship() {
+      this.settings = false;
+      this.propSelectedCitizeienship = this.modelSelectedCitizienship;
+    },
     monthClick(index) {
       this.$set(this.monthsSelect, index, !this.monthsSelect[index]);
     },

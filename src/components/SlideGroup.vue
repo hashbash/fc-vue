@@ -154,11 +154,18 @@ export default {
   methods: {
     returnFlightsString() {
       let monthsReqString=''
+      let citizienShipReqString=''
+      let visaFreeString=''
       for (var i = 0; i < this.months.length; i++) {
-        /* monthsReqString=monthsReqString+'months='+this.months[i]+'&' */
         if (this.months[i]===true) {
           monthsReqString=monthsReqString+'months='+(i+1)+'&'
         }
+      }
+      for (var i = 0; i < this.citizienShip.length; i++) {
+        citizienShipReqString=citizienShipReqString+'citizenships='+this.citizienShip[i]+'&'
+      }
+      if (this.visaFree===true) {
+        visaFreeString='visa_free=true'
       }
       console.log(monthsReqString)
       let string = this.api_url +
@@ -166,6 +173,8 @@ export default {
             `origins=${this.origins.join(",")}&` +
             `currency=${this.currency}&` +
             `${monthsReqString}&`+
+            `${citizienShipReqString}&`+
+            `${visaFreeString}&`+
             "limit=48"
       return string
     },
@@ -207,7 +216,9 @@ export default {
     api_url: String,
     origins: Array,
     currency: String,
-    months: Array
+    months: Array,
+    citizienShip: Array,
+    visaFree: Boolean,
   },
   watch: {
     origins(newValue, oldValue) {
@@ -221,6 +232,14 @@ export default {
       if (newValue.length > 0) {
         this.getFlights();
       }
+    },
+    citizienShip(newValue, oldValue) {
+      if (newValue.length > 0 && this.visaFree === true) {
+        this.getFlights();
+      }
+    },
+    visaFree(newValue, oldValue) {
+      this.getFlights();
     }
   }
 };
