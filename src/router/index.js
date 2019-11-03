@@ -21,7 +21,22 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode: 'history',
+  // scrollBehavior: function(to) {
+  //   if (to.hash) {
+  //     return {selector: to.hash}
+  //   } else {
+  //     return { x: 0, y: 0 }
+  //   }
+  // },
+  // scrollBehavior (to) {
+  //   if (to.hash) {
+  //     return $('html,body').stop().animate({scrollTop: $(to.hash).offset().top }, 1000);
+  //   } else {
+  //     return $('html,body').stop().animate({scrollTop: 0 }, 500);
+  //   }
+  // }
 })
 
 export default router

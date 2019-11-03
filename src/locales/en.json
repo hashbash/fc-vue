@@ -1,0 +1,38 @@
+{
+  "darkTheme": "Dark theme",
+  "close": "Close",
+  "cancel": "Cancel",
+  "save": "Save",
+  "autocomplete": "Start typing for airport, city or country",
+  "autocompletePlaceholder": "Origin airports, cities and countries",
+  "otherMonths": " | 1 other | {n} others",
+  "user": {
+    "unknownUser": "Undefined duck",
+    "visaFree": "Only Visa-Free destinations",
+    "lang": "Language",
+    "citizenship": "Citizenship",
+    "monthSelector": "Travel months and duration",
+    "langName": {
+      "en": "English",
+      "ru": "Русский"
+    },
+    "currency": "Currency"
+  },
+  "flight": {
+    "oneWay": "One way",
+    "roundTrip": "Round trip",
+    "direct": "Direct",
+    "days": " 0 days | 1 day | {n} days"
+  },
+  "navigation": {
+    "goTo": "Go to"
+  },
+  "cacheAge": {
+    "6": "Less than 6 hours ago",
+    "12": "Less than 12 hours ago",
+    "24": "Less than 24 hours ago",
+    "48": "In the last two days",
+    "more_that_48": "More than two days ago"
+  },
+  "locationSnackbar": "We have identified your current location: {country}, {city} in order to select the 5 nearest airports.\nIf we make a mistake, you can change the departure airports in the upper right corner.\nThis message will close automatically."
+}
