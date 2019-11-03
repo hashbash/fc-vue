@@ -43,7 +43,7 @@
 <script>
     import { mapActions, mapGetters } from 'vuex'
     import FlightCollection from "@/components/FlightCollection";
-    const TIMEOUT = 1000;
+    let TIMEOUT = 1000;
     export default {
         name: "CollectionPage",
         components: {
