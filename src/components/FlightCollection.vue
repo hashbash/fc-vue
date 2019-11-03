@@ -10,7 +10,7 @@
                         top
                         color="deep-purple accent-6"
                 ></v-progress-linear>
-                <v-toolbar-title class="ml-2">
+                <v-toolbar-title class="ml-2" v-ripple>
                     <h4>{{ collectionTitle }}</h4>
                 </v-toolbar-title>
                 <div class="flex-grow-1"></div>
