@@ -56,6 +56,7 @@
                                        outlined
                                        style="opacity: 90%"
                                        block
+                                       @click="overlay=!overlay"
                                 >
                                     <v-col>
                                         <div>
@@ -83,6 +84,7 @@
                                        outlined
                                        style="opacity: 90%"
                                        block
+                                       @click="overlay=!overlay"
                                 >
                                     <v-col>
                                         <div>
@@ -106,6 +108,7 @@
                                        class="primary"
                                        outlined
                                        block
+                                       @click="overlay=!overlay"
                                        :href="aviasalesLink(flight.origin_city_iata, flight.destination_city_iata,
                                                             flight.outbound_dt, flight.inbound_dt)"
                                 >
