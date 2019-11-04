@@ -10,9 +10,15 @@
                         top
                         color="deep-purple accent-6"
                 ></v-progress-linear>
+                <router-link
+                        :to="'#collection'+collectionId"
+                        @click.native="scrollTo('#collection'+collectionId)"
+                        tag="div"
+                >
                 <v-toolbar-title class="ml-2" v-ripple>
-                    <h4>{{ collectionTitle }}</h4>
+                    <a class="custom-a">{{ collectionTitle }}</a>
                 </v-toolbar-title>
+                </router-link>
                 <div class="flex-grow-1"></div>
                 <Share
                         :link="siteUrl + '#collection' + collectionId"
@@ -71,6 +77,9 @@ export default {
     methods: {
         ...mapGetters(['getCollectionFlights', 'getSelectedSearchMonths']),
         ...mapActions(['fetchCollectionFlights']),
+        scrollTo: function (hash) {
+            setTimeout(() => { location.href = hash }, 150)
+        }
     },
     async mounted() {
         this.flightsLoaded = await this.fetchCollectionFlights({collectionId: this.collectionId});
@@ -98,5 +107,9 @@ export default {
 
 
 <style scoped>
+    .custom-a {
+        color: inherit;
+        text-decoration: none;
+    }
 
 </style>

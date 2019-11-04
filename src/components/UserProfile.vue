@@ -12,7 +12,7 @@
                 <v-btn icon
                         v-on="on"
                 >
-                    <v-icon>mdi-dots-vertical</v-icon>
+                    <v-icon>mdi-magnify</v-icon>
                 </v-btn>
             </template>
 
