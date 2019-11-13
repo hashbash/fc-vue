@@ -28,7 +28,7 @@
             <v-slide-group
                     v-model="model"
                     v-if="flightsLoaded"
-                    style="transition-duration: 5s"
+                    style="transition-duration: 3s"
                     show-arrows
                     prev-icon="mdi-arrow-left"
                     next-icon="mdi-arrow-right"
@@ -39,8 +39,12 @@
                         :key="index"
                         v-slot:default="{ toggle, active }"
                 >
-                 <FlightCard :key="'coll' + collectionId + 'flightIdx' + index"
-                             :flight="flight"></FlightCard>
+                     <FlightCard v-if="kind === 'simple'" :key="'coll' + collectionId + 'flightIdx' + index"
+                                 :flight="flight">
+                     </FlightCard>
+                     <ComplexFlightCard v-else-if="kind === 'complex'" :key="'coll2' + collectionId + 'flightIdx' + index"
+                                        :flight="flight"></ComplexFlightCard>
+
                 </v-slide-item>
             </v-slide-group>
             <v-overlay
@@ -61,13 +65,14 @@
 
 import { mapActions, mapGetters } from 'vuex';
 import FlightCard from "@/components/FlightCard";
+import ComplexFlightCard from "@/components/ComplexFlightCard";
 import Share from "@/components/Share";
 import AppConfig from "@/AppConfig";
 
 
 export default {
     name: "FlightCollection",
-    components: {FlightCard, Share},
+    components: {FlightCard, Share, ComplexFlightCard},
     data:() => ({
         flightsLoaded: false,
         flights: [],
@@ -76,18 +81,23 @@ export default {
     }),
     methods: {
         ...mapGetters(['getCollectionFlights', 'getSelectedSearchMonths']),
-        ...mapActions(['fetchCollectionFlights']),
+        ...mapActions(['fetchCollectionFlights', 'fetchComplexCollectionFlights']),
         scrollTo: function (hash) {
             setTimeout(() => { location.href = hash }, 150)
         }
     },
     async mounted() {
-        this.flightsLoaded = await this.fetchCollectionFlights({collectionId: this.collectionId});
+        if (this.kind === 'simple') {
+            this.flightsLoaded = await this.fetchCollectionFlights({collectionId: this.collectionId});
+        } else if (this.kind === 'complex') {
+            this.flightsLoaded = await this.fetchComplexCollectionFlights({collectionId: this.collectionId});
+        }
         this.flights = await this.getCollectionFlights()(this.collectionId);
     },
     props: {
         collectionId: Number,
         collectionTitle: String,
+        kind: String
     },
     watch: {
         async getLang(newValue, oldValue) {

@@ -8,11 +8,12 @@
                 :id="'collection'+header.id"
                 :href="'#collection'+header.id"
         >
-            <v-responsive min-height="350">
+            <v-responsive min-height="250">
             <v-lazy>
             <FlightCollection
                     :collectionId="header.id"
                     :collectionTitle="header.title"
+                    :kind="header['kind']"
             ></FlightCollection>
             </v-lazy>
             </v-responsive>

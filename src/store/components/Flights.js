@@ -28,6 +28,28 @@ export default {
             commit('updateCollection', {id: collectionId, flights: flights['data']})
             return true
         },
+        async fetchComplexCollectionFlights({commit, rootGetters}, {collectionId, limit=80}) {
+            let request = await fetch(AppConfig.apiUrl + '/complex-collections', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "collection_id": collectionId,
+                    "origins": rootGetters.getOriginItems.map(e=>(e['place_code'])),
+                    "months_YYYYMM": rootGetters.getSelectedSearchMonths.map(e=>(Number(e.replace('-', '')))),
+                    "lang": rootGetters.getLang,
+                    "currency": rootGetters.getCurrency,
+                    "visa_free": rootGetters.getVisaFree,
+                    "citizenships": rootGetters.getCitizenships,
+                    "trip_duration": rootGetters.getMinMaxDuration,
+                    "limit": limit})}
+                );
+            let response = await request.json();
+            commit('updateCollection', {id: collectionId, flights: response});
+            return true
+        },
         searchParamsChanged({commit}) {
             commit('updateSearchParamsChanged')
         }
@@ -53,6 +75,7 @@ export default {
         getCollectionHeaders(state) {
             return state.collectionHeaders.map(e => ({
                 id: e['id'],
+                kind: e['kind'],
                 title: i18n.locale === 'ru' ? e['title_ru'] : e['title_en']
             }))
         },

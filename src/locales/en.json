@@ -22,7 +22,10 @@
     "oneWay": "One way",
     "roundTrip": "Round trip",
     "direct": "Direct",
-    "days": " 0 days | 1 day | {n} days"
+    "days": " 0 days | 1 day | {n} days",
+    "complex": "Multi-city",
+    "complex_price": "Total price for {n} tickets",
+    "city_count": " 0 city | 1 city | {n} cities"
   },
   "navigation": {
     "goTo": "Go to"

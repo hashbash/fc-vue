@@ -7,7 +7,10 @@
         <span class="font-weight-light">Travel</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-switch hide-details v-model="darkThemeModel" :label="this.$i18n.t('darkTheme')"
+      <v-switch
+                hide-details
+                v-model="darkThemeModel"
+                :label="this.$i18n.t('darkTheme')"
       ></v-switch>
       <UserProfile></UserProfile>
     </v-app-bar>
@@ -35,6 +38,8 @@ export default {
     CollectionPage
     // HelloWorld,
   },
+  data: () => ({
+  }),
   methods: {
     ...mapGetters(['getDarkTheme', 'getIpInfo']),
     ...mapActions(['setDarkTheme', 'fetchIpInfo', 'fetchNearbyAirports', 'recoverFromCookiesNearbyAirports']),
@@ -55,7 +60,7 @@ export default {
       },
       async set(value) {
         this.$vuetify.theme.dark = value;
-        this.setDarkTheme(value)
+        this.setDarkTheme(value);
       }
     },
   },

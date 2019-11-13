@@ -4,7 +4,7 @@ import i18n from "@/i18n";
 
 export default {
     actions: {
-        setDarkTheme({commit}, value) {
+        async setDarkTheme({commit}, value) {
             Cookies.set('darkTheme', value ? 1 : 0, {expires: 365});
             commit('updateDarkTheme', value);
         },
