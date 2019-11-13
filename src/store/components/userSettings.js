@@ -40,24 +40,39 @@ export default {
             commit('updateMinMaxDuration', value)
         },
         async fetchIpInfo({commit, dispatch}) {
-            let res = await fetch(AppConfig.ipInfoUrl);
-            let ipInfo = await res.json();
-            commit('updateIpInfo', ipInfo);
-            Cookies.set('ipInfo', JSON.stringify(ipInfo), {expires: 365});
-            dispatch('setGeo', {longitude: ipInfo['longitude'],
-                                latitude: ipInfo['latitude']});
-            if (!Cookies.get('citizenships') && ipInfo['country_code']) {
-                dispatch('setCitizenships', [ipInfo['country_code']]);
-                if (!Cookies.get('lang')) {
-                    if (ipInfo['country_code'] === "RU") {
-                        dispatch('setLang', 'ru');
-                        i18n.locale = 'ru';
-                        dispatch('fetchCountries', 'ru');
-                        dispatch('setCurrency', 'RUB');
+            try {
+                let res = await fetch(AppConfig.ipInfoUrl);
+                let ipInfo = await res.json();
+                commit('updateIpInfo', ipInfo);
+                Cookies.set('ipInfo', JSON.stringify(ipInfo), {expires: 365});
+                dispatch('setGeo', {
+                    longitude: ipInfo['longitude'],
+                    latitude: ipInfo['latitude']
+                });
+                if (!Cookies.get('citizenships') && ipInfo['country_code']) {
+                    dispatch('setCitizenships', [ipInfo['country_code']]);
+                    if (!Cookies.get('lang')) {
+                        if (ipInfo['country_code'] === "RU") {
+                            dispatch('setLang', 'ru');
+                            i18n.locale = 'ru';
+                            dispatch('fetchCountries', 'ru');
+                            dispatch('setCurrency', 'RUB');
+                        }
                     }
                 }
+                return ipInfo
+            } catch (e) {
+                console.error(e)
+                let res = "{\"ip\":\"217.12.97.173\",\"country_code\":\"RU\",\"country_name\":\"Россия\",\"region_code\":\"MOW\",\"region_name\":\"Москва\",\"city\":\"Москва\",\"zip_code\":\"129223\",\"time_zone\":\"Europe/Moscow\",\"latitude\":55.7527,\"longitude\":37.6172,\"metro_code\":0}";
+                let ipInfo = JSON.parse(res);
+                commit('updateIpInfo', ipInfo);
+                Cookies.set('ipInfo', JSON.stringify(ipInfo), {expires: 365});
+                dispatch('setGeo', {
+                    longitude: ipInfo['longitude'],
+                    latitude: ipInfo['latitude']
+                });
+                return ipInfo
             }
-            return ipInfo
         },
         setGeo({commit, longitude, latitude}) {
             commit('updateGeo', {longitude: longitude, latitude: latitude})
