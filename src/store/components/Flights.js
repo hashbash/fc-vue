@@ -76,6 +76,7 @@ export default {
             return state.collectionHeaders.map(e => ({
                 id: e['id'],
                 kind: e['kind'],
+                icon: e['icon'],
                 title: i18n.locale === 'ru' ? e['title_ru'] : e['title_en']
             }))
         },

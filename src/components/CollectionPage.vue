@@ -1,23 +1,48 @@
 <template>
 <div v-if="originItems.length">
     <div :key="div">
+        <v-list>
+            <v-list-group
+                    v-for="item in collectionHeaders"
+                    :key="item.title"
+                    v-model="item.active"
+                    :prepend-icon="item.icon"
+            >
+                <template v-slot:activator>
+                    <v-list-item-content>
+                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                    </v-list-item-content>
+                </template>
 
-        <v-content
-                v-for="(header, index) in collectionHeaders"
-                :key="index"
-                :id="'collection'+header.id"
-                :href="'#collection'+header.id"
-        >
-            <v-responsive min-height="250">
-            <v-lazy>
-            <FlightCollection
-                    :collectionId="header.id"
-                    :collectionTitle="header.title"
-                    :kind="header['kind']"
-            ></FlightCollection>
-            </v-lazy>
-            </v-responsive>
-        </v-content>
+                <v-list-item
+                        :key="item.id + 'x'"
+                >
+                    <v-list-item-content>
+                                    <FlightCollection
+                                            :collectionId="item.id"
+                                            :collectionTitle="item.title"
+                                            :kind="item['kind']"
+                                    ></FlightCollection>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list-group>
+        </v-list>
+<!--        <v-content-->
+<!--                v-for="(header, index) in collectionHeaders"-->
+<!--                :key="index"-->
+<!--                :id="'collection'+header.id"-->
+<!--                :href="'#collection'+header.id"-->
+<!--        >-->
+<!--            <v-responsive min-height="250">-->
+<!--            <v-lazy>-->
+<!--            <FlightCollection-->
+<!--                    :collectionId="header.id"-->
+<!--                    :collectionTitle="header.title"-->
+<!--                    :kind="header['kind']"-->
+<!--            ></FlightCollection>-->
+<!--            </v-lazy>-->
+<!--            </v-responsive>-->
+<!--        </v-content>-->
 
     </div>
     <v-snackbar
@@ -59,7 +84,7 @@
             snackbarValue: 30,
             snackbar: false,
             snackbarHasClosed: false,
-            interval: {}
+            interval: {},
             // loadedOrigins: undefined
         }),
         methods: {

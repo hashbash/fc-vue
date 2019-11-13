@@ -12,7 +12,7 @@
                 <v-btn icon
                         v-on="on"
                 >
-                    <v-icon>mdi-magnify</v-icon>
+                    <v-icon>mdi-filter-outline</v-icon>
                 </v-btn>
             </template>
 
