@@ -143,7 +143,7 @@
             overlay: false,
             overlaySkyscannerItem: 1,
             overlayAviasalesItem: 1,
-            item: 1
+            item: null
         }),
         methods: {
             cacheAge(age) {

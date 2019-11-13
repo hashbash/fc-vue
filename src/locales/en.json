@@ -3,6 +3,7 @@
   "close": "Close",
   "cancel": "Cancel",
   "save": "Save",
+  "empty": "Oops... Nothing found from provided origins",
   "autocomplete": "Start typing for airport, city or country",
   "autocompletePlaceholder": "Origin airports, cities and countries",
   "otherMonths": " | 1 other | {n} others",

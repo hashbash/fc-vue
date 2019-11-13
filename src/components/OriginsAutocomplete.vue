@@ -59,7 +59,7 @@ export default {
           get() {
               return this.getOriginItems();
           },
-          set(value) {
+          async set(value) {
               this.setOriginItems(value)
           },
         },

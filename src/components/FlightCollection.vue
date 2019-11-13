@@ -1,6 +1,10 @@
 <template>
     <div>
-        <v-sheet class="mx-auto" elevation="8" max-width="1265" min-height="500"
+        <v-sheet class="mx-auto"
+                 elevation="8"
+                 max-width="1265"
+                 min-height="500"
+                 v-if="show"
         >
             <v-toolbar flat>
                 <v-progress-linear
@@ -58,6 +62,59 @@
                 ></v-progress-circular>
             </v-overlay>
         </v-sheet>
+        <v-sheet class="mx-auto"
+                 elevation="8"
+                 max-width="1265"
+                 min-height="500"
+                 v-else-if="!show"
+        >
+            <v-toolbar flat>
+                <v-progress-linear
+                        :active="!flightsLoaded"
+                        :indeterminate="!flightsLoaded"
+                        absolute
+                        top
+                        color="deep-purple accent-6"
+                ></v-progress-linear>
+                <router-link
+                        :to="'#collection'+collectionId"
+                        @click.native="scrollTo('#collection'+collectionId)"
+                        tag="div"
+                >
+                    <v-toolbar-title class="ml-2" v-ripple>
+                        <a class="custom-a">{{ collectionTitle }}</a>
+                    </v-toolbar-title>
+                </router-link>
+                <div class="flex-grow-1"></div>
+                <Share
+                        :link="siteUrl + '#collection' + collectionId"
+                        :text="collectionTitle"
+                ></Share>
+            </v-toolbar>
+            <div>
+                <v-content></v-content>
+                <v-content></v-content>
+                <v-content></v-content>
+                <v-row
+                        align="center"
+                        justify="center"
+                        class="justify-center align-center"
+                >
+                <v-icon x-large>mdi-emoticon-dead-outline</v-icon>
+                <v-icon x-large>mdi-emoticon-dead-outline</v-icon>
+                <v-icon x-large>mdi-emoticon-dead-outline</v-icon>
+                </v-row>
+                <v-row
+                        align="center"
+                        justify="center"
+                >
+                    <div>{{$t('empty')}}</div>
+                </v-row>
+                <v-content></v-content>
+                <v-content></v-content>
+                <v-content></v-content>
+                </div>
+        </v-sheet>
     </div>
 </template>
 
@@ -77,7 +134,8 @@ export default {
         flightsLoaded: false,
         flights: [],
         model: true,
-        siteUrl: AppConfig.siteUrl
+        siteUrl: AppConfig.siteUrl,
+        show: true
     }),
     methods: {
         ...mapGetters(['getCollectionFlights', 'getSelectedSearchMonths']),
@@ -93,6 +151,9 @@ export default {
             this.flightsLoaded = await this.fetchComplexCollectionFlights({collectionId: this.collectionId});
         }
         this.flights = await this.getCollectionFlights()(this.collectionId);
+        if (this.flights.length === 0) {
+            this.show = false;
+        }
     },
     props: {
         collectionId: Number,
