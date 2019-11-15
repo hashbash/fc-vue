@@ -1,3 +1,6 @@
+Cheapster.travel site
+https://cheapster.travel/
+
 # fc-vue
 
 ## Project setup

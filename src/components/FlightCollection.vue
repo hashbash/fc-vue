@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-sheet class="mx-auto"
-                 elevation="8"
+                 elevation="1"
                  max-width="1265"
                  min-height="500"
                  v-if="show"
