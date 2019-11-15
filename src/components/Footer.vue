@@ -39,6 +39,7 @@
                 ['mdi-telegram', 'tg://t.me/cheapstertravelfans'],
                // ['mdi-instagram', 'https://www.instagram.com/senya_vinnyj/'],
                 ['mdi-email', 'mailto:hello@cheapster.travel'],
+                ['mdi-github-box', 'https://github.com/hashbash/fc-vue']
             ],
         })
     }
