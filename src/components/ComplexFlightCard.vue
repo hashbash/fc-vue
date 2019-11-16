@@ -1,6 +1,6 @@
 <template>
     <v-flex class="my-2 mx-auto ">
-        <v-card width="258" height="424"
+        <v-card width="258" height="440"
                 class="ma-4 "
                 @click="overlay = !overlay"
         >
@@ -27,6 +27,13 @@
                 />
             </div>
             </template>
+
+            <v-flex class="mx-5" style="max-height: 2%">
+                <div class="text-xs-center align-center" style="max-height: 2%; max-width: 90%; text-align: center">
+                    <v-subheader class="caption align-center"><v-icon dense>mdi-history</v-icon>   {{ $t('cacheAge.'+ cacheAge(flight['cache_age_hours'])) }}</v-subheader>
+                </div>
+            </v-flex>
+
 
             <template>
                 <v-card-text>
@@ -59,6 +66,7 @@
                         </v-chip>
                     </v-chip-group>
                 </v-card-text>
+
                 <v-card-actions >
                     <v-btn
                             class="primary"
