@@ -27,22 +27,6 @@
                 </v-list-item>
             </v-list-group>
         </v-list>
-<!--        <v-content-->
-<!--                v-for="(header, index) in collectionHeaders"-->
-<!--                :key="index"-->
-<!--                :id="'collection'+header.id"-->
-<!--                :href="'#collection'+header.id"-->
-<!--        >-->
-<!--            <v-responsive min-height="250">-->
-<!--            <v-lazy>-->
-<!--            <FlightCollection-->
-<!--                    :collectionId="header.id"-->
-<!--                    :collectionTitle="header.title"-->
-<!--                    :kind="header['kind']"-->
-<!--            ></FlightCollection>-->
-<!--            </v-lazy>-->
-<!--            </v-responsive>-->
-<!--        </v-content>-->
 
     </div>
     <v-snackbar
