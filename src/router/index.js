@@ -14,7 +14,7 @@ const routes = [
   },
   {
     path: '/collections',
-    name: 'home',
+    name: 'collections',
     component: Collections
   },
   {
