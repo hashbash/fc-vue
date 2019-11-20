@@ -2,6 +2,7 @@
     <v-lazy>
     <v-footer
             padless
+            absolute
             class="font-weight-light"
     >
         <v-card

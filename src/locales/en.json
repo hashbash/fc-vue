@@ -7,6 +7,8 @@
   "autocomplete": "Start typing for airport, city or country",
   "autocompletePlaceholder": "Origin airports, cities and countries",
   "otherMonths": " | 1 other | {n} others",
+  "collections": "Collections",
+  "map": "Map",
   "user": {
     "unknownUser": "Undefined duck",
     "visaFree": "Only Visa-Free destinations",
