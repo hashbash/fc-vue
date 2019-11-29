@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Collections from '../views/Collections.vue'
 import About from '../views/About.vue'
-import Map from "@/views/Map";
+import Map from "../views/Map";
 
 Vue.use(VueRouter)
 

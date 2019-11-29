@@ -4,11 +4,12 @@
             padless
             absolute
             class="font-weight-light"
+            style="max-height: 30px"
     >
         <v-card
                 flat
                 tile
-                class="text-center"
+                class="text-center pa-0 ma-0 px-0"
                 width="100%"
         >
             <v-card-text>
@@ -23,9 +24,9 @@
                     <v-icon size="24px">{{ icon[0] }}</v-icon>
                 </v-btn>
             </v-card-text>
-            <v-card-text class="pt-0">
-                Keep in touch with us <strong class="black--text">❤️</strong>
-            </v-card-text>
+<!--            <v-card-text class="pt-0">-->
+<!--                Keep in touch with us <strong class="black&#45;&#45;text">❤️</strong>-->
+<!--            </v-card-text>-->
         </v-card>
     </v-footer>
     </v-lazy>

@@ -1,15 +1,15 @@
 <template>
-    <InteractiveMap></InteractiveMap>
+    <InteractiveMapbox></InteractiveMapbox>
 </template>
 
 <script>
-    import InteractiveMap from "@/components/InteractiveMap";
+    import InteractiveMapbox from "@/components/InteractiveMapbox";
 
     export default {
         name: "Map",
         components: {
-            InteractiveMap
-        }
+            InteractiveMapbox
+        },
     }
 </script>
 
