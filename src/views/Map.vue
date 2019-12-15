@@ -1,14 +1,15 @@
 <template>
-    <InteractiveMapbox></InteractiveMapbox>
+    <div>
+        <VueMapPage></VueMapPage>
+    </div>
 </template>
 
 <script>
-    import InteractiveMapbox from "@/components/InteractiveMapbox";
-
+    import VueMapPage from "@/components/VueMapPage";
     export default {
         name: "Map",
         components: {
-            InteractiveMapbox
+            VueMapPage
         },
     }
 </script>

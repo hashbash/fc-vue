@@ -7,6 +7,7 @@
   "autocomplete": "Введите аэропорт, город или страну",
   "autocompletePlaceholder": "Аэропорты, города и страны отправления",
   "otherMonths": " | 1 другой | {n} других",
+  "otherDays": " | 1 другая | {n} других",
   "collections": "Подборки",
   "map": "Карта",
   "user": {
@@ -21,6 +22,23 @@
     },
     "currency": "Валюта"
   },
+  "forms": {
+    "names": {
+      "mapSearch": "Поиск на карте"
+    },
+    "switchers": {
+      "visaFree": "Без визы",
+      "directOnly": "Только прямые"
+    },
+    "selectors": {
+      "startDates": "Даты начала путешествия",
+      "dates": "Даты"
+    },
+    "validations": {
+      "selectAtLeastOneDay": "Выберите как минимум одну дату",
+      "selectAtLeastOneOrigin": "Выберите как минимум одну точку отправления"
+    }
+  },
   "flight": {
     "oneWay": "В одну сторону",
     "roundTrip": "Туда-обратно",
@@ -31,7 +49,8 @@
     "city_count": " 0 городов | {n} город | {n} города | {n} городов"
   },
   "navigation": {
-    "goTo": "Перейти на"
+    "goTo": "Перейти на",
+    "search": "Найти"
   },
   "cacheAge": {
     "6": "Менее 6 часов назад",

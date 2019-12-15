@@ -65,7 +65,7 @@ export default {
     if (!this.getIpInfo()) {
       let ipInfo = await this.fetchIpInfo();
       await this.fetchNearbyAirports({longitude: ipInfo['longitude'],
-                                latitude: ipInfo['latitude']});
+                                      latitude: ipInfo['latitude']});
     } else {
       await this.recoverFromCookiesNearbyAirports()
     }

@@ -35,6 +35,10 @@ export default {
             Cookies.set('searchMonths', JSON.stringify(value), {expires:365});
             commit('updateSearchMonths', value)
         },
+        setSearchDays({commit}, value) {
+            Cookies.set('searchDays', JSON.stringify(value), {expires:365});
+            commit('updateSearchDays', value)
+        },
         setMinMaxDuration({commit}, value) {
             Cookies.set('minMaxDuration', value, {expires: 365});
             commit('updateMinMaxDuration', value)
@@ -129,6 +133,9 @@ export default {
         updateSearchMonths(state, value) {
             state.searchMonths = value
         },
+        updateSearchDays(state, value) {
+            state.searchDays = value
+        },
         updateMinMaxDuration(state, value) {
             state.minMaxDuration = value
         },
@@ -171,6 +178,7 @@ export default {
         citizenships: [],
         today: new Date(),
         searchMonths: undefined,
+        searchDays: [],
         minMaxDuration: undefined,
         ipInfo: undefined,
         longitude: undefined,
@@ -247,6 +255,14 @@ export default {
                 }
             } else {
                 return getters.getAllMonthsStr
+            }
+        },
+        getSelectedSearchDays(state) {
+            if (Cookies.get('searchDays')) {
+                let cookieDays = JSON.parse(Cookies.get('searchDays'));
+                return cookieDays
+            } else {
+                return state.searchDays
             }
         },
         getMinMaxDuration(state) {

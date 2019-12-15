@@ -15,6 +15,7 @@
         clearable
         hide-selected
         hide-details
+        autofocus
         return-object
         :no-data-text="$i18n.t('autocomplete') || 'Autocomplete'"
 >
@@ -78,6 +79,7 @@ export default {
             + `&currency=${this.getCurrency()}`
             + `&locale=${this.getLang()+'-'+this.getLang().toUpperCase()}`);
             this.suggestions = await res.json();
+            this.model = this.model;
         },
     }
 }

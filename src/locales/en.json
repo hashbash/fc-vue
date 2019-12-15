@@ -7,6 +7,7 @@
   "autocomplete": "Start typing for airport, city or country",
   "autocompletePlaceholder": "Origin airports, cities and countries",
   "otherMonths": " | 1 other | {n} others",
+  "otherDays": " | 1 other | {n} others",
   "collections": "Collections",
   "map": "Map",
   "user": {
@@ -21,6 +22,23 @@
     },
     "currency": "Currency"
   },
+  "forms": {
+    "names": {
+      "mapSearch": "Map search"
+    },
+    "switchers": {
+      "visaFree": "Visa Free",
+      "directOnly": "Direct only"
+    },
+    "selectors": {
+      "startDates": "Start dates",
+      "dates": "Dates"
+    },
+    "validations": {
+      "selectAtLeastOneDay": "Select at least one date",
+      "selectAtLeastOneOrigin": "Select at least one origin"
+    }
+  },
   "flight": {
     "oneWay": "One way",
     "roundTrip": "Round trip",
@@ -31,7 +49,8 @@
     "city_count": " 0 city | 1 city | {n} cities"
   },
   "navigation": {
-    "goTo": "Go to"
+    "goTo": "Go to",
+    "search": "Search"
   },
   "cacheAge": {
     "6": "Less than 6 hours ago",

@@ -12,7 +12,7 @@
                 <v-btn icon
                         v-on="on"
                 >
-                    <v-icon>mdi-filter-outline</v-icon>
+                    <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
             </template>
 
@@ -30,7 +30,7 @@
                 </v-list>
 
                 <v-divider></v-divider>
-                <v-list>
+                <v-list v-if="$route.path != '/map'">
                     <v-list-item>
                         <OriginsAutocomplete></OriginsAutocomplete>
                     </v-list-item>
@@ -94,7 +94,7 @@
                                 append-outer-icon="mdi-cash-multiple"
                         ></v-select>
                     </v-list-item>
-
+                <div v-if="$route.path != '/map'">
                 <v-divider></v-divider>
                 <v-list>
                     <v-list-item>
@@ -158,8 +158,9 @@
                         </v-range-slider>
                     </v-list-item>
                 </v-list>
-                </v-list>
+                </div>
 
+                </v-list>
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
