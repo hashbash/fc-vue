@@ -99,7 +99,8 @@
         methods: {
             ...mapGetters(['getSelectedSearchDays', 'getAllMonthsStr', 'getCitizenships', 'getVisaFree',
                 'getOriginItems']),
-            ...mapActions(['setSearchDays', 'setMapFieldsSearchClicked', 'setVisaFree', 'fetchOneWayFlights']),
+            ...mapActions(['setSearchDays', 'setMapFieldsSearchClicked', 'setVisaFree',
+                'fetchOneWayFlights', 'setSearchDirectOnly']),
             getMaxDate() {
                 let aYearFromNow = new Date();
                 aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
@@ -155,12 +156,17 @@
             }
             this.fetchOneWayFlights(this.days, this.directOnly);
         },
-        // watch: {
-        //     days(value) {
-        //         console.log(value);
-        //         this.setSearchDays(value)
-        //     }
-        // }
+        watch: {
+            days: {
+                handler: function (value) {
+                    this.setSearchDays(value);
+                },
+                deep: true
+            },
+            directOnly: function(value) {
+                this.setSearchDirectOnly(value)
+            }
+        }
     }
 </script>
 

@@ -39,6 +39,9 @@ export default {
             Cookies.set('searchDays', JSON.stringify(value), {expires:365});
             commit('updateSearchDays', value)
         },
+        setSearchDirectOnly({commit}, value) {
+            commit('updateSearchDirectOnly', value)
+        },
         setMinMaxDuration({commit}, value) {
             Cookies.set('minMaxDuration', value, {expires: 365});
             commit('updateMinMaxDuration', value)
@@ -136,6 +139,9 @@ export default {
         updateSearchDays(state, value) {
             state.searchDays = value
         },
+        updateSearchDirectOnly(state, value) {
+            state.searchDirectOnly = value
+        },
         updateMinMaxDuration(state, value) {
             state.minMaxDuration = value
         },
@@ -179,6 +185,7 @@ export default {
         today: new Date(),
         searchMonths: undefined,
         searchDays: [],
+        searchDirectOnly: false,
         minMaxDuration: undefined,
         ipInfo: undefined,
         longitude: undefined,
@@ -264,6 +271,12 @@ export default {
             } else {
                 return state.searchDays
             }
+        },
+        getSearchDays(state) {
+            return state.searchDays
+        },
+        getSearchDirectOnly(state) {
+            return state.searchDirectOnly
         },
         getMinMaxDuration(state) {
             if (state.minMaxDuration) {

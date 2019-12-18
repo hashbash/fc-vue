@@ -43,6 +43,7 @@
     "oneWay": "One way",
     "roundTrip": "Round trip",
     "direct": "Direct",
+    "withStops": "With stops",
     "days": " 0 days | 1 day | {n} days",
     "complex": "Multi-city",
     "complex_price": "Total price for {n} tickets",

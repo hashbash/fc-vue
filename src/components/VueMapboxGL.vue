@@ -8,7 +8,7 @@
                 :map-options="{
                     style: 'mapbox://styles/mapbox/dark-v9',
                     center: [0, 30],
-                    zoom: 1
+                    zoom: 2
                   }"
                 @map-init="mapInitialized"
                 @map-load="loaded"
@@ -33,7 +33,7 @@
     import Mapbox from 'mapbox-gl-vue'
     import mapboxgl from 'mapbox-gl';
     import VueMapboxPopup from "@/components/VueMapboxPopup";
-    import {mapGetters} from "vuex";
+    import {mapGetters, mapActions} from "vuex";
 
     export default {
         name: "VueMapboxGL",
@@ -50,7 +50,9 @@
             }
         },
         methods: {
-            ...mapGetters(['getGeoJson']),
+
+            ...mapGetters(['getGeoJson', 'getFixedFlights', 'fetchAndGetFixedFlights']),
+            ...mapActions(['fetchFixedFlights', 'setFixedFlights', 'fetchFixedFlightsAsync']),
             mapInitialized(map) {
                 this.map = map;
             },
@@ -80,9 +82,9 @@
                 });
 
             },
-            clicked(map, e) {
+            async clicked(map, e) {
                 if (e.features) {
-                    const coordinates = e.features[0].geometry.coordinates.slice()
+                    const coordinates = e.features[0].geometry.coordinates.slice();
 
                     // Ensure that if the map is zoomed out such that multiple
                     // copies of the feature are visible, the popup appears
@@ -91,14 +93,36 @@
                         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
                     }
 
+
+                    // console.log(this.fetchAndGetFixedFlights()(e.features[0].properties['destination_city_id']));
+
+                    this.map.flyTo({
+                        center: [
+                            coordinates[0],
+                            coordinates[1]
+                        ],
+                        speed: 0.5,
+                        zoom: this.map.getZoom() > 3 ? this.map.getZoom() : this.map.getZoom() + 1
+                    });
+
                     new mapboxgl.Popup()
                         .setLngLat({ lng: coordinates[0], lat: coordinates[1] })
                         .setHTML('<v-content id="vue-mapbox-popup"></v-content>')
-                        .addTo(map)
+                        .addTo(map);
 
+                    this.setFixedFlights([]);
+                    let res = this.fetchFixedFlightsAsync({destination_city_id: e.features[0].properties['destination_city_id']});
+
+                    let i18n = this.$i18n;
                     new VueMapboxPopup({
-                        propsData: { feature: e.features[0] },
-                    }).$mount('#vue-mapbox-popup')
+                        propsData: {
+                            feature: e.features[0],
+                            flights: res,
+                            i18n: i18n
+                        },
+                    }).$mount('#vue-mapbox-popup');
+
+
                 }
             },
             mouseEntered(map) {
@@ -126,6 +150,6 @@
 <style>
     #map {
         width: 100%;
-        height: 500px;
+        height: 520px;
     }
 </style>
