@@ -24,7 +24,11 @@
   },
   "forms": {
     "names": {
-      "mapSearch": "Map search"
+      "mapSearch": "Map search",
+      "route": "Route"
+    },
+    "numbers": {
+      "totalPrice": "Total price"
     },
     "switchers": {
       "visaFree": "Visa Free",
@@ -32,7 +36,8 @@
     },
     "selectors": {
       "startDates": "Start dates",
-      "dates": "Dates"
+      "dates": "Dates",
+      "addToRoute": "Add to route"
     },
     "validations": {
       "selectAtLeastOneDay": "Select at least one date",
@@ -44,6 +49,7 @@
     "roundTrip": "Round trip",
     "direct": "Direct",
     "withStops": "With stops",
+    "priceFrom": "from",
     "days": " 0 days | 1 day | {n} days",
     "complex": "Multi-city",
     "complex_price": "Total price for {n} tickets",

@@ -115,6 +115,8 @@
 
                     let i18n = this.$i18n;
                     new VueMapboxPopup({
+                        store: this.$store,
+                        i18n: this.$i18n,
                         propsData: {
                             feature: e.features[0],
                             flights: res,

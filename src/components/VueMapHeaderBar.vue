@@ -81,7 +81,7 @@
 <script>
     import OriginsAutocomplete from "@/components/OriginsAutocomplete";
     import i18n from "@/i18n";
-    import {mapActions, mapGetters} from "vuex";
+    import {mapActions, mapGetters, mapState} from "vuex";
 
     export default {
         name: "VueMapHeaderBar",
@@ -126,6 +126,17 @@
                     return this.getOriginItems()
                 }
             },
+            daysStoreModel: {
+                get() {
+                    return this.getSelectedSearchDays()
+                }
+            },
+            ...mapState(['searchDays']),
+        },
+        created: function () {
+            this.$store.watch('searchDays', function () {
+                console.log('a thing changed')
+            }, {deep:true})
         },
         mounted() {
             this.days = this.getSelectedSearchDays();
@@ -165,6 +176,15 @@
             },
             directOnly: function(value) {
                 this.setSearchDirectOnly(value)
+            },
+            searchDays: {
+                handler: function(value) {
+                    console.log(value);
+                    if (JSON.stringify(this.days) != JSON.stringify(value)) {
+                        this.days = value
+                    }
+                },
+                deep: true
             }
         }
     }

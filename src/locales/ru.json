@@ -24,7 +24,11 @@
   },
   "forms": {
     "names": {
-      "mapSearch": "Поиск на карте"
+      "mapSearch": "Поиск на карте",
+      "route": "Маршрут"
+    },
+    "numbers": {
+      "totalPrice": "Итого"
     },
     "switchers": {
       "visaFree": "Без визы",
@@ -32,7 +36,8 @@
     },
     "selectors": {
       "startDates": "Даты начала путешествия",
-      "dates": "Даты"
+      "dates": "Даты",
+      "addToRoute": "Добавить к маршруту"
     },
     "validations": {
       "selectAtLeastOneDay": "Выберите как минимум одну дату",
@@ -44,6 +49,7 @@
     "roundTrip": "Туда-обратно",
     "direct": "Прямой",
     "withStops": "С пересадками",
+    "priceFrom": "от",
     "days": " 0 дней | {n} день | {n} дня | {n} дней",
     "complex": "Сложный маршрут",
     "complex_price": " | Общая цена за {n} билет | Общая цена за {n} билета | Общая цена за {n} билетов",

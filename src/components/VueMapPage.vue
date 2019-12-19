@@ -2,23 +2,17 @@
     <div>
         <VueMapHeaderBar></VueMapHeaderBar>
         <VueMapboxGL></VueMapboxGL>
+        <VueMapboxRoute></VueMapboxRoute>
     </div>
 </template>
 
 <script>
     import VueMapboxGL from "@/components/VueMapboxGL";
-    // import MapSearchCard from "@/components/MapSearchCard";
     import VueMapHeaderBar from "@/components/VueMapHeaderBar";
-    // import {mapGetters} from 'vuex';
+    import VueMapboxRoute from "@/components/VueMapboxRoute";
     export default {
         name: "VueMapPage",
-        components: {VueMapboxGL, VueMapHeaderBar},
-        // data:() => ({
-        //     // searchClicked: false
-        // }),
-        // computed: {
-        //     ...mapGetters(['getMapFieldsSearchClicked'])
-        // }
+        components: {VueMapboxGL, VueMapHeaderBar, VueMapboxRoute},
     }
 </script>
 

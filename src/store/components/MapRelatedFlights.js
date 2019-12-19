@@ -79,6 +79,12 @@ export default {
         },
         setMapFieldsSearchClicked({commit}) {
             commit('updateMapFieldsSearchClicked', true)
+        },
+        addToRoute({commit}, flight) {
+            commit('addToRoute', flight)
+        },
+        deleteFromRoute({commit}, index) {
+            commit('deleteFromRoute', index)
         }
     },
     mutations: {
@@ -90,12 +96,19 @@ export default {
         },
         updateFixedFlights(state, value) {
             state.fixedFlights = value
+        },
+        addToRoute(state, value) {
+            state.userRoute.push(value)
+        },
+        deleteFromRoute(state, value) {
+            state.userRoute.splice(value, 1);
         }
     },
     state: {
         oneWayFlights: [],
         mapFieldsSearchClicked: false,
-        fixedFlights: []
+        fixedFlights: [],
+        userRoute: []
     },
     getters: {
         getOneWayFlights(state) {
@@ -182,5 +195,8 @@ export default {
             });
             return serverResponse
         }},
+        getRoute(state) {
+            return state.userRoute
+        }
     }
 }
