@@ -134,9 +134,12 @@
             ...mapState(['searchDays']),
         },
         created: function () {
-            this.$store.watch('searchDays', function () {
-                console.log('a thing changed')
-            }, {deep:true})
+            this.$store.subscribe((mutation) => {
+                if (mutation.type === 'updateSearchDays') {
+                    this.days = mutation.payload;
+                    this.searchMapData()
+                }
+            })
         },
         mounted() {
             this.days = this.getSelectedSearchDays();
@@ -179,7 +182,7 @@
             },
             searchDays: {
                 handler: function(value) {
-                    console.log(value);
+                    // console.log(value);
                     if (JSON.stringify(this.days) != JSON.stringify(value)) {
                         this.days = value
                     }
