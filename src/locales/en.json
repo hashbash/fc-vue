@@ -37,11 +37,15 @@
     "selectors": {
       "startDates": "Start dates",
       "dates": "Dates",
-      "addToRoute": "Add to route"
+      "addToRoute": "Add to route",
+      "openRouteOnSource": "Search this route on"
     },
     "validations": {
       "selectAtLeastOneDay": "Select at least one date",
       "selectAtLeastOneOrigin": "Select at least one origin"
+    },
+    "warnings": {
+      "complexUnavailable" : "Routes may not be available at these sources. Have a look at each segment separately by clicking on the round buttons above."
     }
   },
   "flight": {

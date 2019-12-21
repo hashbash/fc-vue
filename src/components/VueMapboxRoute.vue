@@ -11,19 +11,19 @@
                 <v-list-item-content style="min-width: 300px">
                     <v-list-item-title>{{flight['origin_city_name']
                         + ' (' + flight['origin'] + ')'
-                        + (flight['one_way'] == 0 ? ' &#8644; ' : ' &#8594; ')
+                        + (flight['one_way'] === 0 ? ' &#8644; ' : ' &#8594; ')
                         + flight['destination_city_name']
                         + ' (' + flight['destination'] + ')'
                         }}</v-list-item-title>
                     <v-list-item-subtitle>
-                        {{(flight['direct'] == 1 ? $t('flight.direct') : $t('flight.withStops'))
+                        {{(flight['direct'] === 1 ? $t('flight.direct') : $t('flight.withStops'))
                         + ' &#9992; '
                         + flight['outbound_carrier_names'].join(', ')
                         }}
                     </v-list-item-subtitle>
                     <v-list-item-subtitle>
                         {{flight['outbound_dt']
-                        + (flight['one_way'] == 1 ? '' : ' 	&#8651; ' + flight['inbound_dt'])}}
+                        + (flight['one_way'] === 1 ? '' : ' &#8651; ' + flight['inbound_dt'])}}
                     </v-list-item-subtitle>
                 </v-list-item-content>
 
@@ -70,11 +70,29 @@
                 </v-list-item-action>
             </v-list-item>
         </v-list>
+        <div v-if="this.getRoute.length">
+            <v-card-actions class="justify-end">
+                <v-row class="justify-end px-5">
+                    <v-btn @click="openComplexK">
+                        {{$t('forms.selectors.openRouteOnSource')}} KAYAK
+                    </v-btn>
+                    <v-btn @click="openComplexSk">{{$t('forms.selectors.openRouteOnSource')}} Skyscanner</v-btn>
+                    <v-btn @click="openComplexAS" class="success">{{$t('forms.selectors.openRouteOnSource')}}
+                        Aviasales
+                    </v-btn>
+                </v-row>
+            </v-card-actions>
+            <v-card-actions class="justify-end pa-0 align-end">
+                <v-subheader style="max-width: 40%">
+                    {{$t('forms.warnings.complexUnavailable')}}
+                </v-subheader>
+            </v-card-actions>
+        </div>
     </v-card>
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapActions, mapGetters} from 'vuex';
     import common from "@/common";
 
     export default {
@@ -87,14 +105,18 @@
             sum(numbers){
                 let x = numbers.reduce(function(prev,curr){
                     return curr + prev;
-                },0);
+                }, 0);
                 return x;
             },
             calculatePrice() {
-                return this.sum( this.getRoute.map(x=> x['converted_price']) )
+                return this.sum(this.getRoute.map(x => x['converted_price']))
             },
             openSk(flight) {
                 let link = common.skyscannerLink(flight);
+                window.open(link, '_blank')
+            },
+            openComplexSk() {
+                let link = common.skyscannerComplexLink(this.getRoute);
                 window.open(link, '_blank')
             },
             linkSk(flight) {
@@ -104,11 +126,19 @@
                 let link = common.aviasalesLink(flight);
                 window.open(link, '_blank')
             },
+            openComplexAS() {
+                let link = common.aviasalesComplexLink(this.getRoute);
+                window.open(link, '_blank')
+            },
             linkAS(flight) {
                 return common.aviasalesLink(flight)
             },
             openK(flight) {
                 let link = common.kayakLink(flight);
+                window.open(link, '_blank')
+            },
+            openComplexK() {
+                let link = common.kayakComplexLink(this.getRoute);
                 window.open(link, '_blank')
             },
             linkK(flight) {
