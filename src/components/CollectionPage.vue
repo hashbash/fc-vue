@@ -117,6 +117,9 @@
                 }
             }, 1000);
             this.snackbar = !this.getLocationSnackbarSeen();
+            if (this.collectionHeaders.length) {
+                this.collectionHeaders[2].active = true;
+            }
         },
         watch: {
             searchParamsChanged(newValue) {

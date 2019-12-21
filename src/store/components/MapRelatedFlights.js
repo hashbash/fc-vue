@@ -6,6 +6,10 @@ export default {
     mixins: [Vue2Filters.mixin],
     actions: {
         async fetchOneWayFlights({commit, rootGetters}, {days, directOnly, limit=500}) {
+            if (rootGetters.getOriginItems.length === 0) {
+                console.log('Empty origins. Nothing to search');
+                return
+            }
             let request = await fetch(AppConfig.apiUrl + '/one-way', {
                 method: 'POST',
                     headers: {
