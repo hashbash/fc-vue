@@ -240,6 +240,8 @@
         async mounted() {
             if (this.getOriginItems().length) {
                 await this.getFlights()
+            } else {
+                setTimeout(this.getFlights, 2000);
             }
         }
     }
