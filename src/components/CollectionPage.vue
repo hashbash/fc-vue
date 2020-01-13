@@ -13,19 +13,19 @@
                         <v-list-item-title v-text="item.title">
                         </v-list-item-title>
                     </v-list-item-content>
-                    <v-list-item-action>
-                        <v-btn icon
-                        >
-                            <v-icon>mdi-share-variant</v-icon>
-                        </v-btn>
-                    </v-list-item-action>
-                    <v-list-item-action>
-                        <v-btn icon
+<!--                    <v-list-item-action>-->
+<!--                        <v-btn icon-->
+<!--                        >-->
+<!--                            <v-icon>mdi-share-variant</v-icon>-->
+<!--                        </v-btn>-->
+<!--                    </v-list-item-action>-->
+<!--                    <v-list-item-action>-->
+<!--                        <v-btn icon-->
 
-                        >
-                            <v-icon>mdi-heart</v-icon>
-                        </v-btn>
-                    </v-list-item-action>
+<!--                        >-->
+<!--                            <v-icon>mdi-heart</v-icon>-->
+<!--                        </v-btn>-->
+<!--                    </v-list-item-action>-->
                 </template>
 
                 <v-list-item

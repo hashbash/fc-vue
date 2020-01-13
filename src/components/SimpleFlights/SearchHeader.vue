@@ -6,7 +6,7 @@
                 :lazy-validation="false"
         >
             <v-col class="mx-0 px-0">
-            <v-row class="mx-2 pa-0" align="center" style="max-height: 50px">
+            <v-row class="mx-2 pa-0" align="center" style="max-height: 55px">
                 <v-col style="min-height: 104px">
                     <OriginsAutocomplete></OriginsAutocomplete>
                 </v-col>
@@ -156,7 +156,9 @@
             </v-row>
             </v-col>
         </v-form>
+
         <v-content>
+
             <SimpleFlightCard
                     v-for="(flight, index) in flights"
                     :key="index"
@@ -164,6 +166,7 @@
                     v-bind:index="index"
                     v-bind:flight="flight"
             ></SimpleFlightCard>
+
         </v-content>
     </div>
 </template>
@@ -194,7 +197,8 @@
                 ],
                 tags: [],
                 selectedTags: [],
-                flights: []
+                flights: [],
+                lazyActive: true
         }},
         methods: {
             ...mapGetters(['getCitizenships', 'getOriginItems', 'getTags', 'getLang', 'getSimpleFlights']),

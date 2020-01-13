@@ -54,7 +54,7 @@
                     </span>
                 </v-card-text>
                 <v-card-title>
-                    <span class="secondary">
+                    <span>
                         {{ flight['converted_price'] | currency(flight['converted_currency'], 0, { spaceBetweenAmountAndSymbol: true }) }}
                     </span>
                     <span class="px-5">
