@@ -10,6 +10,7 @@
   "otherDays": " | 1 другая | {n} других",
   "collections": "Авторские подборки",
   "map": "Конструктор сложных маршрутов",
+  "simpleFlights": "Простые билеты",
   "user": {
     "unknownUser": "Неопознанная утка",
     "visaFree": "Только безвизовые направления",
@@ -25,20 +26,32 @@
   "forms": {
     "names": {
       "mapSearch": "Поиск на карте",
-      "route": "Маршрут"
+      "route": "Маршрут",
+      "order": "Сортировка"
     },
     "numbers": {
       "totalPrice": "Итого"
     },
     "switchers": {
       "visaFree": "Без визы",
-      "directOnly": "Только прямые"
+      "visaRequired": "Нужна виза",
+      "directOnly": "Только прямые",
+      "oneWayOnly": "Только туда"
     },
     "selectors": {
       "startDates": "Даты начала путешествия",
       "dates": "Даты",
+      "outboundDates": "Даты вылета",
+      "inboundDates": "Даты прилета",
+      "anytime": "Любые даты",
       "addToRoute": "Добавить к маршруту",
       "openRouteOnSource": "Поиск этого маршрута на"
+    },
+    "choices": {
+      "orderBy": {
+        "price": "По цене",
+        "pricePerKm": "По цене за км"
+      }
     },
     "validations": {
       "selectAtLeastOneDay": "Выберите как минимум одну дату",

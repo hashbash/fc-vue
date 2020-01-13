@@ -10,6 +10,7 @@
   "otherDays": " | 1 other | {n} others",
   "collections": "Collections",
   "map": "Map",
+  "simpleFlights": "Simple flights search",
   "user": {
     "unknownUser": "Undefined duck",
     "visaFree": "Only Visa-Free destinations",
@@ -25,20 +26,32 @@
   "forms": {
     "names": {
       "mapSearch": "Map search",
-      "route": "Route"
+      "route": "Route",
+      "order": "Order by"
     },
     "numbers": {
       "totalPrice": "Total price"
     },
     "switchers": {
       "visaFree": "Visa Free",
-      "directOnly": "Direct only"
+      "visaRequired": "Visa required",
+      "directOnly": "Direct only",
+      "oneWayOnly": "One way"
     },
     "selectors": {
       "startDates": "Start dates",
       "dates": "Dates",
+      "outboundDates": "Outbound dates",
+      "inboundDates": "Inbound dates",
+      "anytime": "Anytime",
       "addToRoute": "Add to route",
       "openRouteOnSource": "Search this route on"
+    },
+    "choices": {
+      "orderBy": {
+        "price": "Price",
+        "pricePerKm": "Price per km"
+      }
     },
     "validations": {
       "selectAtLeastOneDay": "Select at least one date",

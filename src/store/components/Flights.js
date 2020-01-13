@@ -50,6 +50,36 @@ export default {
             commit('updateCollection', {id: collectionId, flights: response});
             return true
         },
+        async fetchSimpleFlights({commit, rootGetters}, {outbound_dates, inbound_dates, visa_free, direct_only, one_way, order_by='price', tags=[], limit=100}) {
+            let request = await fetch(AppConfig.apiUrl + '/simple-flights', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "origins": rootGetters.getOriginItems.map(e=>(e['place_code'])),
+                    "outbound_dates": outbound_dates,
+                    "inbound_dates": inbound_dates,
+                    "direct_only": direct_only,
+                    "one_way": one_way,
+                    "tags": tags,
+                    "lang": rootGetters.getLang,
+                    "currency": rootGetters.getCurrency,
+                    "visa_free": visa_free,
+                    "citizenships": rootGetters.getCitizenships,
+                    "order_by": order_by === null ? 'price' : order_by,
+                    "limit": limit
+                })
+            });
+            let response = await request.json();
+            commit('updateSimpleFlights', response);
+        },
+        async fetchTags({commit}) {
+            let request = await fetch(AppConfig.apiUrl + '/tags');
+            let response = await request.json();
+            commit('updateTags', response);
+        },
         searchParamsChanged({commit}) {
             commit('updateSearchParamsChanged')
         }
@@ -64,12 +94,20 @@ export default {
         },
         updateSearchParamsChanged(state) {
             state.searchParamsChanged++
+        },
+        updateTags(state, value) {
+            state.tags = value
+        },
+        updateSimpleFlights(state, value) {
+            state.simpleFlights = value
         }
     },
     state: {
         collectionHeaders: [],
         collections: {},
-        searchParamsChanged: 0
+        searchParamsChanged: 0,
+        tags: [],
+        simpleFlights: []
     },
     getters: {
         getCollectionHeaders(state) {
@@ -85,6 +123,12 @@ export default {
         },
         searchParamsChanged(state) {
             return state.searchParamsChanged
+        },
+        getTags(state) {
+            return state.tags
+        },
+        getSimpleFlights(state) {
+            return state.simpleFlights
         }
     }
 }

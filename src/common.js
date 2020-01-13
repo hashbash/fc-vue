@@ -88,5 +88,10 @@ export default {
             res.push(currDate)
         }
         return res.map(x => x.toISOString().split('T')[0])
-    }
+    },
+    getMaxDate() {
+        let aYearFromNow = new Date();
+        aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
+        return aYearFromNow
+    },
 }

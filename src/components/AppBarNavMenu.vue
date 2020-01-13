@@ -26,6 +26,14 @@
                         <v-icon left>mdi-earth</v-icon> {{ $t('map')}}
                     </v-btn>
                 </v-card-actions>
+                <v-card-actions>
+                    <v-btn
+                            to="/simple"
+                            :elevation="0"
+                    >
+                        <v-icon left>mdi-routes</v-icon> {{ $t('simpleFlights')}}
+                    </v-btn>
+                </v-card-actions>
             </v-card>
         </v-menu>
     </div>

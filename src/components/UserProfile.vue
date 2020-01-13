@@ -30,7 +30,7 @@
                 </v-list>
 
                 <v-divider></v-divider>
-                <v-list v-if="$route.path != '/map'">
+                <v-list v-if="$route.path == '/collections'">
                     <v-list-item>
                         <OriginsAutocomplete></OriginsAutocomplete>
                     </v-list-item>
@@ -94,7 +94,7 @@
                                 append-outer-icon="mdi-cash-multiple"
                         ></v-select>
                     </v-list-item>
-                <div v-if="$route.path != '/map'">
+                <div v-if="$route.path == '/collections'">
                 <v-divider></v-divider>
                 <v-list>
                     <v-list-item>

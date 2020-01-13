@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Collections from '../views/Collections.vue'
 import About from '../views/About.vue'
 import Map from "../views/Map";
+import SimpleFlights from "../views/SimpleFlights";
 
 Vue.use(VueRouter)
 
@@ -10,7 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Collections
+    component: SimpleFlights
   },
   {
     path: '/collections',
@@ -21,6 +22,11 @@ const routes = [
     path: '/map',
     name: 'map',
     component: Map
+  },
+  {
+    path: '/simple',
+    name: 'simple',
+    component: SimpleFlights
   },
   {
     path: '/about',
