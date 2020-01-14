@@ -43,6 +43,7 @@
                     </template>
                     <v-date-picker v-model="days"
                                    multiple
+                                   :first-day-of-week="1"
                                    :value="this.getSelectedSearchDays()"
                                    :locale="this.$i18n.locale"
                                    :min="new Date().toISOString().substr(0, 10)"

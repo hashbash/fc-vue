@@ -43,6 +43,7 @@
                         </template>
                         <v-date-picker v-model="outboundDays"
                                        multiple
+                                       :first-day-of-week="1"
                                        :locale="this.$i18n.locale"
                                        :min="new Date().toISOString().substr(0, 10)"
                                        :max="getMaxDate().toISOString().substr(0, 10)"
@@ -88,6 +89,7 @@
                         </template>
                         <v-date-picker v-model="inboundDays"
                                        multiple
+                                       :first-day-of-week="1"
                                        :locale="this.$i18n.locale"
                                        :min="new Date().toISOString().substr(0, 10)"
                                        :max="getMaxDate().toISOString().substr(0, 10)"
