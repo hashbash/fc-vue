@@ -73,9 +73,25 @@
                                 class="primary mx-2"
                                 elevation="6"
                         >Aviasales</v-btn>
+                        <span v-if="this.getLang() === 'ru'">
+                        <v-menu>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                                    class="mx-2"
+                                    v-on="on"
+                                    icon
+                                    elevation="6"
+                            >
+                              <v-icon>mdi-dots-horizontal</v-icon>
+                            </v-btn>
+                          </template>
+                            <v-btn :href="linkAT(flight)"
+                                   target="_blank"
+                            >travel.alfabank</v-btn>
+                        </v-menu>
+                        </span>
                     </span>
                     </v-card-title>
-<!--                <v-card-text>{{flight}}</v-card-text>-->
             </div>
             <v-avatar
                     class="ma-0"
@@ -92,6 +108,7 @@
     import Vue2Filters from "vue2-filters";
     import Vue from "vue";
     import common from "../../common";
+    import {mapGetters} from 'vuex';
     Vue.use(Vue2Filters);
 
     export default {
@@ -101,6 +118,7 @@
             apiUrl: AppConfig.apiUrl,
         }),
         methods: {
+            ...mapGetters(['getLang']),
             calculateDays(outbound, inbound, one_way) {
                 if (one_way === 0) {
                     let date1 = new Date(outbound);
@@ -132,6 +150,13 @@
             },
             linkK(flight) {
                 return common.kayakLink(flight)
+            },
+            openAT(flight) {
+                let link = common.travelAlfabankLink(flight);
+                window.open(link, '_blank')
+            },
+            linkAT(flight) {
+                return common.travelAlfabankLink(flight)
             },
         },
         props: {

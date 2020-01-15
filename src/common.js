@@ -78,6 +78,17 @@ export default {
         route.forEach(addToQuery);
         return url + query.join('/')
     },
+    travelAlfabankLink(route) {
+        let url = 'https://travel.alfabank.ru/avia/results/ALFA0000RTE100000009';
+        let outbound = route['origin_city_iata'] + route['destination_city_iata'] +
+            route['outbound_dt'].replace(/-/g, '');
+        let inbound = '';
+        if (route['one_way'] === 0) {
+            inbound = route['destination_city_iata'] + route['origin_city_iata'] +
+                route['inbound_dt'].replace(/-/g, '');
+        }
+        return url + outbound + inbound
+    },
     getDateRange(sourceDate, gap, len) {
         let parts = sourceDate.split("-");
         let dt = new Date(parts[0], parts[1]-1, parts[2]);
