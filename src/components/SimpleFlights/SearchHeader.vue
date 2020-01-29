@@ -241,15 +241,16 @@
         },
         async created() {
             await this.fetchTags();
-            this.tags = this.getTags()
-        },
-        async mounted() {
+            this.tags = this.getTags();
+            this.selectedTags = this.getTags().filter(function(item) {
+                return item['apply_by_default'] === true;
+            }).map(item => item.id);
             if (this.getOriginItems().length) {
                 await this.getFlights()
             } else {
                 setTimeout(this.getFlights, 2000);
             }
-        }
+        },
     }
 </script>
 
