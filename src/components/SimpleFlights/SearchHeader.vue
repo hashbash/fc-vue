@@ -251,6 +251,12 @@
                 setTimeout(this.getFlights, 2000);
             }
         },
+        async mounted() {
+            this.orderByOptions = [
+                {code: 'price', text: this.$i18n.t('forms.choices.orderBy.price')},
+                {code: 'price_per_km', text: this.$i18n.t('forms.choices.orderBy.pricePerKm')},
+            ]
+        }
     }
 </script>
 

@@ -7,7 +7,11 @@ export default {
             flight['outbound_dt'],
             flight['inbound_dt']
         ];
-        return link_arr.join("/");
+        let url = link_arr.join("/");
+        if (flight['direct'] === 1) {
+            url += '?preferdirects=true'
+        }
+        return url;
     },
     skyscannerComplexLink(route) {
         let link = 'https://www.skyscanner.com/transport/d/';
