@@ -27,7 +27,8 @@
     "names": {
       "mapSearch": "Поиск на карте",
       "route": "Маршрут",
-      "order": "Сортировка"
+      "order": "Сортировка",
+      "aggregators": "Агрегаторы"
     },
     "numbers": {
       "totalPrice": "Итого"

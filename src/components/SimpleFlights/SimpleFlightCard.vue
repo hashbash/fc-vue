@@ -63,22 +63,22 @@
                         </v-tooltip>
                     </span>
                     <span class="px-5">
-                        <v-btn :href="linkK(flight)"
-                               target="_blank"
-                               class="mx-2 secondary"
-                               elevation="0"
-                        >KAYAK</v-btn>
-                        <v-btn  :href="linkSk(flight)"
-                                target="_blank"
-                                class="mx-2 secondary"
-                                elevation="0"
-                        >Skyscanner</v-btn>
+<!--                        <v-btn :href="linkK(flight)"-->
+<!--                               target="_blank"-->
+<!--                               class="mx-2 secondary"-->
+<!--                               elevation="0"-->
+<!--                        >KAYAK</v-btn>-->
+<!--                        <v-btn  :href="linkSk(flight)"-->
+<!--                                target="_blank"-->
+<!--                                class="mx-2 secondary"-->
+<!--                                elevation="0"-->
+<!--                        >Skyscanner</v-btn>-->
                         <v-btn  :href="linkAS(flight)"
                                 target="_blank"
                                 class="primary mx-2"
                                 elevation="6"
                         >Aviasales</v-btn>
-                        <span v-if="this.getLang() === 'ru'">
+
                         <v-menu>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -90,11 +90,45 @@
                               <v-icon>mdi-dots-horizontal</v-icon>
                             </v-btn>
                           </template>
-                            <v-btn :href="linkAT(flight)"
-                                   target="_blank"
-                            >travel.alfabank</v-btn>
+                            <v-list dense>
+                                <v-subheader>{{ $t('forms.names.aggregators') }}</v-subheader>
+                                <v-list-item-group>
+                                    <v-list-item
+                                            :href="linkSk(flight)"
+                                            target="_blank"
+                                    >
+                                        <v-list-item-icon class="mx-2">
+                                            <v-icon>mdi-open-in-new</v-icon>
+                                          </v-list-item-icon>
+                                        <v-list-item-title>{{ $t('navigation.goTo') }} SKYSCANNER</v-list-item-title>
+                                    </v-list-item>
+                                    <v-list-item
+                                            :href="linkK(flight)"
+                                            target="_blank"
+                                    >
+                                        <v-list-item-icon class="mx-2">
+                                            <v-icon>mdi-open-in-new</v-icon>
+                                          </v-list-item-icon>
+                                        <v-list-item-title>{{ $t('navigation.goTo') }} KAYAK</v-list-item-title>
+                                    </v-list-item>
+                                </v-list-item-group>
+                                <span v-if="this.getLang() === 'ru'">
+                                <v-subheader>Оплата банковскими милями</v-subheader>
+                                <v-list-item-group>
+                                    <v-list-item
+                                            :href="linkAT(flight)"
+                                            target="_blank"
+                                    >
+                                        <v-list-item-icon class="mx-2">
+                                            <v-icon>mdi-open-in-new</v-icon>
+                                          </v-list-item-icon>
+                                        <v-list-item-title>{{ $t('navigation.goTo') }} TRAVEL.ALFABANK</v-list-item-title>
+                                    </v-list-item>
+                                </v-list-item-group>
+                                </span>
+                            </v-list>
                         </v-menu>
-                        </span>
+
                     </span>
                     </v-card-title>
             </div>

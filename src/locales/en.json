@@ -27,7 +27,8 @@
     "names": {
       "mapSearch": "Map search",
       "route": "Route",
-      "order": "Order by"
+      "order": "Order by",
+      "aggregators": "Aggregators"
     },
     "numbers": {
       "totalPrice": "Total price"

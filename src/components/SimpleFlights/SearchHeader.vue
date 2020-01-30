@@ -164,7 +164,7 @@
             <SimpleFlightCard
                     v-for="(flight, index) in flights"
                     :key="index"
-                    class="mx-2 pa-2 ma-2"
+                    class="mx-12 pa-2 ma-2"
                     v-bind:index="index"
                     v-bind:flight="flight"
             ></SimpleFlightCard>
