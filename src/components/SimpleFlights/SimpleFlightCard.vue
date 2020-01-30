@@ -55,7 +55,12 @@
                 </v-card-text>
                 <v-card-title>
                     <span>
-                        {{ flight['converted_price'] | currency(flight['converted_currency'], 0, { spaceBetweenAmountAndSymbol: true }) }}
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <span v-on="on">{{ flight['converted_price'] | currency(flight['converted_currency'], 0, { spaceBetweenAmountAndSymbol: true }) }}</span>
+                            </template>
+                            <span>{{ $t('flight.cached_at') }} {{ flight['processing_date'] }} (UTC)</span>
+                        </v-tooltip>
                     </span>
                     <span class="px-5">
                         <v-btn :href="linkK(flight)"
@@ -93,12 +98,14 @@
                     </span>
                     </v-card-title>
             </div>
+
             <v-avatar
                     class="ma-0"
                     size="160"
 
-            ><v-img :src="apiUrl + `/image/airports?id=${flight.destination}`"></v-img></v-avatar>
-
+            >
+                <v-img :src="apiUrl + `/image/airports?id=${flight.destination}`"></v-img>
+            </v-avatar>
         </div>
 </v-card>
 </template>

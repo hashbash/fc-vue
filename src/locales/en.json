@@ -70,7 +70,8 @@
     "days": " 0 days | 1 day | {n} days",
     "complex": "Multi-city",
     "complex_price": "Total price for {n} tickets",
-    "city_count": " 0 city | 1 city | {n} cities"
+    "city_count": " 0 city | 1 city | {n} cities",
+    "cached_at": "Cached at"
   },
   "navigation": {
     "goTo": "Go to",
