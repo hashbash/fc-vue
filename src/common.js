@@ -1,3 +1,5 @@
+import AppConfig from "./AppConfig";
+
 export default {
     skyscannerLink(flight) {
         let link_arr = [
@@ -109,4 +111,15 @@ export default {
         aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
         return aYearFromNow
     },
+    async logEvent(event_name, body) {
+        await fetch(AppConfig.apiUrl + '/log?event_name=' + event_name, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        }
+        );
+    }
 }

@@ -59,7 +59,7 @@
                             <template v-slot:activator="{ on }">
                                 <span v-on="on">{{ flight['converted_price'] | currency(flight['converted_currency'], 0, { spaceBetweenAmountAndSymbol: true }) }}</span>
                             </template>
-                            <span>{{ $t('flight.cached_at') }} {{ flight['processing_date'] }} (UTC)</span>
+                            <span>{{ $t('flight.cached_at') }} {{ flight['processing_date'] }} (MSK)</span>
                         </v-tooltip>
                     </span>
                     <span class="px-5">
@@ -73,10 +73,10 @@
 <!--                                class="mx-2 secondary"-->
 <!--                                elevation="0"-->
 <!--                        >Skyscanner</v-btn>-->
-                        <v-btn  :href="linkAS(flight)"
-                                target="_blank"
+                        <v-btn
                                 class="primary mx-2"
                                 elevation="6"
+                                v-on:click="openAS(flight)"
                         >Aviasales</v-btn>
 
                         <v-menu>
@@ -94,8 +94,7 @@
                                 <v-subheader>{{ $t('forms.names.aggregators') }}</v-subheader>
                                 <v-list-item-group>
                                     <v-list-item
-                                            :href="linkSk(flight)"
-                                            target="_blank"
+                                            v-on:click="openSk(flight)"
                                     >
                                         <v-list-item-icon class="mx-2">
                                             <v-icon>mdi-open-in-new</v-icon>
@@ -103,8 +102,7 @@
                                         <v-list-item-title>{{ $t('navigation.goTo') }} SKYSCANNER</v-list-item-title>
                                     </v-list-item>
                                     <v-list-item
-                                            :href="linkK(flight)"
-                                            target="_blank"
+                                            v-on:click="openK(flight)"
                                     >
                                         <v-list-item-icon class="mx-2">
                                             <v-icon>mdi-open-in-new</v-icon>
@@ -116,8 +114,7 @@
                                 <v-subheader>Оплата банковскими милями</v-subheader>
                                 <v-list-item-group>
                                     <v-list-item
-                                            :href="linkAT(flight)"
-                                            target="_blank"
+                                            v-on:click="openAT(flight)"
                                     >
                                         <v-list-item-icon class="mx-2">
                                             <v-icon>mdi-open-in-new</v-icon>
@@ -171,28 +168,32 @@
                     return this.$i18n.t('flight.oneWay')
                 }
             },
-            openSk(flight) {
+            async openSk(flight) {
+                common.logEvent('click_on_flight', flight);
                 let link = common.skyscannerLink(flight);
                 window.open(link, '_blank')
             },
             linkSk(flight) {
                 return common.skyscannerLink(flight)
             },
-            openAS(flight) {
+            async openAS(flight) {
+                common.logEvent('click_on_flight', flight);
                 let link = common.aviasalesLink(flight);
                 window.open(link, '_blank')
             },
             linkAS(flight) {
                 return common.aviasalesLink(flight)
             },
-            openK(flight) {
+            async openK(flight) {
+                common.logEvent('click_on_flight', flight);
                 let link = common.kayakLink(flight);
                 window.open(link, '_blank')
             },
             linkK(flight) {
                 return common.kayakLink(flight)
             },
-            openAT(flight) {
+            async openAT(flight) {
+                common.logEvent('click_on_flight', flight);
                 let link = common.travelAlfabankLink(flight);
                 window.open(link, '_blank')
             },
