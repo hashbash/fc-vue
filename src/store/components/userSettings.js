@@ -109,6 +109,14 @@ export default {
             }
             commit('updateOriginItems', value)
         },
+        setDestinationItems({commit}, value) {
+            if (value.length) {
+                Cookies.set('destinationItems', JSON.stringify(value), {expires: 365})
+            } else {
+                Cookies.remove('destinationItems')
+            }
+            commit('updateDestinationItems', value)
+        },
         setLocationSnackbarSeen({commit}, value=true) {
             Cookies.set('locationSnackbarSeen', Number(value), {expires: 365});
             commit('updateLocationSnackbarSeen', value)
@@ -158,6 +166,9 @@ export default {
         updateOriginItems(state, value) {
             state.originItems = value
         },
+        updateDestinationItems(state, value) {
+            state.destinationItems = value
+        },
         updateOriginsStatus(state, value) {
             state.originsStatus = value
         },
@@ -192,6 +203,7 @@ export default {
         latitude: undefined,
         nearbyAirports: undefined,
         originItems: undefined,
+        destinationItems: undefined,
         originsStatus: false,
         locationSnackbarSeen: false
     },
@@ -320,6 +332,15 @@ export default {
                 let nearby  = getters.getNearbyAirports;
                 let res = nearby.map(e => ({'place_code': e, 'type': 'airport', 'place_name': e}));
                 return res
+            } else {
+                return []
+            }
+        },
+        getDestinationItems(state) {
+            if (state.destinationItems) {
+                return state.destinationItems
+            } else if (Cookies.get('destinationItems')) {
+                return JSON.parse(Cookies.get('destinationItems'))
             } else {
                 return []
             }

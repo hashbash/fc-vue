@@ -4,6 +4,7 @@ import Collections from '../views/Collections.vue'
 import About from '../views/About.vue'
 import Map from "../views/Map";
 import SimpleFlights from "../views/SimpleFlights";
+import PriceHistory from "../components/PriceHistory/PriceHistory";
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/simple',
     name: 'simple',
     component: SimpleFlights
+  },
+  {
+    path: '/history',
+    name: 'history',
+    component: PriceHistory
   },
   {
     path: '/about',

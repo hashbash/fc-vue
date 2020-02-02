@@ -1,0 +1,180 @@
+<template>
+    <v-card class="mx-auto justify-center align-center" style="max-width: 85%" elevation="0">
+        <v-card-title>{{ $t('forms.names.historySearchFromHeader')}}</v-card-title>
+        <v-card-text>
+            <v-form
+                    ref="form"
+                    v-model="valid"
+            >
+                <OriginsAutocomplete></OriginsAutocomplete>
+                <DestinationAutocomplete></DestinationAutocomplete>
+                <v-row>
+                <v-col style="max-width: 26%">
+                    <v-dialog
+                            ref="outboundPickerMenu"
+                            v-model="outboundPickerMenu"
+                            :close-on-content-click="false"
+                            :return-value.sync="outboundDays"
+                    >
+                        <template v-slot:activator="{ on }">
+                            <v-combobox
+                                    v-model="outboundDays"
+                                    multiple
+                                    chips
+                                    :label="$i18n.t('forms.selectors.outboundDates') || 'Date selector outbound'"
+                                    v-on="on"
+                                    clearable
+                                    :placeholder="$i18n.t('forms.selectors.fillDates')"
+                                    :rules="[outboundDays.length > 0 || $i18n.t('forms.validations.requiredField')]"
+                                    required
+                            >
+                                <template v-slot:selection="{ item, index }">
+                                    <v-chip v-if="index === 0"
+                                            @click="outboundPickerMenu = true"
+                                    >
+                                        <span>{{ item }}</span>
+                                    </v-chip>
+                                    <span
+                                            v-if="index === 1"
+                                            class="grey--text caption"
+                                            @click="outboundPickerMenu = true"
+                                    >(+{{ $tc('otherDays', outboundDays.length - 1)}})</span>
+                                </template>
+                            </v-combobox>
+                        </template>
+                        <v-date-picker v-model="outboundDays"
+                                       multiple
+                                       :value="this.getOutboundDates"
+                                       @input="this.setOutboundDates"
+                                       :first-day-of-week="1"
+                                       :locale="this.$i18n.locale"
+                                       :min="new Date().toISOString().substr(0, 10)"
+                                       :max="getMaxDate().toISOString().substr(0, 10)"
+                        >
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="outboundPickerMenu = false">{{ $t('cancel') }}</v-btn>
+                            <v-btn text color="primary" @click="$refs.outboundPickerMenu.save(outboundDays)">{{ $t('save') }}</v-btn>
+                        </v-date-picker>
+                    </v-dialog>
+                </v-col>
+
+                <v-col style="max-width: 26%">
+                    <v-dialog
+                            ref="inboundPickerMenu"
+                            v-model="inboundPickerMenu"
+                            :close-on-content-click="false"
+                            :return-value.sync="inboundDays"
+                    >
+                        <template v-slot:activator="{ on }">
+                            <v-combobox
+                                    v-model="inboundDays"
+                                    multiple
+                                    chips
+                                    :label="$i18n.t('forms.selectors.inboundDates')"
+                                    v-on="on"
+                                    clearable
+                                    :placeholder="oneWayOnly ? $i18n.t('flight.oneWay') : $i18n.t('forms.selectors.fillDates')"
+                                    :disabled="oneWayOnly"
+                                    :rules="[(inboundDays.length > 0 || oneWayOnly) ||  $i18n.t('forms.validations.requiredField')
+                                    ]"
+                                    required
+                            >
+                                <template v-slot:selection="{ item, index }">
+                                    <v-chip v-if="index === 0"
+                                            @click="inboundPickerMenu = true"
+                                    >
+                                        <span>{{ item }}</span>
+                                    </v-chip>
+                                    <span
+                                            v-if="index === 1"
+                                            class="grey--text caption"
+                                            @click="inboundPickerMenu = true"
+                                    >(+{{ $tc('otherDays', inboundDays.length - 1)}})</span>
+                                </template>
+                            </v-combobox>
+                        </template>
+                        <v-date-picker v-model="inboundDays"
+                                       multiple
+                                       :first-day-of-week="1"
+                                       :locale="this.$i18n.locale"
+                                       :min="new Date().toISOString().substr(0, 10)"
+                                       :max="getMaxDate().toISOString().substr(0, 10)"
+                        >
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="inboundPickerMenu = false">{{ $t('cancel') }}</v-btn>
+                            <v-btn text color="primary" @click="$refs.inboundPickerMenu.save(inboundDays)">{{ $t('save') }}</v-btn>
+                        </v-date-picker>
+                    </v-dialog>
+                </v-col>
+
+                    <v-col style="max-width: 13%">
+                        <v-switch
+                                v-model="oneWayOnly"
+                                :label="this.$t('forms.switchers.oneWayOnly')"
+                        ></v-switch>
+                    </v-col>
+                    <v-col style="max-width: 13%">
+                        <v-switch
+                                v-model="directOnly"
+                                :label="this.$t('forms.switchers.directOnly')"
+                        ></v-switch>
+                    </v-col>
+                    <v-spacer style="max-width: 11%"></v-spacer>
+                    <v-col style="max-width: 7%" class="ma-auto justify-end align-end">
+                        <v-btn :disabled="!valid"
+                               :loading="loading"
+                               @click="sendFetchRequest()"
+                               class="success">{{ $t('navigation.search') }}</v-btn>
+                    </v-col>
+                </v-row>
+            </v-form>
+        </v-card-text>
+    </v-card>
+</template>
+
+<script>
+    import {mapActions, mapGetters} from 'vuex';
+    import OriginsAutocomplete from "../OriginsAutocomplete";
+    import DestinationAutocomplete from "./DestinationAutocomplete";
+
+    export default {
+        name: "SearchForm",
+        components: {OriginsAutocomplete, DestinationAutocomplete},
+        data: function () {
+            return {
+                valid: false,
+                outboundDays: [],
+                outboundPickerMenu: false,
+                inboundDays: [],
+                inboundPickerMenu: false,
+                directOnly: false,
+                oneWayOnly: false,
+                loading: false
+            }},
+        methods: {
+            ...mapGetters(['getOutboundDates']),
+            ...mapActions(['fetchPriceHistory', 'setOutboundDates']),
+            getMaxDate() {
+                let aYearFromNow = new Date();
+                aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
+                return aYearFromNow
+            },
+            async sendFetchRequest() {
+                this.loading = true;
+                await this.fetchPriceHistory({outbound_dates: this.outboundDays,
+                    inbound_dates: this.inboundDays,
+                    direct_only: this.directOnly,
+                    one_way: this.oneWayOnly
+                });
+                this.loading = false;
+            }
+        },
+        // async mounted() {
+        //     this.outboundDays = this.getOutboundDates()
+        // },
+    }
+</script>
+
+<style scoped>
+
+</style>

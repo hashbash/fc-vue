@@ -6,11 +6,13 @@
   "empty": "Oops... Nothing found from provided origins",
   "autocomplete": "Start typing for airport, city or country",
   "autocompletePlaceholder": "Origin airports, cities and countries",
+  "autocompletePlaceholderForDestination":  "Destination airports, cities and countries",
   "otherMonths": " | 1 other | {n} others",
   "otherDays": " | 1 other | {n} others",
   "collections": "Collections",
   "map": "Map",
   "simpleFlights": "Simple flights search",
+  "priceHistory": "Price history",
   "user": {
     "unknownUser": "Undefined duck",
     "visaFree": "Only Visa-Free destinations",
@@ -28,7 +30,26 @@
       "mapSearch": "Map search",
       "route": "Route",
       "order": "Order by",
-      "aggregators": "Aggregators"
+      "aggregators": "Aggregators",
+      "historySearchFromHeader": "Price history search",
+      "priceHistoryTable": "Minimal price history table"
+    },
+    "tables": {
+      "headers": {
+        "cacheDatetime": "Cache date",
+        "origin": "Origin",
+        "destination": "Destination",
+        "outboundDate": "Outbound date",
+        "inboundDate": "Inbound date",
+        "carriers": "Carrier",
+        "direct": "Direct",
+        "price": "Price",
+        "currency": "Currency"
+      }
+    },
+    "messages": {
+      "waitingForFillingForm": "Fill search form",
+      "noData": "No data found. Check search parameters."
     },
     "numbers": {
       "totalPrice": "Total price"
@@ -45,6 +66,7 @@
       "outboundDates": "Outbound dates",
       "inboundDates": "Inbound dates",
       "anytime": "Anytime",
+      "fillDates": "Fill dates",
       "addToRoute": "Add to route",
       "openRouteOnSource": "Search this route on"
     },
@@ -55,6 +77,7 @@
       }
     },
     "validations": {
+      "requiredField": "Required field",
       "selectAtLeastOneDay": "Select at least one date",
       "selectAtLeastOneOrigin": "Select at least one origin"
     },

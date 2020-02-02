@@ -18,6 +18,8 @@
         autofocus
         return-object
         :no-data-text="$i18n.t('autocomplete') || 'Autocomplete'"
+        :rules="[this.getOriginItems().length > 0 || 'required']"
+        required
 >
     <template v-slot:item="data">
         <v-list max-width="300">
@@ -51,7 +53,7 @@ export default {
     }),
     methods: {
         ...mapActions(['setOriginItems']),
-        ...mapGetters(['getUserCountry', 'getCurrency', 'getLang', 'originsStatus']),
+        ...mapGetters(['getUserCountry', 'getCurrency', 'getLang']),
         ...mapGetters(['getOriginItems']),
     },
     computed: {

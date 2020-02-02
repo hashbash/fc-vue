@@ -34,6 +34,14 @@
                         <v-icon left>mdi-routes</v-icon> {{ $t('simpleFlights')}}
                     </v-btn>
                 </v-card-actions>
+                <v-card-actions>
+                    <v-btn
+                            to="/history"
+                            :elevation="0"
+                    >
+                        <v-icon left>mdi-history</v-icon> {{ $t('priceHistory')}}
+                    </v-btn>
+                </v-card-actions>
             </v-card>
         </v-menu>
     </div>

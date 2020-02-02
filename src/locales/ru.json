@@ -6,11 +6,13 @@
   "empty": "Опаньки... Ничего не найдено для выбранных точек отправления",
   "autocomplete": "Введите аэропорт, город или страну",
   "autocompletePlaceholder": "Аэропорты, города и страны отправления",
+  "autocompletePlaceholderForDestination":  "Аэропорты, города и страны назаначения",
   "otherMonths": " | 1 другой | {n} других",
   "otherDays": " | 1 другая | {n} других",
   "collections": "Авторские подборки",
-  "map": "Конструктор сложных маршрутов",
+  "map": "Конструктор сложных маршрутов на карте",
   "simpleFlights": "Простые билеты",
+  "priceHistory": "История цен",
   "user": {
     "unknownUser": "Неопознанная утка",
     "visaFree": "Только безвизовые направления",
@@ -28,7 +30,22 @@
       "mapSearch": "Поиск на карте",
       "route": "Маршрут",
       "order": "Сортировка",
-      "aggregators": "Агрегаторы"
+      "aggregators": "Агрегаторы",
+      "historySearchFromHeader": "Поиск по истории цен",
+      "priceHistoryTable": "Таблица с историей минимальной цены"
+    },
+    "tables": {
+      "headers": {
+        "cacheDatetime": "Дата наблюдения",
+        "origin": "Откуда",
+        "destination": "Куда",
+        "outboundDate": "Дата вылета",
+        "inboundDate": "Дата прилета",
+        "carriers": "Перевозчик",
+        "direct": "Без пересадок",
+        "price": "Цена",
+        "currency": "Валюта"
+      }
     },
     "numbers": {
       "totalPrice": "Итого"
@@ -39,12 +56,17 @@
       "directOnly": "Только прямые",
       "oneWayOnly": "Только туда"
     },
+    "messages": {
+      "waitingForFillingForm": "Заполните поисковую форму для отображения результатов",
+      "noData": "Данные отсутствуют"
+    },
     "selectors": {
       "startDates": "Даты начала путешествия",
       "dates": "Даты",
       "outboundDates": "Даты вылета",
       "inboundDates": "Даты прилета",
       "anytime": "Любые даты",
+      "fillDates": "Введите даты",
       "addToRoute": "Добавить к маршруту",
       "openRouteOnSource": "Поиск этого маршрута на"
     },
@@ -55,6 +77,7 @@
       }
     },
     "validations": {
+      "requiredField": "Обязателное поле",
       "selectAtLeastOneDay": "Выберите как минимум одну дату",
       "selectAtLeastOneOrigin": "Выберите как минимум одну точку отправления"
     },
