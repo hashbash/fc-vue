@@ -100,6 +100,30 @@ export default {
             commit('updatePriceHistory', response);
             commit('updatePriceHistoryLoading', false);
         },
+        async fetchCachedFlights({commit, rootGetters}, {outbound_dates, inbound_dates, direct_only, one_way, limit=365}) {
+            commit('updateCachedFlightsLoading', true);
+            let request = await fetch(AppConfig.apiUrl + '/cached-flights', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "origins": rootGetters.getOriginItems.map(e=>(e['place_code'])),
+                    "destinations": rootGetters.getDestinationItems.map(e=>(e['place_code'])),
+                    "outbound_dates": outbound_dates,
+                    "inbound_dates": inbound_dates,
+                    "one_way": one_way,
+                    "direct_only": direct_only,
+                    "lang": rootGetters.getLang,
+                    "currency": rootGetters.getCurrency,
+                    "limit": limit
+                })
+            });
+            let response = await request.json();
+            commit('updateCachedFlights', response);
+            commit('updateCachedFlightsLoading', false);
+        },
         async fetchTags({commit}) {
             let request = await fetch(AppConfig.apiUrl + '/tags');
             let response = await request.json();
@@ -108,16 +132,21 @@ export default {
         searchParamsChanged({commit}) {
             commit('updateSearchParamsChanged')
         },
-        setOutboundDates({commit}, {outboundDates}) {
+        setOutboundDates({commit}, outboundDates) {
             let _outboundDates = [];
-            if (outboundDates !== undefined) {
+            if (outboundDates) {
                 _outboundDates = outboundDates
             }
             Cookies.set('outboundDates', JSON.stringify(_outboundDates), {expires: 10});
             commit('updateOutboundDates', _outboundDates)
         },
-        setInboundDates({commit}, {inboundDates}) {
-            commit('updateInboundDates', inboundDates)
+        setInboundDates({commit}, inboundDates) {
+            let _inboundDates = [];
+            if (inboundDates) {
+                _inboundDates = inboundDates
+            }
+            Cookies.set('inboundDates', JSON.stringify(_inboundDates), {expires: 10});
+            commit('updateInboundDates', _inboundDates)
         },
         setOneWayOnly({commit}, {oneWayOnly}) {
             commit('updateOneWayOnly', oneWayOnly)
@@ -146,6 +175,12 @@ export default {
         updatePriceHistoryLoading(state, value) {
             state.priceHistoryLoading = value
         },
+        updateCachedFlights(state, value){
+            state.cachedFlights = value;
+        },
+        updateCachedFlightsLoading(state, value) {
+            state.cachedFlightsLoading = value
+        },
         updateOutboundDates(state, value) {
             state.outboundDates = value;
         },
@@ -164,6 +199,8 @@ export default {
         simpleFlights: [],
         priceHistory: [],
         priceHistoryLoading: false,
+        cachedFlights: [],
+        cachedFlightsLoading: false,
         outboundDates: [],
         inboundDates: [],
         oneWayOnly: []
@@ -195,6 +232,12 @@ export default {
         getPriceHistoryLoading(state) {
             return state.priceHistoryLoading
         },
+        getCacheFlights(state) {
+            return state.cachedFlights
+        },
+        getCacheFlightsLoading(state) {
+            return state.cachedFlightsLoading
+        },
         getOutboundDates(state) {
             if (state.outboundDates && state.outboundDates.length > 0) {
                 return state.outboundDates
@@ -205,7 +248,13 @@ export default {
             }
         },
         getInboundDates(state) {
-            return state.inboundDates
+            if (state.inboundDates && state.inboundDates.length > 0) {
+                return state.inboundDates
+            } else if (Cookies.get('inboundDates')) {
+                return JSON.parse(Cookies.get('inboundDates'))
+            } else {
+                return []
+            }
         },
         getOneWayOnly(state) {
             return state.oneWayOnly

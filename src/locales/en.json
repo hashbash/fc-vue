@@ -32,7 +32,9 @@
       "order": "Order by",
       "aggregators": "Aggregators",
       "historySearchFromHeader": "Price history search",
-      "priceHistoryTable": "Minimal price history table"
+      "priceHistoryTable": "Minimal historical price table",
+      "priceHistoryChart": "Minimal historical price chart",
+      "latestPricesFromCache": "Latest prices from cache"
     },
     "tables": {
       "headers": {
@@ -44,7 +46,8 @@
         "carriers": "Carrier",
         "direct": "Direct",
         "price": "Price",
-        "currency": "Currency"
+        "currency": "Currency",
+        "link": "Link"
       }
     },
     "messages": {

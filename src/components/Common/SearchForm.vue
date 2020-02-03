@@ -152,8 +152,8 @@
                 loading: false
             }},
         methods: {
-            ...mapGetters(['getOutboundDates']),
-            ...mapActions(['fetchPriceHistory', 'setOutboundDates']),
+            ...mapGetters(['getOutboundDates', 'getInboundDates']),
+            ...mapActions(['fetchPriceHistory', 'setOutboundDates', 'setInboundDates', 'fetchCachedFlights']),
             getMaxDate() {
                 let aYearFromNow = new Date();
                 aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
@@ -161,17 +161,48 @@
             },
             async sendFetchRequest() {
                 this.loading = true;
-                await this.fetchPriceHistory({outbound_dates: this.outboundDays,
+                let priceHistoryRequest = this.fetchPriceHistory({outbound_dates: this.outboundDays,
                     inbound_dates: this.inboundDays,
                     direct_only: this.directOnly,
                     one_way: this.oneWayOnly
                 });
+                let cachedFlightsRequest = this.fetchCachedFlights({outbound_dates: this.outboundDays,
+                    inbound_dates: this.inboundDays,
+                    direct_only: this.directOnly,
+                    one_way: this.oneWayOnly
+                });
+                await priceHistoryRequest;
+                await cachedFlightsRequest;
                 this.loading = false;
             }
         },
-        // async mounted() {
-        //     this.outboundDays = this.getOutboundDates()
-        // },
+        async mounted() {
+            if (this.getOutboundDates().length) {
+                this.outboundDays = this.getOutboundDates()
+            }
+            if (this.getInboundDates().length) {
+                this.inboundDays = this.getInboundDates()
+            }
+            setTimeout(() => {
+                if(this.valid) {
+                    this.sendFetchRequest()
+                }
+            }, 2000);
+        },
+        watch: {
+            outboundDays: {
+                handler: function(newValue) {
+                    this.setOutboundDates(newValue)
+                },
+                deep: true
+            },
+            inboundDays: {
+                handler: function(newValue) {
+                    this.setInboundDates(newValue)
+                },
+                deep: true
+            }
+        }
     }
 </script>
 

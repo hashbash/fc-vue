@@ -32,7 +32,9 @@
       "order": "Сортировка",
       "aggregators": "Агрегаторы",
       "historySearchFromHeader": "Поиск по истории цен",
-      "priceHistoryTable": "Таблица с историей минимальной цены"
+      "priceHistoryTable": "Таблица с историей минимальной цены",
+      "priceHistoryChart": "График минимальной цены",
+      "latestPricesFromCache": "Последние цены из кэша"
     },
     "tables": {
       "headers": {
@@ -44,7 +46,8 @@
         "carriers": "Перевозчик",
         "direct": "Без пересадок",
         "price": "Цена",
-        "currency": "Валюта"
+        "currency": "Валюта",
+        "link": "Ссылка"
       }
     },
     "numbers": {
