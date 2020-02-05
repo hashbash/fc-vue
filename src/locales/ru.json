@@ -61,7 +61,8 @@
     },
     "messages": {
       "waitingForFillingForm": "Заполните поисковую форму для отображения результатов",
-      "noData": "Данные отсутствуют"
+      "noData": "Данные отсутствуют",
+      "longLinkMessageToAviasales": "Перейти к текущим вариантам на AVIASALES"
     },
     "selectors": {
       "startDates": "Даты начала путешествия",

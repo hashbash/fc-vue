@@ -16,6 +16,8 @@
                     :headers="headers"
                     :items="items"
                     dense
+                    key="history"
+                    multi-sort
                     class="mx-auto justify-center align-center"
                     style="max-width: 97%"
                     :no-data-text="noDataFound ? $t('forms.messages.noData') : $t('forms.messages.waitingForFillingForm')"
@@ -24,15 +26,24 @@
         </v-card>
         </v-content>
         <v-content class="px-0 mx-0 pa-0">
-            <v-card class="mx-auto justify-center align-center" style="max-width: 85%">
+            <v-card class="mx-auto justify-center align-center" style="max-width: 85%"
+                    :loading="liveLoading"
+
+            >
                 <v-card-title>{{$t('forms.names.latestPricesFromCache')}}</v-card-title>
                 <v-data-table
                         :headers="currentVariantsHeader"
-                        :items="currentVariantsItems"
+                        :items="cacheFlightsCombined"
                         dense
+                        :options="{
+                            sortBy: ['converted_price_rounded']
+                        }"
+                        :key="currentCacheKey"
+                        loading-text="Loading"
+                        multi-sort
                         class="mx-auto justify-center align-center"
                         style="max-width: 97%"
-                        :no-data-text="currentVariantsNoDataFound ? $t('forms.messages.noData') : $t('forms.messages.waitingForFillingForm')"
+                        :no-data-text="$t('forms.messages.noData')"
                 >
                     <template v-slot:item.converted_price_rounded="{ item }">
                         <span>
@@ -108,11 +119,23 @@
                 </v-data-table>
             </v-card>
         </v-content>
+        <v-content class="px-0 mx-0 pa-2 justify-center align-center"
+                   v-if="currentVariantsNoDataFound"
+        >
+            <v-card class="mx-auto justify-center align-center" style="max-width: 85%">
+                <v-btn small width="100%" class="primary"
+                       :href="this.getLang() === 'ru' ? 'https://www.aviasales.ru/?marker=201249' : 'https://www.aviasales.com/?marker=201249'"
+                       target="_blank"
+                >{{$t('forms.messages.longLinkMessageToAviasales')}}
+                <v-icon size="18">mdi-open-in-new</v-icon></v-btn>
+            </v-card>
+
+        </v-content>
     </div>
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
     import SearchForm from "../Common/SearchForm";
     import PriceHistoryChartCard from "./PriceHistoryChartCard";
     import common from "../../common";
@@ -150,10 +173,13 @@
                     {text: this.$t('forms.tables.headers.price'), value: 'converted_price_rounded'},
                     {text: this.$t('forms.tables.headers.link'), value: 'origin_city_id'},
                 ],
-                chartKey: 0
+                chartKey: 0,
+                liveLoading: false,
+                currentCacheKey: 0
             }
         },
         methods: {
+            ...mapActions({liveSearch: 'fetchLiveCacheSearch'}),
             ...mapGetters(['getLang']),
             async openSk(flight) {
                 common.logEvent('click_on_flight', flight);
@@ -174,13 +200,46 @@
                 common.logEvent('click_on_flight', flight);
                 let link = common.travelAlfabankLink(flight);
                 window.open(link, '_blank')
-            }
+            },
+            // async sendLiveSearch() {
+            //     let liveCacheSearch = this.liveSearch(
+            //         {outbound_dates: this.outboundDays,
+            //         inbound_dates: this.inboundDays,
+            //         one_way: this.oneWayOnly,
+            //         limit: 100}
+            //     );
+            //     return liveCacheSearch;
+            // }
         },
         computed: {
             ...mapGetters({loading: 'getPriceHistoryLoading',
                 flightHistory: 'getPriceHistory',
-                cachedFlights: 'getCacheFlights'
-            })
+                cachedFlights: 'getCacheFlights',
+                liveSearchResults: 'getLiveCacheSearch'
+            }),
+            cacheFlightsCombined() {
+                if (this.cachedFlights.length > 0) {
+                    return this.cachedFlights.map(element => {
+                        return {
+                            ...element,
+                            prettyOrigin: element['origin_city_name'] + ` (${element['origin']})`,
+                            prettyDestination: element['destination_city_name'] + ` (${element['destination']})`,
+                            prettyInboundDate: element['inbound_dt'] === null ? '—' : element['inbound_dt'],
+                            prettyDirect: element['direct'] === 1 ? '✓' : '✗'
+                        };
+                    });
+                } else {
+                    return this.liveSearchResults.map(element => {
+                        return {
+                            ...element,
+                            prettyOrigin: element['origin_city_name'] + ` (${element['origin']})`,
+                            prettyDestination: element['destination_city_name'] + ` (${element['destination']})`,
+                            prettyInboundDate: element['inbound_dt'] === null ? '—' : element['inbound_dt'],
+                            prettyDirect: element['direct'] === 1 ? '✓' : '✗'
+                        };
+                    });
+                }
+            }
         },
         async mounted() {
             this.headers = [
@@ -207,33 +266,31 @@
             ];
         },
         watch: {
-            loading(newValue, oldValue) {
-                if (newValue === false && oldValue === true) {
-                    this.items = this.flightHistory.map(element => {
-                        return {
-                            ...element,
-                            prettyOrigin: element['origin_city_name'] + ` (${element['origin']})`,
-                            prettyDestination: element['destination_city_name'] + ` (${element['destination']})`,
-                            prettyInboundDate: element['inbound_dt'] === null ? '—' : element['inbound_dt'],
-                            prettyDirect: element['direct'] === 1 ? '✓' : '✗'
-                        };
-                    });
-                    this.noDataFound = this.items.length === 0;
-                    this.chartKey++;
+            loading: {
+                handler: function(newValue, oldValue) {
+                    if (newValue === false && oldValue === true) {
+                        this.items = this.flightHistory.map(element => {
+                            return {
+                                ...element,
+                                prettyOrigin: element['origin_city_name'] + ` (${element['origin']})`,
+                                prettyDestination: element['destination_city_name'] + ` (${element['destination']})`,
+                                prettyInboundDate: element['inbound_dt'] === null ? '—' : element['inbound_dt'],
+                                prettyDirect: element['direct'] === 1 ? '✓' : '✗'
+                            };
+                        });
+                        this.noDataFound = this.items.length === 0;
+                        this.chartKey++;
 
-                    this.currentVariantsItems = this.cachedFlights.map(element => {
-                        return {
-                            ...element,
-                            prettyOrigin: element['origin_city_name'] + ` (${element['origin']})`,
-                            prettyDestination: element['destination_city_name'] + ` (${element['destination']})`,
-                            prettyInboundDate: element['inbound_dt'] === null ? '—' : element['inbound_dt'],
-                            prettyDirect: element['direct'] === 1 ? '✓' : '✗'
-                        };
-                    });
-                    this.currentVariantsNoDataFound = this.items.length === 0;
-
+                        if (this.currentVariantsItems.length === 0) {
+                            this.currentCacheKey++;
+                            this.liveLoading = true;
+                            this.liveSearch();
+                            this.currentCacheKey += 1;
+                            this.liveLoading = false;
+                        }
+                        this.currentVariantsNoDataFound = this.cacheFlightsCombined.length === 0;
                 }
-            }
+            }}
         }
     }
 </script>

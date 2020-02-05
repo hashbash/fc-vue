@@ -124,6 +124,26 @@ export default {
             commit('updateCachedFlights', response);
             commit('updateCachedFlightsLoading', false);
         },
+        fetchLiveCacheSearch({commit, rootGetters}) {
+            fetch(AppConfig.apiUrl + '/live-cache-search', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "origins": rootGetters.getOriginItems.map(e=>(e['place_code'])),
+                    "destinations": rootGetters.getDestinationItems.map(e=>(e['place_code'])),
+                    "outbound_dates": rootGetters.getOutboundDates,
+                    "inbound_dates": rootGetters.getInboundDates,
+                    "requests_limit": 20
+                })
+            }).then((response) => {
+                return response.json().then((json) => {
+                    commit('updateLiveCacheSearch', json);
+                })
+            });
+        },
         async fetchTags({commit}) {
             let request = await fetch(AppConfig.apiUrl + '/tags');
             let response = await request.json();
@@ -181,6 +201,9 @@ export default {
         updateCachedFlightsLoading(state, value) {
             state.cachedFlightsLoading = value
         },
+        updateLiveCacheSearch(state, value) {
+            state.liveCacheSearch = value
+        },
         updateOutboundDates(state, value) {
             state.outboundDates = value;
         },
@@ -203,7 +226,8 @@ export default {
         cachedFlightsLoading: false,
         outboundDates: [],
         inboundDates: [],
-        oneWayOnly: []
+        oneWayOnly: [],
+        liveCacheSearch: []
     },
     getters: {
         getCollectionHeaders(state) {
@@ -237,6 +261,9 @@ export default {
         },
         getCacheFlightsLoading(state) {
             return state.cachedFlightsLoading
+        },
+        getLiveCacheSearch(state) {
+            return state.liveCacheSearch
         },
         getOutboundDates(state) {
             if (state.outboundDates && state.outboundDates.length > 0) {
