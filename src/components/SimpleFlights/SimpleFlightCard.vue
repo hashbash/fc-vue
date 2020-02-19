@@ -77,7 +77,7 @@
                                 class="primary mx-2"
                                 elevation="6"
                                 v-on:click="openAS(flight)"
-                        >Aviasales</v-btn>
+                        >{{getLang() === 'ru' ? 'Aviasales' : 'Jetradar'}}</v-btn>
 
                         <v-menu>
                           <template v-slot:activator="{ on }">

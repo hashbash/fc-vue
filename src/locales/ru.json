@@ -83,7 +83,7 @@
     "messages": {
       "waitingForFillingForm": "Заполните поисковую форму для отображения результатов",
       "noData": "Данные отсутствуют",
-      "longLinkMessageToAviasales": "Перейти к текущим вариантам на AVIASALES",
+      "longLinkMessageTo": "Перейти к текущим вариантам на",
       "all": "Все"
     },
     "selectors": {

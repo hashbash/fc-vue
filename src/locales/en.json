@@ -65,7 +65,7 @@
     "messages": {
       "waitingForFillingForm": "Fill search form",
       "noData": "No data found. Check search parameters.",
-      "longLinkMessageToAviasales": "Go to current prices on AVIASALES",
+      "longLinkMessageTo": "Go to current prices on",
       "all": "All"
     },
     "numbers": {

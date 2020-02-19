@@ -62,7 +62,7 @@
                                 class="primary mx-2"
                                 elevation="6"
                                 v-on:click="openAS(item)"
-                        >Aviasales
+                        >{{getLang() === 'ru' ? 'Aviasales' : 'Jetradar'}}
                             <v-icon size="15">mdi-open-in-new</v-icon>
                         </v-btn>
 
@@ -124,9 +124,9 @@
         >
             <v-card class="mx-auto justify-center align-center" style="max-width: 85%">
                 <v-btn small width="100%" class="primary"
-                       :href="this.getLang() === 'ru' ? 'https://www.aviasales.ru/?marker=201249' : 'https://www.aviasales.com/?marker=201249'"
+                       :href="this.getLang() === 'ru' ? 'https://www.aviasales.ru/?marker=201249' : 'https://www.jetradar.com/?marker=201249'"
                        target="_blank"
-                >{{$t('forms.messages.longLinkMessageToAviasales')}}
+                >{{$t('forms.messages.longLinkMessageTo')}} {{getLang() === 'ru' ? 'Aviasales' : 'Jetradar'}}
                 <v-icon size="18">mdi-open-in-new</v-icon></v-btn>
             </v-card>
 

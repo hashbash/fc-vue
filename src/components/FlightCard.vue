@@ -118,7 +118,7 @@
                                             <span>{{$t('navigation.goTo')}}</span>
                                         </v-row>
                                         <v-row class="justify-center">
-                                            <span>Aviasales</span>
+                                            <span>{{getLang() === 'ru' ? 'Aviasales' : 'Jetradar'}}</span>
                                         </v-row>
                                     </div>
                                     </v-col>
@@ -170,6 +170,7 @@ export default {
         overlay: false
     }),
     methods: {
+        ...mapGetters(['getLang']),
         cacheAge(age) {
             if (age < 6) {
                 return '6'
@@ -203,8 +204,8 @@ export default {
             return link_arr.join("/");
         },
         aviasalesLink(origin_city_iata, destination_city_iata, outbound, inbound) {
-            let url = 'https://www.aviasales.com/';
-            if (this.getLang === 'ru') {
+            let url = 'https://www.jetradar.com/';
+            if (this.getLang() === 'ru') {
                 url = 'https://www.aviasales.ru/'
             }
             url += '?marker=201249';
@@ -215,7 +216,7 @@ export default {
                 url += `&return_date=${inbound}`;
             }
             url += '&with_request=true';
-            url += `&locale=${this.getLang}`;
+            url += `&locale=${this.getLang()}`;
             url += `&currency=${this.getCurrency.toLowerCase()}`;
             return url
         },
@@ -229,7 +230,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['getLang', 'getCurrency']),
+        ...mapGetters(['getCurrency']),
     },
     props: {
         flight: Object
