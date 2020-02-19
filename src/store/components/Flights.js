@@ -102,6 +102,8 @@ export default {
         },
         async fetchCachedFlights({commit, rootGetters}, {outbound_dates, inbound_dates, direct_only, one_way, limit=365}) {
             commit('updateCachedFlightsLoading', true);
+            commit('updateLiveCacheSearch', []);
+            commit('updateCachedFlights', []);
             let request = await fetch(AppConfig.apiUrl + '/cached-flights', {
                 method: 'POST',
                 headers: {
@@ -124,7 +126,7 @@ export default {
             commit('updateCachedFlights', response);
             commit('updateCachedFlightsLoading', false);
         },
-        fetchLiveCacheSearch({commit, rootGetters}) {
+        fetchLiveCacheSearch({commit, getters, rootGetters}, {outboundDates, inboundDates, oneWay}) {
             fetch(AppConfig.apiUrl + '/live-cache-search', {
                 method: 'POST',
                 headers: {
@@ -134,8 +136,9 @@ export default {
                 body: JSON.stringify({
                     "origins": rootGetters.getOriginItems.map(e=>(e['place_code'])),
                     "destinations": rootGetters.getDestinationItems.map(e=>(e['place_code'])),
-                    "outbound_dates": rootGetters.getOutboundDates,
-                    "inbound_dates": rootGetters.getInboundDates,
+                    "outbound_dates": outboundDates || rootGetters.getOutboundDates,
+                    "inbound_dates": inboundDates || rootGetters.getInboundDates,
+                    "one_way": oneWay || getters.getOneWayOnly,
                     "requests_limit": 20
                 })
             }).then((response) => {
@@ -168,7 +171,7 @@ export default {
             Cookies.set('inboundDates', JSON.stringify(_inboundDates), {expires: 10});
             commit('updateInboundDates', _inboundDates)
         },
-        setOneWayOnly({commit}, {oneWayOnly}) {
+        setOneWayOnly({commit}, oneWayOnly) {
             commit('updateOneWayOnly', oneWayOnly)
         }
 
@@ -226,7 +229,7 @@ export default {
         cachedFlightsLoading: false,
         outboundDates: [],
         inboundDates: [],
-        oneWayOnly: [],
+        oneWayOnly: false,
         liveCacheSearch: []
     },
     getters: {

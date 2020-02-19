@@ -7,12 +7,15 @@
   "autocomplete": "Start typing for airport, city or country",
   "autocompletePlaceholder": "Origin airports, cities and countries",
   "autocompletePlaceholderForDestination":  "Destination airports, cities and countries",
+  "excludePlaces": "Exclude airports, cities and countries",
   "otherMonths": " | 1 other | {n} others",
   "otherDays": " | 1 other | {n} others",
   "collections": "Collections",
   "map": "Map",
-  "simpleFlights": "Simple flights search",
+  "simpleFlights": "Simple flights",
+  "complexFlights": "Complex flights",
   "priceHistory": "Price history",
+  "combinator": "Complex flight combinator",
   "user": {
     "unknownUser": "Undefined duck",
     "visaFree": "Only Visa-Free destinations",
@@ -34,7 +37,11 @@
       "historySearchFromHeader": "Price history search",
       "priceHistoryTable": "Minimal historical price table",
       "priceHistoryChart": "Minimal historical price chart",
-      "latestPricesFromCache": "Latest prices from cache"
+      "latestPricesFromCache": "Latest prices from cache",
+      "latestPricesFromCacheForSimple": "Latest prices from cache for simple flight",
+      "complexFLightsCombinator": "Complex flights combinator",
+      "intermediateStops": "Intermediate stops",
+      "multiCityRoutes": "Multi-city routes"
     },
     "tables": {
       "headers": {
@@ -47,46 +54,77 @@
         "direct": "Direct",
         "price": "Price",
         "currency": "Currency",
-        "link": "Link"
+        "link": "Link",
+        "schema": "Schema",
+        "segmentsCount": "Segments count",
+        "totalPrice": "Total est. price",
+        "firstSegmentDate": "First segment date",
+        "cities": "Cities"
       }
     },
     "messages": {
       "waitingForFillingForm": "Fill search form",
       "noData": "No data found. Check search parameters.",
-      "longLinkMessageToAviasales": "Go to current prices on AVIASALES"
+      "longLinkMessageToAviasales": "Go to current prices on AVIASALES",
+      "all": "All"
     },
     "numbers": {
-      "totalPrice": "Total price"
+      "totalPrice": "Total price",
+      "maxPrice": "Max total price",
+      "totalPriceForCount": " | Total price for 1 ticket | Total price for {n} tickets"
     },
     "switchers": {
-      "visaFree": "Visa Free",
+      "visaFree": "Visa free",
+      "visaFreeSegments": "Visa free segments",
       "visaRequired": "Visa required",
       "directOnly": "Direct only",
-      "oneWayOnly": "One way"
+      "directOnlySegments": "Direct only segments",
+      "oneWayOnly": "One way",
+      "same_airport": "Same airport",
+      "same_city": "Same city",
+      "200km": "Cities in radius 200 km",
+      "400km": "Cities in radius 400 km",
+      "600km": "Cities in radius 600 km"
     },
     "selectors": {
       "startDates": "Start dates",
       "dates": "Dates",
       "outboundDates": "Outbound dates",
       "inboundDates": "Inbound dates",
+      "outboundDatesRange": "Outbound date range",
+      "inboundDatesRange": "Inbound date range",
       "anytime": "Anytime",
       "fillDates": "Fill dates",
       "addToRoute": "Add to route",
-      "openRouteOnSource": "Search this route on"
+      "openRouteOnSource": "Search this route on",
+      "multiCitySearch": "Multi-city search at",
+      "intermediateStopsDays": "Stop duration",
+      "radius": "Radius between stops",
+      "complexFlightSchema": "Flight schema",
+      "priceMinimizeRule": "Max price correction rule"
     },
     "choices": {
       "orderBy": {
         "price": "Price",
         "pricePerKm": "Price per km"
+      },
+      "priceChanges": {
+        "fixed": "Fixed by filter",
+        "minimize_after_step": "Minimize after each step"
       }
     },
     "validations": {
       "requiredField": "Required field",
       "selectAtLeastOneDay": "Select at least one date",
-      "selectAtLeastOneOrigin": "Select at least one origin"
+      "selectAtLeastOneOrigin": "Select at least one origin",
+      "dateOverlapping": "Inbound dates must be after outbound date",
+      "maxRangeLength": "Maximum 30 days in range"
     },
     "warnings": {
-      "complexUnavailable" : "Routes may not be available at these sources. Have a look at each segment separately by clicking on the round buttons above."
+      "complexUnavailable" : "Routes may not be available at these sources. Have a look at each segment separately by clicking on the round buttons above.",
+      "minimumTwoDates": "At least 2 dates required",
+      "maxPrice": "Max price must be greater than 0, sorry...",
+      "complexMayBeMoreExpensive": "Price for multi-city flight may be higher than multiple separate simple flights"
     }
   },
   "flight": {

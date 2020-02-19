@@ -5,6 +5,8 @@ import About from '../views/About.vue'
 import Map from "../views/Map";
 import SimpleFlights from "../views/SimpleFlights";
 import PriceHistory from "../components/PriceHistory/PriceHistory";
+import CombinatorPage from "../components/Combinator/CombinatorPage";
+import ComplexFlightsPage from "../components/ComplexFlights/ComplexFlightsPage";
 
 Vue.use(VueRouter)
 
@@ -33,6 +35,16 @@ const routes = [
     path: '/history',
     name: 'history',
     component: PriceHistory
+  },
+  {
+    path: '/combinator',
+    name: 'combinator',
+    component: CombinatorPage
+  },
+  {
+    path: '/complex',
+    name: 'complex',
+    component: ComplexFlightsPage
   },
   {
     path: '/about',

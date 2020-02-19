@@ -27,7 +27,7 @@ export default {
         return link + query.join('/')
     },
     aviasalesLink(flight) {
-        let url = 'https://www.aviasales.com/';
+        let url = 'https://www.jetradar.com/';
         if (flight['converted_currency'] === 'RUB') {
             url = 'https://www.aviasales.ru/'
         }
@@ -43,7 +43,7 @@ export default {
         return url
     },
     aviasalesComplexLink(route) {
-        let url = 'https://www.aviasales.com/flights/?';
+        let url = 'https://www.jetradar.com/flights/?';
         if (route[0]['converted_currency'] === 'RUB') {
             url = 'https://www.aviasales.ru/flights?'
         }
@@ -106,10 +106,30 @@ export default {
         }
         return res.map(x => x.toISOString().split('T')[0])
     },
+    getRangeBetweenDates(startDate, endDate) {
+        let result = [];
+        let day = 1000*60*60*24;
+        let date1 = new Date(startDate);
+        let date2 = new Date(endDate);
+
+        let diff = (date2.getTime()- date1.getTime())/day;
+        for(let i=0;i<=diff; i++)
+        {
+            let xx = date1.getTime()+day*i;
+            let yy = new Date(xx);
+            result.push(yy.toISOString().slice(0,10));
+        }
+        return result
+    },
     getMaxDate() {
         let aYearFromNow = new Date();
         aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
         return aYearFromNow
+    },
+    getMaxDateISO() {
+        let aYearFromNow = new Date();
+        aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
+        return aYearFromNow.toISOString().substr(0, 10)
     },
     async logEvent(event_name, body) {
         await fetch(AppConfig.apiUrl + '/log?event_name=' + event_name, {

@@ -1,42 +1,31 @@
 <template>
     <div>
-        <v-content class="px-0 mx-0 pa-2 justify-center align-center">
-            <SearchForm></SearchForm>
-        </v-content>
-        <v-content class="pa-0" v-if="this.items.length">
-            <PriceHistoryChartCard class="mx-auto justify-center align-center" style="max-width: 85%"
-                                   :flights="this.items"
-                                   :key="chartKey"
-            ></PriceHistoryChartCard>
+        <v-content class="px-0 mx-0 pa-2 ma-0 justify-center align-center">
+            <CombinatorSearchForm></CombinatorSearchForm></v-content>
+        <v-content class="px-0 mx-0 pa-0 ma-0">
+            <v-card class="mx-auto justify-center align-center" style="max-width: 85%"
+                    :loading="combinatorLoading"
+                    loader-height="1"
+            >
+                <v-card-title>{{$t('forms.names.multiCityRoutes')}}</v-card-title>
+                <v-card-text>
+                    <CombinatorFlightsTable></CombinatorFlightsTable>
+                </v-card-text>
+            </v-card>
         </v-content>
         <v-content class="px-0 mx-0 pa-2">
-        <v-card class="mx-auto justify-center align-center" style="max-width: 85%">
-            <v-card-title>{{$t('forms.names.priceHistoryTable')}}</v-card-title>
-            <v-data-table
-                    :headers="headers"
-                    :items="items"
-                    dense
-                    key="history"
-                    multi-sort
-                    class="mx-auto justify-center align-center"
-                    style="max-width: 97%"
-                    :no-data-text="noDataFound ? $t('forms.messages.noData') : $t('forms.messages.waitingForFillingForm')"
-            >
-            </v-data-table>
-        </v-card>
-        </v-content>
-        <v-content class="px-0 mx-0 pa-0">
             <v-card class="mx-auto justify-center align-center" style="max-width: 85%"
-                    :loading="liveLoading"
-
+                    :loading="combinatorLoading"
+                    loader-height="1"
             >
-                <v-card-title>{{$t('forms.names.latestPricesFromCache')}}</v-card-title>
+                <v-card-title>{{$t('forms.names.latestPricesFromCacheForSimple')}}</v-card-title>
                 <v-data-table
                         :headers="currentVariantsHeader"
                         :items="cacheFlightsCombined"
                         dense
                         :options="{
-                            sortBy: ['converted_price_rounded']
+                            sortBy: ['converted_price_rounded'],
+                            itemsPerPage: 5
                         }"
                         :key="currentCacheKey"
                         loading-text="Loading"
@@ -62,7 +51,7 @@
                                 class="primary mx-2"
                                 elevation="6"
                                 v-on:click="openAS(item)"
-                        >Aviasales
+                        >{{getLang() === 'ru' ? 'Aviasales' : 'Jetradar'}}
                             <v-icon size="15">mdi-open-in-new</v-icon>
                         </v-btn>
 
@@ -127,53 +116,29 @@
                        :href="this.getLang() === 'ru' ? 'https://www.aviasales.ru/?marker=201249' : 'https://www.aviasales.com/?marker=201249'"
                        target="_blank"
                 >{{$t('forms.messages.longLinkMessageToAviasales')}}
-                <v-icon size="18">mdi-open-in-new</v-icon></v-btn>
+                    <v-icon size="18">mdi-open-in-new</v-icon></v-btn>
             </v-card>
-
         </v-content>
+
     </div>
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
-    import SearchForm from "../Common/SearchForm";
-    import PriceHistoryChartCard from "./PriceHistoryChartCard";
+    import CombinatorSearchForm from "./CombinatorSearchForm";
+    import {mapActions, mapGetters} from "vuex";
     import common from "../../common";
     import Vue2Filters from "vue2-filters";
+    import CombinatorFlightsTable from "./CombinatorFlightsTable";
 
     export default {
-        name: "PriceHistory",
-        components: {SearchForm, PriceHistoryChartCard},
+        name: "CombinatorPage",
+        components: {CombinatorSearchForm, CombinatorFlightsTable},
         mixins: [Vue2Filters.mixin],
         data: function () {
             return {
-                noDataFound: false,
-                items: [],
-                headers: [
-                    {text: this.$t('forms.tables.headers.cacheDatetime'), value: 'processing_dt'},
-                    {text: this.$t('forms.tables.headers.origin'), value: 'prettyOrigin'},
-                    {text: this.$t('forms.tables.headers.destination'), value: 'prettyDestination'},
-                    {text: this.$t('forms.tables.headers.outboundDate'), value: 'outbound_dt'},
-                    {text: this.$t('forms.tables.headers.inboundDate'), value: 'prettyInboundDate'},
-                    {text: this.$t('forms.tables.headers.carriers'), value: 'carrier_names', filterable: true},
-                    {text: this.$t('forms.tables.headers.direct'), value: 'direct'},
-                    {text: this.$t('forms.tables.headers.currency'), value: 'converted_currency'},
-                    {text: this.$t('forms.tables.headers.price'), value: 'converted_price_rounded'},
-                ],
                 currentVariantsNoDataFound: false,
                 currentVariantsItems: [],
-                currentVariantsHeader: [
-                    {text: this.$t('forms.tables.headers.origin'), value: 'prettyOrigin'},
-                    {text: this.$t('forms.tables.headers.destination'), value: 'prettyDestination'},
-                    {text: this.$t('forms.tables.headers.outboundDate'), value: 'outbound_dt'},
-                    {text: this.$t('forms.tables.headers.inboundDate'), value: 'prettyInboundDate'},
-                    {text: this.$t('forms.tables.headers.carriers'), value: 'carrier_names_joined', filterable: true},
-                    {text: this.$t('forms.tables.headers.direct'), value: 'prettyDirect'},
-                    // {text: this.$t('forms.tables.headers.currency'), value: 'converted_currency'},
-                    {text: this.$t('forms.tables.headers.price'), value: 'converted_price_rounded'},
-                    {text: this.$t('forms.tables.headers.link'), value: 'origin_city_id'},
-                ],
-                chartKey: 0,
+                currentVariantsHeader: [],
                 liveLoading: false,
                 currentCacheKey: 0
             }
@@ -181,11 +146,6 @@
         methods: {
             ...mapActions({liveSearch: 'fetchLiveCacheSearch'}),
             ...mapGetters(['getLang']),
-            ...mapGetters({
-                flightHistory: 'getPriceHistory',
-                cachedFlights: 'getCacheFlights',
-                liveSearchResults: 'getLiveCacheSearch'
-            }),
             async openSk(flight) {
                 common.logEvent('click_on_flight', flight);
                 let link = common.skyscannerLink(flight);
@@ -206,22 +166,16 @@
                 let link = common.travelAlfabankLink(flight);
                 window.open(link, '_blank')
             },
-            // async sendLiveSearch() {
-            //     let liveCacheSearch = this.liveSearch(
-            //         {outbound_dates: this.outboundDays,
-            //         inbound_dates: this.inboundDays,
-            //         one_way: this.oneWayOnly,
-            //         limit: 100}
-            //     );
-            //     return liveCacheSearch;
-            // }
         },
         computed: {
-            ...mapGetters({loading: 'getPriceHistoryLoading'
+            ...mapGetters({
+                cachedFlights: 'getCacheFlights',
+                liveSearchResults: 'getLiveCacheSearch',
+                combinatorLoading: 'getLoading'
             }),
             cacheFlightsCombined() {
-                if (this.cachedFlights().length > 0) {
-                    return this.cachedFlights().map(element => {
+                if (this.cachedFlights.length > 0) {
+                    return this.cachedFlights.map(element => {
                         return {
                             ...element,
                             prettyOrigin: element['origin_city_name'] + ` (${element['origin']})`,
@@ -231,7 +185,7 @@
                         };
                     });
                 } else {
-                    return this.liveSearchResults().map(element => {
+                    return this.liveSearchResults.map(element => {
                         return {
                             ...element,
                             prettyOrigin: element['origin_city_name'] + ` (${element['origin']})`,
@@ -244,17 +198,6 @@
             }
         },
         async mounted() {
-            this.headers = [
-                {text: this.$t('forms.tables.headers.cacheDatetime'), value: 'processing_dt'},
-                {text: this.$t('forms.tables.headers.origin'), value: 'prettyOrigin'},
-                {text: this.$t('forms.tables.headers.destination'), value: 'prettyDestination'},
-                {text: this.$t('forms.tables.headers.outboundDate'), value: 'outbound_dt'},
-                {text: this.$t('forms.tables.headers.inboundDate'), value: 'prettyInboundDate'},
-                {text: this.$t('forms.tables.headers.carriers'), value: 'carrier_names', filterable: true},
-                {text: this.$t('forms.tables.headers.direct'), value: 'prettyDirect'},
-                {text: this.$t('forms.tables.headers.currency'), value: 'converted_currency'},
-                {text: this.$t('forms.tables.headers.price'), value: 'converted_price_rounded'},
-            ];
             this.currentVariantsHeader = [
                 {text: this.$t('forms.tables.headers.origin'), value: 'prettyOrigin'},
                 {text: this.$t('forms.tables.headers.destination'), value: 'prettyDestination'},
@@ -262,38 +205,10 @@
                 {text: this.$t('forms.tables.headers.inboundDate'), value: 'prettyInboundDate'},
                 {text: this.$t('forms.tables.headers.carriers'), value: 'carrier_names_joined', filterable: true},
                 {text: this.$t('forms.tables.headers.direct'), value: 'prettyDirect'},
-                // {text: this.$t('forms.tables.headers.currency'), value: 'converted_currency'},
                 {text: this.$t('forms.tables.headers.price'), value: 'converted_price_rounded'},
                 {text: this.$t('forms.tables.headers.link'), value: 'origin_city_id', sortable: false},
             ];
         },
-        watch: {
-            loading: {
-                handler: function(newValue, oldValue) {
-                    if (newValue === false && oldValue === true) {
-                        this.items = this.flightHistory().map(element => {
-                            return {
-                                ...element,
-                                prettyOrigin: element['origin_city_name'] + ` (${element['origin']})`,
-                                prettyDestination: element['destination_city_name'] + ` (${element['destination']})`,
-                                prettyInboundDate: element['inbound_dt'] === null ? '—' : element['inbound_dt'],
-                                prettyDirect: element['direct'] === 1 ? '✓' : '✗'
-                            };
-                        });
-                        this.noDataFound = this.items.length === 0;
-                        this.chartKey++;
-
-                        // if (this.cacheFlightsCombined.length === 0) {
-                        //     this.currentCacheKey++;
-                        //     this.liveLoading = true;
-                        //     this.liveSearch();
-                        //     this.currentCacheKey += 1;
-                        //     this.liveLoading = false;
-                        // }
-                        this.currentVariantsNoDataFound = this.cacheFlightsCombined.length === 0;
-                }
-            }}
-        }
     }
 </script>
 

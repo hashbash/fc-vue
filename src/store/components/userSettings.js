@@ -69,7 +69,7 @@ export default {
                 }
                 return ipInfo
             } catch (e) {
-                console.error(e)
+                console.error(e);
                 let res = "{\"ip\":\"217.12.97.173\",\"country_code\":\"RU\",\"country_name\":\"Россия\",\"region_code\":\"MOW\",\"region_name\":\"Москва\",\"city\":\"Москва\",\"zip_code\":\"129223\",\"time_zone\":\"Europe/Moscow\",\"latitude\":55.7527,\"longitude\":37.6172,\"metro_code\":0}";
                 let ipInfo = JSON.parse(res);
                 commit('updateIpInfo', ipInfo);
@@ -116,6 +116,14 @@ export default {
                 Cookies.remove('destinationItems')
             }
             commit('updateDestinationItems', value)
+        },
+        setExcludedPlacesItems({commit}, value) {
+            if (value.length) {
+                Cookies.set('excludedPlacesItems', JSON.stringify(value), {expires: 365})
+            } else {
+                Cookies.remove('excludedPlacesItems')
+            }
+            commit('updateExcludedPlacesItems', value)
         },
         setLocationSnackbarSeen({commit}, value=true) {
             Cookies.set('locationSnackbarSeen', Number(value), {expires: 365});
@@ -169,6 +177,9 @@ export default {
         updateDestinationItems(state, value) {
             state.destinationItems = value
         },
+        updateExcludedPlacesItems(state, value) {
+            state.excludedPlacesItems = value
+        },
         updateOriginsStatus(state, value) {
             state.originsStatus = value
         },
@@ -203,9 +214,19 @@ export default {
         latitude: undefined,
         nearbyAirports: undefined,
         originItems: undefined,
+        excludedPlacesItems: undefined,
         destinationItems: undefined,
         originsStatus: false,
-        locationSnackbarSeen: false
+        locationSnackbarSeen: false,
+        maxPriceForCurrency: {
+            "USD": 3000,
+            "EUR": 2500,
+            "RUB": 100000,
+            "AUD": 4500,
+            "CAD": 4000,
+            "JPY": 330000,
+            "CNY": 20000
+        }
     },
     getters: {
         getDarkTheme(state) {
@@ -345,6 +366,15 @@ export default {
                 return []
             }
         },
+        getExcludedPlacesItems(state) {
+            if (state.excludedPlacesItems) {
+                return state.excludedPlacesItems
+            } else if (Cookies.get('excludedPlacesItems')) {
+                return JSON.parse(Cookies.get('excludedPlacesItems'))
+            } else {
+                return []
+            }
+        },
         getLocationSnackbarSeen(state) {
             return state.locationSnackbarSeen || Boolean(Cookies.get('locationSnackbarSeen'))
         },
@@ -354,5 +384,8 @@ export default {
         originsStatus(state) {
             return state.originsStatus
         },
+        getMaxPriceForCurrency(state, getters) {
+            return state.maxPriceForCurrency[getters.getCurrency]
+        }
     }
 }

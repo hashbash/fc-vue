@@ -7,12 +7,15 @@
   "autocomplete": "Введите аэропорт, город или страну",
   "autocompletePlaceholder": "Аэропорты, города и страны отправления",
   "autocompletePlaceholderForDestination":  "Аэропорты, города и страны назаначения",
+  "excludePlaces": "Аэропорты, города и страны исключения",
   "otherMonths": " | 1 другой | {n} других",
   "otherDays": " | 1 другая | {n} других",
   "collections": "Авторские подборки",
   "map": "Конструктор сложных маршрутов на карте",
   "simpleFlights": "Простые билеты",
+  "complexFlights": "Сложные билеты",
   "priceHistory": "История цен",
+  "combinator": "Комбинатор сложных маршрутов",
   "user": {
     "unknownUser": "Неопознанная утка",
     "visaFree": "Только безвизовые направления",
@@ -34,7 +37,11 @@
       "historySearchFromHeader": "Поиск по истории цен",
       "priceHistoryTable": "Таблица с историей минимальной цены",
       "priceHistoryChart": "График минимальной цены",
-      "latestPricesFromCache": "Последние цены из кэша"
+      "latestPricesFromCache": "Последние цены из кэша",
+      "latestPricesFromCacheForSimple": "Последние цены из кэша на простые билеты",
+      "complexFLightsCombinator": "Комбинатор сложных маршрутов",
+      "intermediateStops": "Промежуточные остановки",
+      "multiCityRoutes": "Сложные маршруты"
     },
     "tables": {
       "headers": {
@@ -47,46 +54,77 @@
         "direct": "Без пересадок",
         "price": "Цена",
         "currency": "Валюта",
-        "link": "Ссылка"
+        "link": "Ссылка",
+        "schema": "Схема",
+        "segmentsCount": "Кол-во сегментов",
+        "totalPrice": "Общая цена",
+        "firstSegmentDate": "Дата первого сегмета",
+        "cities": "Города"
       }
     },
     "numbers": {
-      "totalPrice": "Итого"
+      "totalPrice": "Итого",
+      "maxPrice": "Макс. цена",
+      "totalPriceForCount": " | Цена за 1 билет | Общая цена за {n} билета"
     },
     "switchers": {
       "visaFree": "Без визы",
+      "visaFreeSegments": "Сегменты без визы",
       "visaRequired": "Нужна виза",
       "directOnly": "Только прямые",
-      "oneWayOnly": "Только туда"
+      "directOnlySegments": "Только прямые сегменты",
+      "oneWayOnly": "Только туда",
+      "same_airport": "Тот же аэропорт",
+      "same_city": "Тот же город",
+      "200km": "Города в радиусе 200 км",
+      "400km": "Города в радиусе 400 км",
+      "600km": "Города в радиусе 600 км"
     },
     "messages": {
       "waitingForFillingForm": "Заполните поисковую форму для отображения результатов",
       "noData": "Данные отсутствуют",
-      "longLinkMessageToAviasales": "Перейти к текущим вариантам на AVIASALES"
+      "longLinkMessageToAviasales": "Перейти к текущим вариантам на AVIASALES",
+      "all": "Все"
     },
     "selectors": {
       "startDates": "Даты начала путешествия",
       "dates": "Даты",
       "outboundDates": "Даты вылета",
       "inboundDates": "Даты прилета",
+      "outboundDatesRange": "Дипазон дат вылета",
+      "inboundDatesRange": "Дипазон дат прилета",
       "anytime": "Любые даты",
       "fillDates": "Введите даты",
       "addToRoute": "Добавить к маршруту",
-      "openRouteOnSource": "Поиск этого маршрута на"
+      "openRouteOnSource": "Поиск этого маршрута на",
+      "multiCitySearch": "Прейти к сложному маршруту на",
+      "intermediateStopsDays": "Длительность остановок",
+      "radius": "Радиус между остановками",
+      "complexFlightSchema": "Схема перелета",
+      "priceMinimizeRule": "Корректировка фильтра по макс. цене"
     },
     "choices": {
       "orderBy": {
         "price": "По цене",
         "pricePerKm": "По цене за км"
+      },
+      "priceChanges": {
+        "fixed": "В соответсивии с фильтром",
+        "minimize_after_step": "Уменьшать после каждого этапа"
       }
     },
     "validations": {
       "requiredField": "Обязателное поле",
       "selectAtLeastOneDay": "Выберите как минимум одну дату",
-      "selectAtLeastOneOrigin": "Выберите как минимум одну точку отправления"
+      "selectAtLeastOneOrigin": "Выберите как минимум одну точку отправления",
+      "dateOverlapping": "Даты прилета должны быть после вылета",
+      "maxRangeLength": "Максимум 30 дней"
     },
     "warnings": {
-      "complexUnavailable" : "Маршруты могут быть недоступны в этих источниках. Поброуйте посмотреть каждый сегмент отдельно по нажантию на круглые кнопки выше."
+      "complexUnavailable" : "Маршруты могут быть недоступны в этих источниках. Поброуйте посмотреть каждый сегмент отдельно по нажантию на круглые кнопки выше.",
+      "minimumTwoDates": "Выберите по меньшей мере 2 даты",
+      "maxPrice": "Максимальная цена должна быть больше 0, извините...",
+      "complexMayBeMoreExpensive": "Цена на сложный маршрут может быть выше, чем общая цена нескольких билетов, если покупать их по отдельности. Проверяйте все возможонсти"
     }
   },
   "flight": {

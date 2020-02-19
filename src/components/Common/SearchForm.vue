@@ -147,13 +147,14 @@
                 outboundPickerMenu: false,
                 inboundDays: [],
                 inboundPickerMenu: false,
-                directOnly: false,
-                oneWayOnly: false,
+                directOnly: true,
+                oneWayOnly: true,
                 loading: false
             }},
         methods: {
-            ...mapGetters(['getOutboundDates', 'getInboundDates']),
-            ...mapActions(['fetchPriceHistory', 'setOutboundDates', 'setInboundDates', 'fetchCachedFlights']),
+            ...mapGetters(['getOutboundDates', 'getInboundDates', 'getCacheFlights']),
+            ...mapActions(['fetchPriceHistory', 'setOutboundDates', 'setInboundDates', 'fetchCachedFlights', 'setOneWayOnly',
+            'fetchLiveCacheSearch']),
             getMaxDate() {
                 let aYearFromNow = new Date();
                 aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
@@ -173,6 +174,16 @@
                 });
                 await priceHistoryRequest;
                 await cachedFlightsRequest;
+
+                if (this.getCacheFlights().length === 0) {
+                    await this.fetchLiveCacheSearch(
+                        {
+                            outboundDates: this.outboundDays,
+                            inboundDates: this.inboundDays,
+                            oneWay: this.oneWayOnly
+                        }
+                    )
+                }
                 this.loading = false;
             }
         },
@@ -188,6 +199,7 @@
                     this.sendFetchRequest()
                 }
             }, 2000);
+            this.setOneWayOnly(this.oneWayOnly);
         },
         watch: {
             outboundDays: {
@@ -201,6 +213,10 @@
                     this.setInboundDates(newValue)
                 },
                 deep: true
+            },
+            oneWayOnly(newValue) {
+                console.log(newValue);
+                this.setOneWayOnly(newValue);
             }
         }
     }

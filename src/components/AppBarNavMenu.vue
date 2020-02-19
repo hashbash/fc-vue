@@ -36,10 +36,26 @@
                 </v-card-actions>
                 <v-card-actions>
                     <v-btn
+                            to="/complex"
+                            :elevation="0"
+                    >
+                        <v-icon left>mdi-progress-wrench</v-icon> {{ $t('complexFlights')}}
+                    </v-btn>
+                </v-card-actions>
+                <v-card-actions>
+                    <v-btn
                             to="/history"
                             :elevation="0"
                     >
                         <v-icon left>mdi-history</v-icon> {{ $t('priceHistory')}}
+                    </v-btn>
+                </v-card-actions>
+                <v-card-actions>
+                    <v-btn
+                            to="/combinator"
+                            :elevation="0"
+                    >
+                        <v-icon left>mdi-shape-plus</v-icon> {{ $t('combinator')}}
                     </v-btn>
                 </v-card-actions>
             </v-card>
