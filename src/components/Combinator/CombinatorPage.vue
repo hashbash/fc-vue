@@ -54,6 +54,16 @@
                         >{{getLang() === 'ru' ? 'Aviasales' : 'Jetradar'}}
                             <v-icon size="15">mdi-open-in-new</v-icon>
                         </v-btn>
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn icon v-on="on" elevation="3"
+                                       :href="historyLink(item)"
+                                       target="_blank"
+                                       x-small
+                                > <v-icon>mdi-history</v-icon></v-btn>
+                              </template>
+                              <span>{{$t('navigation.goToHistory')}}</span>
+                        </v-tooltip>
 
                         <v-menu>
                           <template v-slot:activator="{ on }">
@@ -146,6 +156,7 @@
         methods: {
             ...mapActions({liveSearch: 'fetchLiveCacheSearch'}),
             ...mapGetters(['getLang']),
+            historyLink: common.getLinkToHistory,
             async openSk(flight) {
                 common.logEvent('click_on_flight', flight);
                 let link = common.skyscannerLink(flight);

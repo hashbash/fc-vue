@@ -79,13 +79,23 @@
                                 v-on:click="openAS(flight)"
                         >{{getLang() === 'ru' ? 'Aviasales' : 'Jetradar'}}</v-btn>
 
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn icon v-on="on" elevation="3"
+                                       :href="historyLink(flight)"
+                                       target="_blank"
+                                > <v-icon>mdi-history</v-icon></v-btn>
+                              </template>
+                              <span>{{$t('navigation.goToHistory')}}</span>
+                        </v-tooltip>
+
                         <v-menu>
                           <template v-slot:activator="{ on }">
                             <v-btn
                                     class="mx-2"
                                     v-on="on"
                                     icon
-                                    elevation="6"
+                                    elevation="3"
                             >
                               <v-icon>mdi-dots-horizontal</v-icon>
                             </v-btn>
@@ -126,6 +136,7 @@
                             </v-list>
                         </v-menu>
 
+
                     </span>
                     </v-card-title>
             </div>
@@ -157,6 +168,7 @@
         }),
         methods: {
             ...mapGetters(['getLang']),
+            historyLink: common.getLinkToHistory,
             calculateDays(outbound, inbound, one_way) {
                 if (one_way === 0) {
                     let date1 = new Date(outbound);

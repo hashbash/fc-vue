@@ -41,7 +41,7 @@
                                 <v-col class="overline" style="max-width: 2%">
                                     {{f_index + 1}}
                                 </v-col>
-                                <v-col style="max-width: 35%">
+                                <v-col style="max-width: 35%; min-width: 30%">
                                     {{`${f['origin_city_name']}`}}
                                     <span class="grey">{{`${f['origin']}`}}</span>
                                     <span>
@@ -54,7 +54,8 @@
                                         </span>
                                     </span>
                                 </v-col>
-                                <v-col style="max-width: 55%">
+
+                                <v-col style="max-width: 55%; min-width: 30%">
                                     <span>
                                         {{f['outbound_dt']}}
                                     </span>
@@ -79,7 +80,6 @@
                                         {{ f['direct'] === 1 ? $t('flight.direct') : $t('flight.withStops') }}
                                     </span>
                                 </v-col>
-                                <v-spacer style="min-width: 5%"></v-spacer>
                                 <v-col style="max-width: 10%" class="justify-end align-end align-right">
                                     <v-tooltip bottom>
                                         <template v-slot:activator="{ on }">
@@ -89,7 +89,7 @@
                                     </v-tooltip>
                                 </v-col>
 
-                                <v-col style="max-width: 15%" class="justify-end align-right">
+                                <v-col style="max-width: 20%" class="justify-end align-right">
                         <span>
                         <v-btn
                                 x-small
@@ -99,7 +99,16 @@
                         >{{getLang() === 'ru' ? 'Aviasales' : 'Jetradar'}}
                             <v-icon size="15">mdi-open-in-new</v-icon>
                         </v-btn>
-
+                            <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn icon v-on="on" elevation="3"
+                                       :href="historyLink(f)"
+                                       target="_blank"
+                                       x-small
+                                > <v-icon>mdi-history</v-icon></v-btn>
+                              </template>
+                              <span>{{$t('navigation.goToHistory')}}</span>
+                        </v-tooltip>
                         <v-menu>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -179,6 +188,7 @@
                                         <v-icon>mdi-dots-horizontal</v-icon>
                                     </v-btn>
                                 </template>
+
                                 <v-list dense>
                                     <v-subheader>{{ $t('forms.names.aggregators') }}</v-subheader>
                                     <v-list-item-group>
@@ -227,6 +237,7 @@
         },
         methods: {
             ...mapGetters(['getLang']),
+            historyLink: common.getLinkToHistory,
             handleRowClick(e) {
                 if (this.expanded.filter(el => el['uuid'] === e['uuid']).length > 0) {
                     this.expanded = this.expanded.filter(el => el['uuid'] !== e['uuid'])

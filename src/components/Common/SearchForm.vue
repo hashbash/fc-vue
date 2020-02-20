@@ -152,9 +152,9 @@
                 loading: false
             }},
         methods: {
-            ...mapGetters(['getOutboundDates', 'getInboundDates', 'getCacheFlights']),
+            ...mapGetters(['getOutboundDates', 'getInboundDates', 'getCacheFlights', 'getOriginItems', 'getDestinationItems']),
             ...mapActions(['fetchPriceHistory', 'setOutboundDates', 'setInboundDates', 'fetchCachedFlights', 'setOneWayOnly',
-            'fetchLiveCacheSearch']),
+            'fetchLiveCacheSearch', 'setOriginItems', 'setDestinationItems']),
             getMaxDate() {
                 let aYearFromNow = new Date();
                 aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
@@ -179,27 +179,55 @@
                     await this.fetchLiveCacheSearch(
                         {
                             outboundDates: this.outboundDays,
-                            inboundDates: this.inboundDays,
-                            oneWay: this.oneWayOnly
+                            inboundDates: this.inboundDays || [],
+                            oneWay: this.oneWayOnly,
                         }
                     )
                 }
                 this.loading = false;
-            }
+                // this.setUrlParams();
+            },
+            // async setUrlParams() {
+            //     await this.$router.push({
+            //         path: '/history',
+            //         query: {
+            //             origin: this.getOriginItems().map(e=>(e['place_code']))[0],
+            //             destination: this.getDestinationItems().map(e=>(e['place_code']))[0],
+            //             outboundDate: this.outboundDays[0],
+            //             inboundDate: this.inboundDays[0],
+            //             oneWay: this.oneWayOnly,
+            //             directOnly: this.directOnly
+            //         }
+            //     }).catch(() => {})
+            // }
         },
         async mounted() {
-            if (this.getOutboundDates().length) {
-                this.outboundDays = this.getOutboundDates()
-            }
-            if (this.getInboundDates().length) {
-                this.inboundDays = this.getInboundDates()
-            }
-            setTimeout(() => {
-                if(this.valid) {
+            if (Object.keys(this.$route.query).length === 0) {
+                if (this.getOutboundDates().length) {
+                    this.outboundDays = this.getOutboundDates()
+                }
+                if (this.getInboundDates().length) {
+                    this.inboundDays = this.getInboundDates()
+                }
+                setTimeout(() => {
+                    if (this.valid) {
+                        this.sendFetchRequest()
+                    }
+                }, 2000);
+                this.setOneWayOnly(this.oneWayOnly);
+            } else {
+                this.setOriginItems([{place_code: this.$route.query.origin,
+                    place_name: this.$route.query.origin_name}]);
+                this.setDestinationItems([{place_code: this.$route.query.destination,
+                    place_name: this.$route.query.destination_name}]);
+                this.outboundDays = [this.$route.query.outboundDays];
+                this.inboundDays = this.$route.query.inboundDays ? [this.$route.query.inboundDays] : [];
+                this.directOnly = this.$route.query.directOnly === '1';
+                this.oneWayOnly = this.$route.query.oneWayOnly === '1';
+                if (this.valid) {
                     this.sendFetchRequest()
                 }
-            }, 2000);
-            this.setOneWayOnly(this.oneWayOnly);
+            }
         },
         watch: {
             outboundDays: {
@@ -215,7 +243,7 @@
                 deep: true
             },
             oneWayOnly(newValue) {
-                console.log(newValue);
+                // console.log(newValue);
                 this.setOneWayOnly(newValue);
             }
         }

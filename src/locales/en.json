@@ -141,7 +141,8 @@
   },
   "navigation": {
     "goTo": "Go to",
-    "search": "Search"
+    "search": "Search",
+    "goToHistory": "Go to price history for this route"
   },
   "cacheAge": {
     "6": "Less than 6 hours ago",

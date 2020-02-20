@@ -221,8 +221,8 @@
                     tags: this.selectedTags
                 });
                 this.loading = false;
-                this.flights = this.getSimpleFlights()
-            }
+                this.flights = this.getSimpleFlights();
+            },
         },
         computed: {
             visaFreeModel: {

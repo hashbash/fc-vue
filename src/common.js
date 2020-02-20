@@ -141,5 +141,17 @@ export default {
             body: JSON.stringify(body)
         }
         );
+    },
+    getLinkToHistory(flight) {
+        let url = '/history?'
+        url += `origin=${flight['origin_city_id']}&origin_name=${flight['origin_city_name']}&`;
+        url += `destination=${flight['destination_city_id']}&destination_name=${flight['destination_city_name']}&`;
+        url += `outboundDays=${flight['outbound_dt']}&`;
+        if (flight['one_way'] === 0) {
+            url += `inboundDays=${flight['inbound_dt']}&`
+        }
+        url += `oneWayOnly=${flight['one_way']}&`;
+        url += `directOnly=${flight['direct']}`;
+        return url
     }
 }
