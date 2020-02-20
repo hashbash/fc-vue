@@ -143,7 +143,7 @@ export default {
         );
     },
     getLinkToHistory(flight) {
-        let url = '/history?'
+        let url = '/history?';
         url += `origin=${flight['origin_city_id']}&origin_name=${flight['origin_city_name']}&`;
         url += `destination=${flight['destination_city_id']}&destination_name=${flight['destination_city_name']}&`;
         url += `outboundDays=${flight['outbound_dt']}&`;
