@@ -8,14 +8,15 @@
   "autocompletePlaceholder": "Origin airports, cities and countries",
   "autocompletePlaceholderForDestination":  "Destination airports, cities and countries",
   "excludePlaces": "Exclude airports, cities and countries",
+  "includePlaces": "Include airports, cities and countries",
   "otherMonths": " | 1 other | {n} others",
   "otherDays": " | 1 other | {n} others",
   "collections": "Collections",
   "map": "Map",
   "simpleFlights": "Simple flights",
-  "complexFlights": "Complex flights",
+  "complexFlights": "Multi-city flights",
   "priceHistory": "Price history",
-  "combinator": "Complex flight combinator",
+  "combinator": "Multi-city flight combinator",
   "user": {
     "unknownUser": "Undefined duck",
     "visaFree": "Only Visa-Free destinations",
@@ -91,6 +92,7 @@
       "dates": "Dates",
       "outboundDates": "Outbound dates",
       "inboundDates": "Inbound dates",
+      "tripDateRange": "Trip date range",
       "outboundDatesRange": "Outbound date range",
       "inboundDatesRange": "Inbound date range",
       "anytime": "Anytime",
@@ -99,6 +101,7 @@
       "openRouteOnSource": "Search this route on",
       "multiCitySearch": "Multi-city search at",
       "intermediateStopsDays": "Stop duration",
+      "tripTotalDuration": "Trip duration",
       "radius": "Radius between stops",
       "complexFlightSchema": "Flight schema",
       "priceMinimizeRule": "Max price correction rule"
@@ -123,6 +126,7 @@
     "warnings": {
       "complexUnavailable" : "Routes may not be available at these sources. Have a look at each segment separately by clicking on the round buttons above.",
       "minimumTwoDates": "At least 2 dates required",
+      "minimum3Dates": "At least 3 dates range required",
       "maxPrice": "Max price must be greater than 0, sorry...",
       "complexMayBeMoreExpensive": "Price for multi-city flight may be higher than multiple separate simple flights"
     }

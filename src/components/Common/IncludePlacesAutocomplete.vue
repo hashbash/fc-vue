@@ -1,10 +1,10 @@
 <template>
     <v-autocomplete
-            :label="$i18n.t('excludePlaces') || 'Autocomplete'"
-            v-model="excludedPlacesModel"
-            :items="excludedPlacesItems.concat(this.suggestions)"
+            :label="$i18n.t('includePlaces') || 'Autocomplete'"
+            v-model="includedPlacesModel"
+            :items="includedPlacesItems.concat(this.suggestions)"
             :search-input.sync="search"
-            @input="this.setExcludedPlacesItems"
+            @input="this.setIncludedPlacesItems"
             :menu-props="{ closeOnContentClick: true }"
             item-value="place_code"
             item-text="place_name"
@@ -15,7 +15,7 @@
             clearable
             hide-selected
             hide-details
-            :key="'exclude'"
+            :key="'include'"
             return-object
             :no-data-text="$i18n.t('autocomplete') || 'Autocomplete'"
     >
@@ -45,30 +45,30 @@
 
 
     export default {
-        name: "ExcludePlacesAutocomplete",
+        name: "IncludePlacesAutocomplete",
         data: () => ({
             search: null,
             suggestions: [],
             model: false,
         }),
         methods: {
-            ...mapActions(['setExcludedPlacesItems']),
+            ...mapActions(['setIncludedPlacesItems']),
             ...mapGetters(['getUserCountry', 'getCurrency', 'getLang']),
-            ...mapGetters(['getExcludedPlacesItems']),
+            ...mapGetters(['getIncludedPlacesItems']),
         },
         computed: {
-            ...mapGetters({excludedPlacesItems: 'getExcludedPlacesItems'}),
-            excludedPlacesModel: {
+            ...mapGetters({includedPlacesItems: 'getIncludedPlacesItems'}),
+            includedPlacesModel: {
                 get() {
-                    return this.getExcludedPlacesItems();
+                    return this.getIncludedPlacesItems();
                 },
                 async set(value) {
-                    this.setExcludedPlacesItems(value)
+                    this.setIncludedPlacesItems(value)
                 },
             },
         },
         async mounted() {
-            this.model = this.getExcludedPlacesItems();
+            this.model = this.getIncludedPlacesItems();
         },
         watch: {
             async search(val) {

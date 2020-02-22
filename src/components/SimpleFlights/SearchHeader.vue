@@ -188,7 +188,7 @@
                 outboundPickerMenu: false,
                 inboundDays: [],
                 inboundPickerMenu: false,
-                directOnly: false,
+                directOnly: true,
                 oneWayOnly: false,
                 visaFree: false,
                 loading: false,

@@ -41,6 +41,43 @@ export default {
                 })
             });
         },
+        async fetchComplexFlights({commit, rootGetters}, {outboundRange, directIntermediateFlights,
+            tripTotalDuration, visaFree, stopDurationDays, radius
+        }) {
+            commit('updateLoading', true);
+            fetch(AppConfig.apiUrl + '/combinator', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "origins": rootGetters.getOriginItems.map(e=>(e['place_code'])),
+                    "include_places": rootGetters.getIncludedPlacesItems.map(e=>(e['place_code'])),
+                    "exclude_places": rootGetters.getExcludedPlacesItems.map(e=>(e['place_code'])),
+                    "outbound_range": outboundRange,
+                    "one_way": true,
+                    "direct_only_segments": directIntermediateFlights,
+                    "stops_duration": stopDurationDays,
+                    "total_trip_duration": tripTotalDuration,
+                    "radius": radius,
+                    "schema": "A->b->c->A",
+                    "max_price_converted": rootGetters.getMaxPriceForCurrency,
+                    "currency": rootGetters.getCurrency,
+                    "visa_free_segments": visaFree,
+                    "citizenships": rootGetters.getCitizenships,
+                    "lang": rootGetters.getLang,
+                    "limit": 100,
+                    "kind": "triangle"
+                })
+            }).then((response) => {
+                return response.json().then((json) => {
+                    commit('updateComplexFlights', json);
+                    commit('updateLoading', false);
+                })
+            });
+
+        },
         clearCombinatorFlights({commit}) {
             commit('clearMutationCombinatorFlights', [])
         },
@@ -80,6 +117,9 @@ export default {
         updateCombinatorFlights(state, value) {
             state.combinatorFlights = state.combinatorFlights.concat(value)
         },
+        updateComplexFlights(state, value) {
+            state.complexFlights = value
+        },
         clearMutationCombinatorFlights(state, value) {
             state.combinatorFlights = value
         }
@@ -89,7 +129,8 @@ export default {
         outboundDateRange: [],
         inboundDateRange: [],
         loading: false,
-        combinatorFlights: []
+        combinatorFlights: [],
+        complexFlights: []
     },
     getters: {
         getComplexSchemas(state) {
@@ -121,6 +162,9 @@ export default {
         },
         getCombinatorFlights(state) {
             return state.combinatorFlights
+        },
+        getComplexFlights(state) {
+            return state.complexFlights
         }
     }
 }

@@ -125,6 +125,14 @@ export default {
             }
             commit('updateExcludedPlacesItems', value)
         },
+        setIncludedPlacesItems({commit}, value) {
+            if (value.length) {
+                Cookies.set('includedPlacesItems', JSON.stringify(value), {expires: 365})
+            } else {
+                Cookies.remove('includedPlacesItems')
+            }
+            commit('updateIncludedPlacesItems', value)
+        },
         setLocationSnackbarSeen({commit}, value=true) {
             Cookies.set('locationSnackbarSeen', Number(value), {expires: 365});
             commit('updateLocationSnackbarSeen', value)
@@ -180,6 +188,9 @@ export default {
         updateExcludedPlacesItems(state, value) {
             state.excludedPlacesItems = value
         },
+        updateIncludedPlacesItems(state, value) {
+            state.includedPlacesItems = value
+        },
         updateOriginsStatus(state, value) {
             state.originsStatus = value
         },
@@ -215,6 +226,7 @@ export default {
         nearbyAirports: undefined,
         originItems: undefined,
         excludedPlacesItems: undefined,
+        includedPlacesItems: undefined,
         destinationItems: undefined,
         originsStatus: false,
         locationSnackbarSeen: false,
@@ -371,6 +383,15 @@ export default {
                 return state.excludedPlacesItems
             } else if (Cookies.get('excludedPlacesItems')) {
                 return JSON.parse(Cookies.get('excludedPlacesItems'))
+            } else {
+                return []
+            }
+        },
+        getIncludedPlacesItems(state) {
+            if (state.includedPlacesItems) {
+                return state.includedPlacesItems
+            } else if (Cookies.get('includedPlacesItems')) {
+                return JSON.parse(Cookies.get('includedPlacesItems'))
             } else {
                 return []
             }

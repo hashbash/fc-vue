@@ -39,7 +39,7 @@
                             to="/complex"
                             :elevation="0"
                     >
-                        <v-icon left>mdi-progress-wrench</v-icon> {{ $t('complexFlights')}}
+                        <v-icon left>mdi-vector-triangle</v-icon> {{ $t('complexFlights')}}
                     </v-btn>
                 </v-card-actions>
                 <v-card-actions>
