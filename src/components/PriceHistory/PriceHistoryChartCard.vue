@@ -39,6 +39,11 @@
                         time: {
                             unit: 'month'
                         }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
                     }]
                 },
                 legend: false,
