@@ -6,6 +6,7 @@
         <v-content class="pa-0" v-if="this.items.length">
             <PriceHistoryChartCard class="mx-auto justify-center align-center" style="max-width: 85%"
                                    :flights="this.items"
+                                   :predictions="this.predictions"
                                    :key="chartKey"
             ></PriceHistoryChartCard>
         </v-content>
@@ -136,7 +137,7 @@
 
 <script>
     import {mapGetters, mapActions} from 'vuex';
-    import SearchForm from "../Common/SearchForm";
+    import SearchForm from "./SearchForm";
     import PriceHistoryChartCard from "./PriceHistoryChartCard";
     import common from "../../common";
     import Vue2Filters from "vue2-filters";
@@ -175,7 +176,8 @@
                 ],
                 chartKey: 0,
                 liveLoading: false,
-                currentCacheKey: 0
+                currentCacheKey: 0,
+                predictions: []
             }
         },
         methods: {
@@ -184,7 +186,8 @@
             ...mapGetters({
                 flightHistory: 'getPriceHistory',
                 cachedFlights: 'getCacheFlights',
-                liveSearchResults: 'getLiveCacheSearch'
+                liveSearchResults: 'getLiveCacheSearch',
+                pricePredictions: 'getPricePredictions'
             }),
             async openSk(flight) {
                 common.logEvent('click_on_flight', flight);
@@ -217,7 +220,8 @@
             // }
         },
         computed: {
-            ...mapGetters({loading: 'getPriceHistoryLoading'
+            ...mapGetters({loading: 'getPriceHistoryLoading',
+                predictionLoading: 'getPricePredictionsLoading'
             }),
             cacheFlightsCombined() {
                 if (this.cachedFlights().length > 0) {
@@ -281,6 +285,7 @@
                             };
                         });
                         this.noDataFound = this.items.length === 0;
+                        this.predictions = this.pricePredictions();
                         this.chartKey++;
 
                         // if (this.cacheFlightsCombined.length === 0) {
@@ -292,7 +297,15 @@
                         // }
                         this.currentVariantsNoDataFound = this.cacheFlightsCombined.length === 0;
                 }
-            }}
+            }},
+            predictionLoading: {
+                handler: function(newValue, oldValue) {
+                    if (newValue === false && oldValue === true) {
+                        this.predictions = this.pricePredictions();
+                        this.chartKey++;
+                    }
+                }
+            }
         }
     }
 </script>

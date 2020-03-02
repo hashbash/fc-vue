@@ -129,6 +129,10 @@
       "minimum3Dates": "At least 3 dates range required",
       "maxPrice": "Max price must be greater than 0, sorry...",
       "complexMayBeMoreExpensive": "Price for multi-city flight may be higher than multiple separate simple flights"
+    },
+    "labels": {
+      "history": "History",
+      "prediction": "Prediction"
     }
   },
   "flight": {
@@ -141,7 +145,8 @@
     "complex": "Multi-city",
     "complex_price": "Total price for {n} tickets",
     "city_count": " 0 city | 1 city | {n} cities",
-    "cached_at": "Cached at"
+    "cached_at": "Cached at",
+    "predictionFor": "Prediction for"
   },
   "navigation": {
     "goTo": "Go to",

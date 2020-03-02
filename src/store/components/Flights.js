@@ -78,6 +78,7 @@ export default {
         },
         async fetchPriceHistory({commit, rootGetters}, {outbound_dates, inbound_dates, direct_only, one_way, limit=365}) {
             commit('updatePriceHistoryLoading', true);
+            commit('updatePricePredictions', []);
             let request = await fetch(AppConfig.apiUrl + '/price-history', {
                 method: 'POST',
                 headers: {
@@ -99,6 +100,30 @@ export default {
             let response = await request.json();
             commit('updatePriceHistory', response);
             commit('updatePriceHistoryLoading', false);
+        },
+        async fetchPricePredictions({commit, rootGetters}, {outboundDates, inboundDates, oneWay, limit=365}) {
+            commit('updatePricePredictionsLoading', true);
+            commit('updatePricePredictions', []);
+            let request = await fetch(AppConfig.apiUrl + '/price-prediction', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "origins": rootGetters.getOriginItems.map(e=>(e['place_code'])),
+                    "destinations": rootGetters.getDestinationItems.map(e=>(e['place_code'])),
+                    "outbound_dates": outboundDates,
+                    "inbound_dates": inboundDates,
+                    "one_way": oneWay,
+                    "lang": rootGetters.getLang,
+                    "currency": rootGetters.getCurrency,
+                    "limit": limit
+                })
+            });
+            let response = await request.json();
+            commit('updatePricePredictions', response);
+            commit('updatePricePredictionsLoading', false);
         },
         async fetchCachedFlights({commit, rootGetters}, {outbound_dates, inbound_dates, direct_only, one_way, limit=365}) {
             commit('updateCachedFlightsLoading', true);
@@ -198,6 +223,12 @@ export default {
         updatePriceHistoryLoading(state, value) {
             state.priceHistoryLoading = value
         },
+        updatePricePredictions(state, value) {
+            state.pricePredictions = value;
+        },
+        updatePricePredictionsLoading(state, value) {
+            state.pricePredictionsLoading = value;
+        },
         updateCachedFlights(state, value){
             state.cachedFlights = value;
         },
@@ -230,7 +261,9 @@ export default {
         outboundDates: [],
         inboundDates: [],
         oneWayOnly: false,
-        liveCacheSearch: []
+        liveCacheSearch: [],
+        pricePredictions: [],
+        pricePredictionsLoading: false
     },
     getters: {
         getCollectionHeaders(state) {
@@ -258,6 +291,12 @@ export default {
         },
         getPriceHistoryLoading(state) {
             return state.priceHistoryLoading
+        },
+        getPricePredictions(state) {
+            return state.pricePredictions
+        },
+        getPricePredictionsLoading(state) {
+            return state.pricePredictionsLoading
         },
         getCacheFlights(state) {
             return state.cachedFlights

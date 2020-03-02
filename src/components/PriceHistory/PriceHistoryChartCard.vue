@@ -38,7 +38,7 @@
                         type: 'time',
                         time: {
                             unit: 'month'
-                        }
+                        },
                     }],
                     yAxes: [{
                         ticks: {
@@ -46,34 +46,54 @@
                         }
                     }]
                 },
-                legend: false,
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                },
                 tooltips: {
                     enabled: true,
-                    mode: 'label',
+                    // mode: 'nearest',
                     callbacks: {
+                        mode: 'x-axis',
+                        intersect: false,
                         title: function() {
                             return undefined
                         },
                         beforeLabel: function(tooltipItem, parsedData) {
-                            return parsedData.datasets[0].data[tooltipItem.index].formattedCacheDate
+                            if (tooltipItem.datasetIndex === 0) {
+                                return parsedData.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].formattedCacheDate
+                            } else if (tooltipItem.datasetIndex === 1) {
+                                return parsedData.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].predictionForDate
+                            }
                         },
-                        label: function(tooltipItem, parsedData) {
-                            return [
-                                parsedData.datasets[0].data[tooltipItem.index].places,
-                                parsedData.datasets[0].data[tooltipItem.index].formattedDates,
-                                parsedData.datasets[0].data[tooltipItem.index].carriers,
-                                parsedData.datasets[0].data[tooltipItem.index].direct, '',
-                                parsedData.datasets[0].data[tooltipItem.index].prettyPrice
-                            ]
+                        label: function(t, d) {
+                            if (t.datasetIndex === 0) {
+                                return [
+                                    d.datasets[t.datasetIndex].data[t.index].places,
+                                    d.datasets[t.datasetIndex].data[t.index].formattedDates,
+                                    d.datasets[t.datasetIndex].data[t.index].carriers,
+                                    d.datasets[t.datasetIndex].data[t.index].direct, '',
+                                    d.datasets[t.datasetIndex].data[t.index].prettyPrice
+                                ]
+                            } else if (t.datasetIndex === 1) {
+                                return [
+                                    d.datasets[t.datasetIndex].data[t.index].places,
+                                    d.datasets[t.datasetIndex].data[t.index].formattedDates,
+                                    d.datasets[t.datasetIndex].data[t.index].direct, '',
+                                    d.datasets[t.datasetIndex].data[t.index].prettyPrice
+                                ]
+                            }
                         },
                     },
                 }
             },
             parsedData: [],
+            parsedPredictions: [],
             chartData: null,
         }),
         props: {
-            flights: Array
+            flights: Array,
+            predictions: Array
         },
         async mounted() {
             this.loaded = false;
@@ -90,12 +110,35 @@
 
                 }
             });
+
+            this.parsedPredictions = this.predictions.map(element => {
+               return {
+                   x: new Date(element['future_date']),
+                   y: element['converted_price_rounded'],
+                   predictionForDate: `${this.$t('flight.predictionFor')} ${element['future_date']}`,
+                   places: `${element['origin']} - ${element['destination']}`,
+                   formattedDates: `${element['outbound_dt']}${element['inbound_dt'] ? ' - ' + element['inbound_dt'] : ''}`,
+                   direct: `${this.$t('forms.tables.headers.direct')}: ${element['direct'] === 1 ? '✓' : '✗'}`,
+                   prettyPrice: `${element['converted_price_rounded']} ${element['converted_currency']}`
+               }
+            });
+
             this.chartData = {
                 datasets: [{
+                    label: `${this.$t('forms.labels.history')}`,
                     data: this.parsedData,
                     borderColor: "#3e95cd",
-                    fill: false
-                }]
+                    fill: false,
+                }, {
+                    label: `${this.$t('forms.labels.prediction')}`,
+                    data: this.parsedPredictions,
+                    borderColor: "#808080",
+                    fill: false,
+                    borderDash: [10,2],
+                    pointRadius: 0,
+
+                }
+                ]
             };
             this.loaded = true;
         }

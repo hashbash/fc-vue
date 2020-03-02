@@ -135,7 +135,7 @@
 <script>
     import {mapActions, mapGetters} from 'vuex';
     import OriginsAutocomplete from "../OriginsAutocomplete";
-    import DestinationAutocomplete from "./DestinationAutocomplete";
+    import DestinationAutocomplete from "../Common/DestinationAutocomplete";
 
     export default {
         name: "SearchForm",
@@ -152,9 +152,10 @@
                 loading: false
             }},
         methods: {
-            ...mapGetters(['getOutboundDates', 'getInboundDates', 'getCacheFlights', 'getOriginItems', 'getDestinationItems']),
+            ...mapGetters(['getOutboundDates', 'getInboundDates', 'getCacheFlights', 'getOriginItems',
+                'getDestinationItems', 'getPriceHistory']),
             ...mapActions(['fetchPriceHistory', 'setOutboundDates', 'setInboundDates', 'fetchCachedFlights', 'setOneWayOnly',
-            'fetchLiveCacheSearch', 'setOriginItems', 'setDestinationItems']),
+            'fetchLiveCacheSearch', 'setOriginItems', 'setDestinationItems', 'fetchPricePredictions']),
             getMaxDate() {
                 let aYearFromNow = new Date();
                 aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
@@ -184,6 +185,16 @@
                         }
                     )
                 }
+
+                if (this.directOnly && this.getPriceHistory().length > 0) {
+                    // console.log(1);
+                    await this.fetchPricePredictions({
+                        outboundDates: this.outboundDays,
+                        inboundDates: this.inboundDays || [],
+                        oneWay: this.oneWayOnly,
+                    })
+                }
+
                 this.loading = false;
                 // this.setUrlParams();
             },
