@@ -37,7 +37,7 @@
       "aggregators": "Aggregators",
       "historySearchFromHeader": "Price history search",
       "priceHistoryTable": "Minimal historical price table",
-      "priceHistoryChart": "Minimal historical price chart",
+      "priceHistoryChart": "Minimal price chart",
       "latestPricesFromCache": "Latest prices from cache",
       "latestPricesFromCacheForSimple": "Latest prices from cache for simple flight",
       "complexFLightsCombinator": "Complex flights combinator",

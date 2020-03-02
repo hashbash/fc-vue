@@ -142,7 +142,7 @@
             valid: false,
             tripDays: [
                 (new Date(Date.now() + (7 * 24 * 60 * 60 * 1000))).toISOString().substr(0, 10),
-                (new Date(Date.now() + (34 * 24 * 60 * 60 * 1000))).toISOString().substr(0, 10)],
+                (new Date(Date.now() + (28 * 24 * 60 * 60 * 1000))).toISOString().substr(0, 10)],
             tripDaysPickerMenu: false,
             visaFree: false,
             stopDurationDays: [4, 7],
