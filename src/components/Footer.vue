@@ -37,11 +37,11 @@
         name: "Footer",
         data: () => ({
             icons: [
-                ['mdi-facebook', 'https://www.facebook.com/profile.php?id=100013718824496'],
+                // ['mdi-facebook', 'https://www.facebook.com/profile.php?id=100013718824496'],
                 ['mdi-telegram', 'tg://t.me/cheapstertravelfans'],
                // ['mdi-instagram', 'https://www.instagram.com/senya_vinnyj/'],
                 ['mdi-email', 'mailto:hello@cheapster.travel'],
-                ['mdi-github-box', 'https://github.com/hashbash/fc-vue']
+                // ['mdi-github-box', 'https://github.com/hashbash/fc-vue']
             ],
         })
     }
