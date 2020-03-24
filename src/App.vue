@@ -10,10 +10,11 @@
       <v-spacer></v-spacer>
 
       <v-spacer></v-spacer>
-      <v-switch
+      <v-switch v-if="$route.name !== 'search'"
                 hide-details
                 v-model="darkThemeModel"
                 :label="this.$i18n.t('darkTheme')"
+
       ></v-switch>
       <UserProfile></UserProfile>
     </v-app-bar>

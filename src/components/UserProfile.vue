@@ -53,7 +53,7 @@
                             <!--                                menu-props="auto"  // poor performance-->
                         </v-autocomplete>
                     </v-list-item>
-                    <v-list-item>
+                    <v-list-item v-if="$route.name !== 'search'">
                         <v-list-item-action>
                             <v-switch
                                     v-model="visaFreeModel"

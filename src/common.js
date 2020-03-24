@@ -28,18 +28,18 @@ export default {
     },
     aviasalesLink(flight) {
         let url = 'https://www.jetradar.com/';
-        if (flight['converted_currency'] === 'RUB') {
+        if ((flight['converted_currency'] || flight['currency']) === 'RUB') {
             url = 'https://www.aviasales.ru/'
         }
         url += '?marker=201249';
-        url += `&origin_iata=${flight['origin_city_iata']}`;
-        url += `&destination_iata=${flight['destination_city_iata']}`;
+        url += `&origin_iata=${flight['origin_city_iata'] || flight['origin']}`;
+        url += `&destination_iata=${flight['destination_city_iata'] || flight['destination']}`;
         url += `&depart_date=${flight['outbound_dt']}`;
         if (flight['inbound_dt']) {
             url += `&return_date=${flight['inbound_dt']}`;
         }
         url += '&with_request=true';
-        url += `&currency=${flight['converted_currency']}`;
+        url += `&currency=${flight['converted_currency'] || flight['currency']}`;
         return url
     },
     aviasalesComplexLink(route) {

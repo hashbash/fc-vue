@@ -17,6 +17,7 @@
   "complexFlights": "Multi-city flights",
   "priceHistory": "Price history",
   "combinator": "Multi-city flight combinator",
+  "search": "Search",
   "user": {
     "unknownUser": "Undefined duck",
     "visaFree": "Only Visa-Free destinations",
@@ -104,7 +105,12 @@
       "tripTotalDuration": "Trip duration",
       "radius": "Radius between stops",
       "complexFlightSchema": "Flight schema",
-      "priceMinimizeRule": "Max price correction rule"
+      "priceMinimizeRule": "Max price correction rule",
+      "origin": "Origin",
+      "destination": "Destination",
+      "allAirports": "All airports",
+      "outbound": "Depart",
+      "inbound": "Return"
     },
     "choices": {
       "orderBy": {
@@ -128,7 +134,9 @@
       "minimumTwoDates": "At least 2 dates required",
       "minimum3Dates": "At least 3 dates range required",
       "maxPrice": "Max price must be greater than 0, sorry...",
-      "complexMayBeMoreExpensive": "Price for multi-city flight may be higher than multiple separate simple flights"
+      "complexMayBeMoreExpensive": "Price for multi-city flight may be higher than multiple separate simple flights",
+      "required": "Required field",
+      "inboundAfterInbound": "Return must be after Depart"
     },
     "labels": {
       "history": "History",
@@ -147,6 +155,22 @@
     "city_count": " 0 city | 1 city | {n} cities",
     "cached_at": "Cached at",
     "predictionFor": "Prediction for"
+  },
+  "meta": {
+    "noData": "Nothing found",
+    "stop": "Stop",
+    "cheapestDirect": "Cheapest Direct flight",
+    "cheapestNonDirect": "Cheapest flight with stops",
+    "skiplegged": "Hidden-city route",
+    "loadingCard": "Search status",
+    "fetchLiveFlights": "Fetch live prices",
+    "fetchSkiplegged": "Fetch hidden-city route",
+    "status": {
+      "success": "Done",
+      "processing": "Processing...",
+      "error": "Error",
+      "undefined": ""
+    }
   },
   "navigation": {
     "goTo": "Go to",

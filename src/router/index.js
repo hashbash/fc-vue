@@ -7,6 +7,7 @@ import SimpleFlights from "../views/SimpleFlights";
 import PriceHistory from "../components/PriceHistory/PriceHistory";
 import CombinatorPage from "../components/Combinator/CombinatorPage";
 import ComplexFlightsPage from "../components/ComplexFlights/ComplexFlightsPage";
+import SearchPage from "../components/Search/SearchPage";
 
 Vue.use(VueRouter)
 
@@ -14,7 +15,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: SimpleFlights
+    redirect: {name: 'search'}
   },
   {
     path: '/collections',
@@ -45,6 +46,11 @@ const routes = [
     path: '/complex',
     name: 'complex',
     component: ComplexFlightsPage
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: SearchPage
   },
   {
     path: '/about',

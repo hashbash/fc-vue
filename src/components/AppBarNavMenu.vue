@@ -58,6 +58,14 @@
                         <v-icon left>mdi-shape-plus</v-icon> {{ $t('combinator')}}
                     </v-btn>
                 </v-card-actions>
+                <v-card-actions>
+                    <v-btn
+                            to="/search"
+                            :elevation="0"
+                    >
+                        <v-icon left>mdi-map-search-outline</v-icon> {{ $t('search')}}
+                    </v-btn>
+                </v-card-actions>
             </v-card>
         </v-menu>
     </div>
