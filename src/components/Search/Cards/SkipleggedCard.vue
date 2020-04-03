@@ -1,7 +1,15 @@
 <template>
     <v-card>
-        <v-card-title>{{$t('meta.skiplegged')}}</v-card-title>
-        <v-card-text class="pa-0">
+        <v-card-title>{{$t('meta.skiplegged')}}
+            <v-spacer></v-spacer>
+            <div class="overline" style="color: gray">
+                <div v-if="this.getSearchType() === 1">{{(this.outbound) ? '' : $t('meta.noData')}}</div>
+                <div v-if="this.getSearchType() === 0">{{this.outbound || this.inbound
+                    ? (this.outbound && this.inbound) ? '' : $t('meta.partiallyNoData')
+                    : $t('meta.noData')}}</div>
+            </div>
+        </v-card-title>
+        <v-card-text class="pa-0" v-if="(this.outbound || this.inbound)">
             <v-container fluid>
                 <v-row v-if="outbound" :key="'outbound_skip'">
                     <v-col style="max-width: 10%" class="text-center">
@@ -59,7 +67,7 @@
             inbound: undefined
         }),
         methods: {
-            ...mapGetters(['getSearchSkiplegged'])
+            ...mapGetters(['getSearchSkiplegged', 'getSearchType'])
         },
         mounted() {
             let flight = this.getSearchSkiplegged();

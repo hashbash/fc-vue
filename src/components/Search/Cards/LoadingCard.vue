@@ -4,7 +4,7 @@
         <v-card-text>
             <v-container fluid>
                 <v-row>
-                    <v-col style="max-width: 15%">
+                    <v-col style="min-width: 20%; max-width: 20%">
                         {{$t('meta.fetchLiveFlights')}}
                     </v-col>
                     <v-col>
@@ -20,7 +20,7 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-col style="max-width: 15%">
+                    <v-col style="min-width: 20%; max-width: 20%">
                         {{$t('meta.fetchSkiplegged')}}
                     </v-col>
                     <v-col>
@@ -35,6 +35,59 @@
                         </v-progress-linear>
                     </v-col>
                 </v-row>
+                <div v-if="this.getSearchType() === 0">
+
+                    <v-row>
+                        <v-col style="min-width: 20%; max-width: 20%">
+                            {{$t('meta.fetchOutboundForRT')}}
+                        </v-col>
+                        <v-col>
+                            <v-progress-linear rounded
+                                               striped
+                                               :indeterminate="statuses['liveSearchOutboundForRT'] === 'processing'"
+                                               :color="getColor(statuses['liveSearchOutboundForRT'])"
+                                               height="22px"
+                                               :key="key"
+                            >
+                                {{$t('meta.status.' + statuses['liveSearchOutboundForRT'] )}}
+                            </v-progress-linear>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col style="min-width: 20%; max-width: 20%">
+                            {{$t('meta.fetchInboundForRT')}}
+                        </v-col>
+                        <v-col>
+                            <v-progress-linear rounded
+                                               striped
+                                               :indeterminate="statuses['liveSearchInboundForRT'] === 'processing'"
+                                               :color="getColor(statuses['liveSearchInboundForRT'])"
+                                               height="22px"
+                                               :key="key"
+                            >
+                                {{$t('meta.status.' + statuses['liveSearchInboundForRT'] )}}
+                            </v-progress-linear>
+                        </v-col>
+                    </v-row>
+                </div>
+                <div v-if="this.getSearchType() === 1">
+                    <v-row>
+                        <v-col style="min-width: 20%; max-width: 20%">
+                            {{$t('meta.checkRTCheaperThanOW')}}
+                        </v-col>
+                        <v-col>
+                            <v-progress-linear rounded
+                                               striped
+                                               :indeterminate="statuses['cachedFlights'] === 'processing'"
+                                               :color="getColor(statuses['cachedFlights'])"
+                                               height="22px"
+                                               :key="key"
+                            >
+                                {{$t('meta.status.' + statuses['cachedFlights'] )}}
+                            </v-progress-linear>
+                        </v-col>
+                    </v-row>
+                </div>
             </v-container>
         </v-card-text>
     </v-card>
@@ -50,7 +103,7 @@
             key: 0
         }),
         methods: {
-            ...mapGetters(['getSearchLoadingDetails']),
+            ...mapGetters(['getSearchLoadingDetails', 'getSearchType']),
             getColor(status) {
                 if (['success', 'error'].includes(status)) {
                     return status

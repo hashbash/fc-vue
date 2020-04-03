@@ -54,14 +54,17 @@
                         this.setSearchDestination(this.items.filter(e => {
                                 return e.place_code === newValue
                             })[0]
-                        )
+                        );
+                        this.setDestinationItems(this.items.filter(e => {
+                            return e.place_code === newValue
+                        }));
                     }
                 },
                 deep: true
             }
         },
         methods: {
-            ...mapActions({setSearchDestination: 'setSearchDestination'}),
+            ...mapActions({setSearchDestination: 'setSearchDestination', setDestinationItems: 'setDestinationItems'}),
             ...mapGetters(['getUserCountry', 'getCurrency', 'getLang', 'getSearchDestination']),
             async querySelections (val) {
                 this.loading = true;

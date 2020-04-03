@@ -125,7 +125,7 @@ export default {
             commit('updatePricePredictions', response);
             commit('updatePricePredictionsLoading', false);
         },
-        async fetchCachedFlights({commit, rootGetters}, {outbound_dates, inbound_dates, direct_only, one_way, limit=365}) {
+        async fetchCachedFlights({commit, rootGetters}, {outbound_dates, inbound_dates, direct_only, one_way, limit=365, limitBy}) {
             commit('updateCachedFlightsLoading', true);
             commit('updateLiveCacheSearch', []);
             commit('updateCachedFlights', []);
@@ -144,7 +144,8 @@ export default {
                     "direct_only": direct_only,
                     "lang": rootGetters.getLang,
                     "currency": rootGetters.getCurrency,
-                    "limit": limit
+                    "limit": limit,
+                    "limit_by": limitBy
                 })
             });
             let response = await request.json();

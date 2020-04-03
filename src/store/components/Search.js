@@ -34,7 +34,7 @@ export default {
                     currency: rootGetters.getCurrency,
                     lang: rootGetters.getLang,
                     country: rootGetters.getCitizenships[0]
-            })
+            }, {headers: {'Access-Control-Allow-Origin': '*'}})
                 .then(response => {
                     commit('updateCheapestLiveDirect', response.data['direct']);
                     commit('updateCheapestLiveNonDirect', response.data['non_direct']);
@@ -45,7 +45,47 @@ export default {
                     commit('updateSearchLoadingDetails', {key: 'liveSearch', value: 'error'});
                     })
         },
-        async fetchSkiplagged({commit, rootGetters}) {
+        async fetchCheapestLiveOutboundForRT({commit, rootGetters}) {
+            commit('updateSearchLoadingDetails', {key: 'liveSearchOutboundForRT', value: 'processing'});
+            await axios.post(AppConfig.apiUrl + '/cheapest-live-flight',{
+                origin: rootGetters.getSearchOrigin['place_code'],
+                destination: rootGetters.getSearchDestination['place_code'],
+                outbound_date: rootGetters.getSearchOutboundDate,
+                currency: rootGetters.getCurrency,
+                lang: rootGetters.getLang,
+                country: rootGetters.getCitizenships[0]
+            }, {headers: {'Access-Control-Allow-Origin': '*'}})
+                .then(response => {
+                    commit('updateCheapestLiveDirectOutboundForRT', response.data['direct']);
+                    commit('updateCheapestLiveNonDirectOutboundForRT', response.data['non_direct']);
+                    commit('updateSearchLoadingDetails', {key: 'liveSearchOutboundForRT', value: 'success'});
+                })
+                .catch(e => {
+                    console.log(e);
+                    commit('updateSearchLoadingDetails', {key: 'liveSearchOutboundForRT', value: 'error'});
+                })
+        },
+        async fetchCheapestLiveInboundForRT({commit, rootGetters}) {
+            commit('updateSearchLoadingDetails', {key: 'liveSearchInboundForRT', value: 'processing'});
+            await axios.post(AppConfig.apiUrl + '/cheapest-live-flight',{
+                origin: rootGetters.getSearchDestination['place_code'],
+                destination: rootGetters.getSearchOrigin['place_code'],
+                outbound_date: rootGetters.getSearchInboundDate,
+                currency: rootGetters.getCurrency,
+                lang: rootGetters.getLang,
+                country: rootGetters.getCitizenships[0]
+            }, {headers: {'Access-Control-Allow-Origin': '*'}})
+                .then(response => {
+                    commit('updateCheapestLiveDirectInboundForRT', response.data['direct']);
+                    commit('updateCheapestLiveNonDirectInboundForRT', response.data['non_direct']);
+                    commit('updateSearchLoadingDetails', {key: 'liveSearchInboundForRT', value: 'success'});
+                })
+                .catch(e => {
+                    console.log(e);
+                    commit('updateSearchLoadingDetails', {key: 'liveSearchInboundForRT', value: 'error'});
+                })
+        },
+        async fetchSkiplegged({commit, rootGetters}) {
             commit('updateSearchLoadingDetails', {key: 'skiplegged', value: 'processing'});
             await axios.post(AppConfig.apiUrl + '/skiplegged-live-flight',{
                 origin: rootGetters.getSearchOrigin['place_code'],
@@ -56,7 +96,7 @@ export default {
                 currency: rootGetters.getCurrency,
                 lang: rootGetters.getLang,
                 country: rootGetters.getCitizenships[0]
-            })
+            }, {headers: {'Access-Control-Allow-Origin': '*'}})
                 .then(response => {
                     commit('updateSearchSkiplegged', response.data);
                     commit('updateSearchLoadingDetails', {key: 'skiplegged', value: 'success'});
@@ -69,8 +109,8 @@ export default {
         setSearchLoading({commit}, value) {
             commit('updateSearchLoading', value)
         },
-        setSearchLoadingDetails({commit}, {key, status}) {
-            commit('updateSearchLoadingDetails', {key, status})
+        setSearchLoadingDetails({commit}, {key, value}) {
+            commit('updateSearchLoadingDetails', {key, value})
         }
 
     },
@@ -96,6 +136,18 @@ export default {
         updateCheapestLiveNonDirect(state, value) {
             state.cheapestLiveNonDirect = value
         },
+        updateCheapestLiveDirectOutboundForRT(state, value) {
+            state.cheapestLiveDirectOutboundForRT = value
+        },
+        updateCheapestLiveNonDirectOutboundForRT(state, value) {
+            state.cheapestLiveNonDirectOutboundForRT = value
+        },
+        updateCheapestLiveDirectInboundForRT(state, value) {
+            state.cheapestLiveDirectInboundForRT = value
+        },
+        updateCheapestLiveNonDirectInboundForRT(state, value) {
+            state.cheapestLiveNonDirectInboundForRT = value
+        },
         updateSearchSkiplegged(state, value) {
             state.searchSkiplegged = value
         },
@@ -114,6 +166,10 @@ export default {
         searchType: undefined,
         cheapestLiveDirect: undefined,
         cheapestLiveNonDirect: undefined,
+        cheapestLiveDirectOutboundForRT: undefined,
+        cheapestLiveNonDirectOutboundForRT: undefined,
+        cheapestLiveDirectInboundForRT: undefined,
+        cheapestLiveNonDirectInboundForRT: undefined,
         searchLoading: false,
         searchLoadingDetails: {},
         searchSkiplegged: undefined
@@ -159,6 +215,18 @@ export default {
         },
         getCheapestLiveNonDirect(state) {
             return state.cheapestLiveNonDirect
+        },
+        getCheapestLiveDirectOutboundForRT(state) {
+            return state.cheapestLiveDirectOutboundForRT
+        },
+        getCheapestLiveNonDirectOutboundForRT(state) {
+            return state.cheapestLiveNonDirectOutboundForRT
+        },
+        getCheapestLiveDirectInboundForRT(state) {
+            return state.cheapestLiveDirectInboundForRT
+        },
+        getCheapestLiveNonDirectInboundForRT(state) {
+            return state.cheapestLiveNonDirectInboundForRT
         },
         getSearchLoading(state) {
             return state.searchLoading

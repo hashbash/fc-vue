@@ -24,6 +24,15 @@
                     -Date.parse(arrivals[index]))/1000
                     )}}
                 </div>
+
+                <div :key="`${index}-btn`" v-if="((index + 1) === origins.length) && kind === 'ow'"
+                     style="padding-top: 6.5%; position: relative"
+                >
+                    <v-btn elevation="0"
+                           :href="aviasalesLink(flight)"
+                           target="_blank"
+                    >{{ flight.price | currency(flight.currency, 0, { spaceBetweenAmountAndSymbol: true }) }}</v-btn>
+                </div>
             </template>
 
         </v-stepper-header>
@@ -31,9 +40,12 @@
 </template>
 
 <script>
+    import common from "../../../common";
+
     export default {
         name: "SegmentElement",
         methods: {
+            aviasalesLink: common.aviasalesLink,
             prettyInterval(secs) {
                 let sec_num = parseInt(secs, 10);
                 let hours   = Math.floor(sec_num / 3600);
@@ -51,8 +63,17 @@
             destinations: Array,
             destinationNames: Array,
             departures: Array,
-            arrivals: Array
-
+            arrivals: Array,
+            kind: {
+                type: String,
+                default: ""
+            },
+            flight: {
+                type: Object,
+                default: function () {
+                    return {}
+                }
+            }
         }
     }
 </script>

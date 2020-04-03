@@ -158,13 +158,21 @@
   },
   "meta": {
     "noData": "Nothing found",
+    "partiallyNoData": "Nothing found for some segment(s)",
     "stop": "Stop",
     "cheapestDirect": "Cheapest Direct flight",
     "cheapestNonDirect": "Cheapest flight with stops",
     "skiplegged": "Hidden-city route",
+    "separateDirectForRTCard": "Separate direct flight for Round-trip",
+    "separateNonDirectForRTCard": "Separate non-direct flight for Round-trip",
+    "cheapestRTForOWCard": "Cache. Cheapest Round-trip for Depart date",
+
     "loadingCard": "Search status",
     "fetchLiveFlights": "Fetch live prices",
     "fetchSkiplegged": "Fetch hidden-city route",
+    "fetchOutboundForRT": "Fetch flight for Depart",
+    "fetchInboundForRT": "Fetch flight for Return",
+    "checkRTCheaperThanOW": "Check Round-trip cheaper than one-way",
     "status": {
       "success": "Done",
       "processing": "Processing...",

@@ -53,6 +53,19 @@
                     <v-item class="mb-2">
                         <SkipleggedCard></SkipleggedCard>
                     </v-item>
+                    <div v-if="searchType === 0">
+                        <v-item class="mb-2">
+                            <SeparateDirectForRT></SeparateDirectForRT>
+                        </v-item>
+                        <v-item class="mb-2">
+                            <SeparateNonDirectForRT></SeparateNonDirectForRT>
+                        </v-item>
+                    </div>
+                    <div v-else-if="searchType === 1">
+                        <v-item class="mb-2">
+                            <CheapestRTForOW></CheapestRTForOW>
+                        </v-item>
+                    </div>
                     <v-item class="mb-2" v-if="!searchLoading">
                         <LoadingCard></LoadingCard>
                     </v-item>
@@ -72,11 +85,15 @@
     import LoadingCard from "./Cards/LoadingCard";
     import LiveCheapestCard from "./Cards/LiveCheapestCard";
     import SkipleggedCard from "./Cards/SkipleggedCard";
+    import SeparateDirectForRT from "./Cards/SeparateDirectForRT";
+    import SeparateNonDirectForRT from "./Cards/SeparateNonDirectForRT";
+    import CheapestRTForOW from "./Cards/CheapestRTForOW";
 
     export default {
         name: "SearchPage",
         components: {SingleOriginAutocomplete, SingleDestinationAutocomplete, SingleOutboundDatePicker,
-            SingleInboundDatePicker, LoadingCard, LiveCheapestCard, SkipleggedCard},
+            SingleInboundDatePicker, LoadingCard, LiveCheapestCard, SkipleggedCard, SeparateDirectForRT,
+            SeparateNonDirectForRT, CheapestRTForOW},
         data: () => ({
             valid: false,
             cardsKey: 0,
@@ -84,17 +101,45 @@
             searchCount: 0
         }),
         methods: {
-            ...mapGetters(['getSearchType', 'getSearchLoading']),
-            ...mapActions(['setSearchType', 'fetchCheapestLive', 'setSearchLoading', 'fetchSkiplagged']),
+            ...mapGetters(['getSearchType', 'getSearchLoading', 'getSearchOutboundDate', 'getSearchInboundDate']),
+            ...mapActions(['setSearchType', 'fetchCheapestLive', 'setSearchLoading', 'fetchSkiplegged',
+                           'fetchCheapestLiveOutboundForRT', 'fetchCheapestLiveInboundForRT', 'fetchLiveCacheSearch',
+                           'fetchCachedFlights', 'setSearchLoadingDetails']),
             async search() {
                 this.searchLoading = true;
                 let cl = this.fetchCheapestLive();
-                let sl = this.fetchSkiplagged();
+                let sl = this.fetchSkiplegged();
+                this.fetchLiveCacheSearch({outboundDates: [this.getSearchOutboundDate()],
+                    inboundDates: [], oneWay: true});
+                if (this.searchType === 0) {
+                    let outboundForRT = this.fetchCheapestLiveOutboundForRT();
+                    let inboundForRT = this.fetchCheapestLiveInboundForRT();
+                    this.fetchLiveCacheSearch({outboundDates: [this.getSearchOutboundDate()],
+                        inboundDates: [this.getSearchInboundDate()], oneWay: false});
+                    await outboundForRT;
+                    await inboundForRT;
+                } else if (this.searchType === 1) {
+                    let rs = this.loadCachedFlights();
+                    await rs;
+                }
                 await cl;
                 await sl;
                 this.searchLoading = false;
                 this.searchCount ++;
                 this.cardsKey ++;
+            },
+            async loadCachedFlights() {
+                try {
+                    this.setSearchLoadingDetails({key: 'cachedFlights', value: 'processing'});
+                    await this.fetchCachedFlights({outbound_dates: [this.getSearchOutboundDate()],
+                        inbound_dates: undefined, direct_only: undefined, one_way: false, limit: 20,
+                        limitBy: 'origin_city_id, destination_city_id, direct, ' +
+                            'if(direct = 1, outbound_carrier_names[1], \'\')'});
+                    this.setSearchLoadingDetails({key: 'cachedFlights', value: 'success'});
+                } catch (e) {
+                    console.error(e);
+                    this.setSearchLoadingDetails({key: 'cachedFlights', value: 'error'});
+                }
             }
         },
         computed: {
